@@ -7,3 +7,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'DashboardController::dashboard');
+$routes->get('/supply', 'SupplyController::index');
