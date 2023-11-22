@@ -6,6 +6,6 @@ use App\Controllers\BaseController;
 
 class SupplyController extends BaseController{
     public function index(){
-        return view('/supply');
+        return view('toko/supply');
     }
 }

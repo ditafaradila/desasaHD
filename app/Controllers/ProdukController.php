@@ -6,6 +6,6 @@ use App\Controllers\BaseController;
 
 class ProdukController extends BaseController{
     public function viewProduk(){
-        return view('/produk');
+        return view('toko/produk');
     }
 }

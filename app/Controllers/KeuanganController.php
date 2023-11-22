@@ -6,6 +6,6 @@ use App\Controllers\BaseController;
 
 class KeuanganController extends BaseController{
     public function index(){
-        return view('/keuangan');
+        return view('toko/keuangan');
     }
 }
