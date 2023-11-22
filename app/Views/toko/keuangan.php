@@ -20,10 +20,16 @@
         <div class="col-6">
             <div class="card mb-4">
                 <div class="card-header pb-0">
-                    <h6>Pemasukan</h6>
-                    <button class="btn info align-left text-center">
-                        <span class="text-secondary text-xs font-weight-bold">Tambah</span>
-                    </button>
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h6 class="mb-0">Pemasukan</h6>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button class="btn btn-outline-primary btn-sm mb-0">Tambah</button>
+                        </div>
+                    </div>
+
+
                 </div>
 
                 <div class="card-body px-0 pt-0 pb-2">
@@ -78,10 +84,21 @@
         <div class="col-6">
             <div class="card mb-4">
                 <div class="card-header pb-0">
-                    <h6>Pengeluaran</h6>
+
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h6 class="mb-0">Pengeluaran</h6>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button class="btn btn-outline-primary btn-sm mb-0">Tambah</button>
+                        </div>
+                    </div>
+
+                    <!-- <h6>Pengeluaran</h6>
                     <button class="btn info align-left text-center">
                         <span class="text-secondary text-xs font-weight-bold">Tambah</span>
-                    </button>
+                    </button> -->
+                    
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
