@@ -222,6 +222,16 @@
   </aside>
   
   <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+  <main id="main" class="main">
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div class="content-wrapper">
+        <div class="container">
+          <?= $this->renderSection('content') ?>
+        </div>
+      </div>
+    </div>
+  </main><!-- End #main -->
   </main>
 
   <div class="fixed-plugin">
