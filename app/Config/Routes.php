@@ -11,3 +11,6 @@ $routes->get('/supply', 'SupplyController::index');
 $routes->get('/produk', 'ProdukController::viewProduk');
 $routes->get('/keuangan', 'KeuanganController::index');
 $routes->get('/transaksi', 'TransaksiController::index');
+$routes->get('/tambahPemasukan', 'KeuanganController::tambahK');
+$routes->post('/storeK','KeuanganController::storeK');
+$routes->get('/editPemasukan/(:num)','KeuanganController::editPemasukan/$1');

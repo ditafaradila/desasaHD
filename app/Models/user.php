@@ -12,7 +12,7 @@ class user extends Model
     protected $allowedFields    = ['id_user', 'username', 'password', 'id_role', 'nama'];
 
     public function getData(){
-        $builder = $this->db->table('tbl_user')
-        ->get()->getRowArray();
+        return $this->db->table('tbl_user')
+        ->get()->getResultArray();
     }
 }

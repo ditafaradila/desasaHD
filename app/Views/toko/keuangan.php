@@ -25,11 +25,10 @@
                             <h6 class="mb-0">Pemasukan</h6>
                         </div>
                         <div class="col-6 text-end">
-                            <button class="btn btn-outline-primary btn-sm mb-0">Tambah</button>
+                            <a href="/tambahPemasukan" type="button" class="btn btn-outline-primary btn-sm mb-0">Tambah</a>
+                            <!-- <button class="btn btn-outline-primary btn-sm mb-0">Tambah</button> -->
                         </div>
                     </div>
-
-
                 </div>
 
                 <div class="card-body px-0 pt-0 pb-2">
@@ -55,23 +54,29 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            <?php $no = 1;
+                                foreach ($pemasukan as $pemasukan) ;
+                            ?>
                                 <tr>
                                     <td class="align-middle text-center">
-                                        <span class="text-secondary text-xs font-weight-bold">1</span>
+                                        <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
                                     </td>
                                     <td>
-                                        <p class="text-xs font-weight-bold mb-0">Shopee</p>
+                                        <p class="text-xs font-weight-bold mb-0"><?= $pemasukan['sumber'] ?></p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
-                                        <p class="text-xs font-weight-bold mb-0">23 November 2023</p>
+                                        <p class="text-xs font-weight-bold mb-0"><?= $pemasukan['tanggal'] ?></p>
                                     </td>
                                     <td class="align-middle text-center">
-                                        <span class="text-secondary text-xs font-weight-bold">1.000.000</span>
+                                        <span class="text-secondary text-xs font-weight-bold">Rp <?= number_format($pemasukan['jumlah']) ?></span>
                                     </td>
                                     <td>
-                                        <button class="btn info align-middle text-center">
+                                        <a href="/editPemasukan/<?= $pemasukan['id_pemasukan'] ?>" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="btn info align-middle text-center">
                                             <span class="text-secondary text-xs font-weight-bold">Edit</span>
-                                        </button>
+                                        </a>
+                                        <!-- <button class="btn info align-middle text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">Edit</span>
+                                        </button> -->
                                     </td>
                                 </tr>
                             </tbody>
@@ -90,6 +95,7 @@
                             <h6 class="mb-0">Pengeluaran</h6>
                         </div>
                         <div class="col-6 text-end">
+                            <!-- <a href="/tambahKeuangan" type="button" class="btn btn-outline-primary btn-sm mb-0">Tambah</a> -->
                             <button class="btn btn-outline-primary btn-sm mb-0">Tambah</button>
                         </div>
                     </div>
