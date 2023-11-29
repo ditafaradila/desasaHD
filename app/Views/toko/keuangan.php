@@ -25,7 +25,8 @@
                             <h6 class="mb-0">Pemasukan</h6>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="/tambahPemasukan" type="button" class="btn btn-outline-primary btn-sm mb-0">Tambah</a>
+                            <a href="/tambahPemasukan" type="button"
+                                class="btn btn-outline-primary btn-sm mb-0">Tambah</a>
                             <!-- <button class="btn btn-outline-primary btn-sm mb-0">Tambah</button> -->
                         </div>
                     </div>
@@ -46,7 +47,7 @@
                                         Tanggal</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Jumlah</th>
+                                        Nominal</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Aksi</th>
@@ -54,7 +55,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php $no = 1;
+                                <?php $no = 1;
                                 foreach ($pemasukan as $pemasukan) ;
                             ?>
                                 <tr>
@@ -68,12 +69,14 @@
                                         <p class="text-xs font-weight-bold mb-0"><?= $pemasukan['tanggal'] ?></p>
                                     </td>
                                     <td class="align-middle text-center">
-                                        <span class="text-secondary text-xs font-weight-bold">Rp <?= number_format($pemasukan['jumlah']) ?></span>
+                                        <span class="text-secondary text-xs font-weight-bold">Rp
+                                            <?= number_format($pemasukan['jumlah']) ?></span>
                                     </td>
                                     <td>
-                                        <a href="/editPemasukan/<?= $pemasukan['id_pemasukan'] ?>" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="btn info align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">Edit</span>
-                                        </a>
+                                        <a class="btn btn-link text-danger text-gradient px-1 mb-0"
+                                            href="javascript:;"><i class="far fa-trash-alt me-2"></i></a>
+                                        <a class="btn btn-link text-dark px-1 mb-0" href="javascript:;"><i
+                                                class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i></a>
                                         <!-- <button class="btn info align-middle text-center">
                                             <span class="text-secondary text-xs font-weight-bold">Edit</span>
                                         </button> -->
@@ -104,7 +107,7 @@
                     <button class="btn info align-left text-center">
                         <span class="text-secondary text-xs font-weight-bold">Tambah</span>
                     </button> -->
-                    
+
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
@@ -121,7 +124,7 @@
                                         Tanggal</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Jumlah</th>
+                                        Nominal</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Aksi</th>
@@ -143,9 +146,10 @@
                                         <span class="text-secondary text-xs font-weight-bold">1.000.000</span>
                                     </td>
                                     <td>
-                                        <button class="btn info align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">Edit</span>
-                                        </button>
+                                        <a class="btn btn-link text-danger text-gradient px-1 mb-0"
+                                            href="javascript:;"><i class="far fa-trash-alt me-2"></i></a>
+                                        <a class="btn btn-link text-dark px-1 mb-0" href="javascript:;"><i
+                                                class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
