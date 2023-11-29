@@ -26,8 +26,9 @@
                             <h6 class="mb-0">Pemasukan</h6>
                         </div>
                         <div class="col-6 text-end">
-                            <!-- <a href="/tambahKeuangan" type="button" class="btn btn-outline-primary btn-sm mb-0">Tambah</a> -->
-                            <button class="btn btn-outline-primary btn-sm mb-0">Tambah</button>
+                            <a href="/tambahSupply" type="button"
+                                class="btn btn-outline-primary btn-sm mb-0">Tambah</a>
+                            <!-- <button class="btn btn-outline-primary btn-sm mb-0">Tambah</button> -->
                         </div>
                     </div>
 
