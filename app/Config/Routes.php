@@ -7,11 +7,26 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'DashboardController::dashboard');
+
 $routes->get('/supply', 'SupplyController::index');
+$routes->get('/tambahSupply', 'SupplyController::tambahS');
+
 $routes->get('/produk', 'ProdukController::viewProduk');
-$routes->get('/keuangan', 'KeuanganController::index');
 $routes->get('/transaksi', 'TransaksiController::index');
+
+$routes->get('/keuangan', 'KeuanganController::index');
 $routes->get('/tambahPemasukan', 'KeuanganController::tambahK');
 $routes->post('/storeK','KeuanganController::storeK');
 $routes->get('/editPemasukan/(:num)','KeuanganController::editPemasukan/$1');
-$routes->get('/tambahSupply', 'SupplyController::tambahS');
+$routes->post('/updatePemasukan/(:num)','KeuanganController::updatePemasukan/$1');
+$routes->delete('/hapusPemasukan/(:num)', 'KeuanganController::hapusPemasukan/$1');
+$routes->get('/tambahPengeluaran', 'KeuanganController::tambahPengeluaran');
+$routes->post('/storePengeluaran','KeuanganController::storePengeluaran');
+$routes->get('/editPengeluaran/(:num)','KeuanganController::editPengeluaran/$1');
+$routes->post('/updatePengeluaran/(:num)','KeuanganController::updatePengeluaran/$1');
+$routes->delete('/hapusPengeluaran/(:num)', 'KeuanganController::hapusPengeluaran/$1');
+
+
+
+
+
