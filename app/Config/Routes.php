@@ -10,6 +10,10 @@ $routes->get('/dashboard', 'DashboardController::dashboard');
 
 $routes->get('/supply', 'SupplyController::index');
 $routes->get('/tambahSupply', 'SupplyController::tambahS');
+$routes->post('/storeSupply','SupplyController::storeSupply');
+$routes->get('/editSupply/(:num)','SupplyController::editSupply/$1');
+$routes->post('/updateSupply/(:num)','SupplyController::updateSupply/$1');
+$routes->delete('/hapusSupply/(:num)', 'SupplyController::hapusSupply/$1');
 
 $routes->get('/produk', 'ProdukController::viewProduk');
 $routes->get('/transaksi', 'TransaksiController::index');
