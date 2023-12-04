@@ -96,8 +96,8 @@
                         <div class="col-6 text-end">
                             <a href="/tambahPengeluaran" type="button" class="btn btn-outline-primary btn-sm mb-0">Tambah</a>
                         </div>
-
                     </div>
+                    
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">

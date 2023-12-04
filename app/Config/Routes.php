@@ -16,6 +16,10 @@ $routes->post('/updateSupply/(:num)','SupplyController::updateSupply/$1');
 $routes->delete('/hapusSupply/(:num)', 'SupplyController::hapusSupply/$1');
 
 $routes->get('/produk', 'ProdukController::viewProduk');
+$routes->post('/storeProduk','ProdukController::storeProduk');
+$routes->post('/kurangjumlahProduk/(:num)','ProdukController::kurangjumlahProduk/$1');
+$routes->post('/tambahjumlahProduk/(:num)','ProdukController::tambahjumlahProduk/$1');
+
 $routes->get('/transaksi', 'TransaksiController::index');
 
 $routes->get('/keuangan', 'KeuanganController::index');
