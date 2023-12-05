@@ -105,7 +105,7 @@
                 <div class="card-header pb-0">
                     <div class="row">
                         <div class="col-6 d-flex align-items-center">
-                            <h6 class="mb-0">Barang Masuk</h6>
+                            <h6 class="mb-0">Barang Keluar</h6>
                         </div>
                         <div class="col-6 text-end">
                             <a href="/tambahSupply" type="button" class="btn btn-outline-primary btn-sm mb-0">Tambah</a>

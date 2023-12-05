@@ -19,6 +19,8 @@ $routes->get('/produk', 'ProdukController::viewProduk');
 $routes->post('/storeProduk','ProdukController::storeProduk');
 $routes->post('/kurangjumlahProduk/(:num)','ProdukController::kurangjumlahProduk/$1');
 $routes->post('/tambahjumlahProduk/(:num)','ProdukController::tambahjumlahProduk/$1');
+$routes->add('produk/edit/(:segment)', 'ProdukController::edit/$1');
+$routes->get('produk/delete/(:segment)', 'ProdukController::delete/$1');
 
 $routes->get('/transaksi', 'TransaksiController::index');
 

@@ -55,4 +55,27 @@ class ProdukController extends BaseController{
         $produkModel->update($id_produk, $data);
         return redirect()->to(base_url('produk'));
     }
+
+    public function edit($id_produk){
+        $produkModel = new Produk();
+        $dataBerkas = $this->request->getFile('foto_produk');
+        $fileName = $dataBerkas->getName();
+
+        $data = [
+            'nama_produk' => $this->request->getPost('nama_produk'),
+            'harga_produk' => $this->request->getPost('harga_produk'),
+            'foto_produk' => $fileName,
+        ];
+
+        $dataBerkas->move('berkas', $fileName);
+        $produkModel->update($id_produk, $data);
+        return redirect()->to('produk');        
+    }
+
+    public function delete($id_produk){
+        $produkModel = new Produk();
+        $produkModel->delete($id_produk);
+
+        return redirect()->to('/produk');
+    }
 }

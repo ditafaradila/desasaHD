@@ -70,6 +70,21 @@
                                     <div class="col-auto me-auto">
                                         <h5 class="card-title"><?= $produk['nama_produk'] ?></h5>
                                     </div>
+                                    <div class="col">
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <div class="card-body" align="center">
+                                                    <li>
+                                                        <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#editModal-<?= $produk['id_produk'] ?>">
+                                                            Edit
+                                                        </button>
+                                                    </li>
+                                                    <li><a href="<?= base_url('produk/delete/'.$produk['id_produk']) ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure ?')">Hapus</a></li>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <p class="card-text">Rp <?= number_format($produk['harga_produk']) ?></p>
                                 </div>
                             </div>
@@ -94,6 +109,41 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal untuk Edit data -->
+                    <div class="modal fade" id="editModal-<?= $produk['id_produk'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit produk</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
+                                </div>
+                                <form action="<?= base_url('produk/edit/' . $produk['id_produk']) ?>" method="post" enctype="multipart/form-data">
+                                    <?= csrf_field(); ?>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="nama_produk">Name</label>
+                                            <input type="text" name="nama_produk" class="form-control" id="nama_produk" value="<?= $produk['nama_produk'] ?>" placeholder="produk nama_produk" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="harga_produk">Harga Produk</label>
+                                            <input type="text" name="harga_produk" class="form-control" id="harga_produk" value="<?= $produk['harga_produk'] ?>" placeholder="produk harga_produk" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="foto_produk">Masukkan foto</label>
+                                            <div>
+                                                <input type="file" class="form-control-file" name="foto_produk" id="foto_produk" required accept=".jpg, .png, .jpeg">
+                                            </div>
+                                        </div>
+                                        <div class="col-6 text-end" align="center">
+                                            <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                 <?php
                 endforeach
                 ?>
