@@ -70,7 +70,7 @@
                                     <div class="col-auto me-auto">
                                         <h5 class="card-title"><?= $produk['nama_produk'] ?></h5>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-3">
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
