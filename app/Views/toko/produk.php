@@ -67,49 +67,54 @@
             foreach ($produk as $produk) :
             ?>
             <div class="col-4">
-                <div class="card mb-3 mr-3" style="width: 25rem;">
-                    <img class="card-img-top" src="<?= base_url() ?>berkas/<?= $produk['foto_produk']; ?>"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-auto me-auto">
-                                <h5 class="card-title"><?= $produk['nama_produk'] ?></h5>
-                            </div>
-                            <div class="col-3">
-                                <div class="d-flex">
-                                    <button type="button" class="btn btn-link text-dark px-1 mb-0"
-                                        data-bs-toggle="modal" data-bs-target="#editModal-<?= $produk['id_produk'] ?>">
-                                        <i class="fa fa-pencil"></i>
-                                    </button>
-                                    <a href="<?= base_url('produk/delete/' . $produk['id_produk']) ?>"
-                                        class="btn btn-link text-danger px-1 mb-0"
-                                        onclick="return confirm('Apakah anda yakin?')"><i
-                                            class="far fa-trash-alt me-2"></i></a>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <div class="card-deck">
+                        <div class="card mb-4 mr-4" style="width: 18rem;">
+                            <img class="card-img-top" src="<?= base_url() ?>berkas/<?= $produk['foto_produk']; ?>"
+                                alt="Card image cap">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-auto me-auto">
+                                        <h5 class="card-title"><?= $produk['nama_produk'] ?></h5>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="d-flex">
+                                            <button type="button" class="btn btn-link text-dark px-1 mb-0"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editModal-<?= $produk['id_produk'] ?>">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <a href="<?= base_url('produk/delete/' . $produk['id_produk']) ?>"
+                                                class="btn btn-link text-danger px-1 mb-0"
+                                                onclick="return confirm('Apakah anda yakin?')"><i
+                                                    class="far fa-trash-alt me-2"></i></a>
+                                        </div>
+                                    </div>
+                                    <p class="card-text">Rp <?= number_format($produk['harga_produk']) ?></p>
                                 </div>
                             </div>
-                            <p class="card-text">Rp <?= number_format($produk['harga_produk']) ?></p>
-                        </div>
-                    </div>
-                    <div align="center">
-                        <div class="row">
-                            <div class="col">
-                                <form method="POST" action="/kurangjumlahProduk/<?= $produk['id_produk'] ?>">
-                                    <input type="hidden" name="jumlah_produk"
-                                        value="<?php echo ($produk['jumlah_produk']) - 1 ?>">
-                                    <button type="submit" name="submit" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        class="btn btn-outline-dark">-</button>
-                                </form>
-                            </div>
-                            <div class="col">
-                                <p class="form-text"><?= ($produk['jumlah_produk']) ?></p>
-                            </div>
-                            <div class="col">
-                                <form method="POST" action="/tambahjumlahProduk/<?= $produk['id_produk'] ?>">
-                                    <input type="hidden" name="jumlah_produk"
-                                        value="<?php echo ($produk['jumlah_produk']) + 1 ?>">
-                                    <button type="submit" name="submit" data-bs-toggle="tooltip" data-bs-placement="top"
-                                        class="btn btn-outline-dark">+</button>
-                                </form>
+                            <div align="center">
+                                <div class="row">
+                                    <div class="col">
+                                        <form method="POST" action="/kurangjumlahProduk/<?= $produk['id_produk'] ?>">
+                                            <input type="hidden" name="jumlah_produk"
+                                                value="<?php echo ($produk['jumlah_produk']) - 1 ?>">
+                                            <button type="submit" name="submit" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" class="btn btn-outline-dark">-</button>
+                                        </form>
+                                    </div>
+                                    <div class="col">
+                                        <p class="form-text"><?= ($produk['jumlah_produk']) ?></p>
+                                    </div>
+                                    <div class="col">
+                                        <form method="POST" action="/tambahjumlahProduk/<?= $produk['id_produk'] ?>">
+                                            <input type="hidden" name="jumlah_produk"
+                                                value="<?php echo ($produk['jumlah_produk']) + 1 ?>">
+                                            <button type="submit" name="submit" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" class="btn btn-outline-dark">+</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -165,7 +170,7 @@
 
     <div class="fixed-plugin">
         <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
-            <i class="fa fa-cog py-2"> </i>
+            <i class="fa fa-plus py-2"> </i>
         </a>
         <form method="POST" action="/storeProduk" enctype="multipart/form-data">
             <div class="row">
