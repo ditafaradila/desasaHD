@@ -67,14 +67,46 @@
                                         </td>
                                         <td>
                                             <div class="d-flex">
-                                                <form method="POST" action="/hapusPemasukan/<?= $pemasukan['id_pemasukan'] ?>">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" name="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus" class="btn btn-link text-danger text-gradient px-1 mb-0"><i class="far fa-trash-alt me-2"></i></button>
-                                                </form>
-                                                <a href="/editPemasukan/<?= $pemasukan['id_pemasukan'] ?>" type="button" class="btn btn-link text-dark px-1 mb-0"><i class="fa fa-pencil"></i></a>
+                                                <a href="<?= base_url('/hapusPemasukan/' . $pemasukan['id_pemasukan']) ?>" class="btn btn-link text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
+                                                <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editPemasukan-<?= $pemasukan['id_pemasukan'] ?>">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
+                                    <!-- Modal Edit Pemasukan -->
+                                    <div class="modal fade" id="editPemasukan-<?= $pemasukan['id_pemasukan'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title" id="exampleModalLabel">Edit Pemasukan</h6>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
+                                                </div>
+                                                <form action="<?= base_url('/updatePemasukan/' . $pemasukan['id_pemasukan']) ?>" method="post">
+                                                    <?= csrf_field(); ?>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="sumber">Sumber</label>
+                                                            <select name="sumber" id="sumber" class="form-control">
+                                                                <option value="Toko">Toko</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="tanggal">Tanggal</label>
+                                                            <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= $pemasukan['tanggal'] ?>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="jumlah">Nominal</label>
+                                                            <input type="text" class="form-control" name="jumlah" id="jumlah" value="<?= $pemasukan['jumlah'] ?>">
+                                                        </div>
+                                                        <div align="center">
+                                                            <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN PERUBAHAN</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 <?php
                                 endforeach
                                 ?>
@@ -97,7 +129,7 @@
                             <a href="/tambahPengeluaran" type="button" class="btn btn-outline-primary btn-sm mb-0">Tambah</a>
                         </div>
                     </div>
-                    
+
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
@@ -135,14 +167,45 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <form method="POST" action="/hapusPengeluaran/<?= $pengeluaran['id_pengeluaran'] ?>">
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <button type="submit" name="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus" class="btn btn-link text-danger text-gradient px-1 mb-0"><i class="far fa-trash-alt me-2"></i></button>
-                                                    </form>
-                                                    <a href="/editPengeluaran/<?= $pengeluaran['id_pengeluaran'] ?>" type="button" class="btn btn-link text-dark px-1 mb-0"><i class="fa fa-pencil"></i></a>
+                                                    <a href="<?= base_url('/hapusPengeluaran/' . $pengeluaran['id_pengeluaran']) ?>" class="btn btn-link text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
+                                                    <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editPengeluaran-<?= $pengeluaran['id_pengeluaran'] ?>">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
+
+                                        <!-- Modal Edit Pengeluaran -->
+                                        <div class="modal fade" id="editPengeluaran-<?= $pengeluaran['id_pengeluaran'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title" id="exampleModalLabel">Edit Pengeluaran</h6>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
+                                                    </div>
+                                                    <form action="<?= base_url('/updatePengeluaran/' . $pengeluaran['id_pengeluaran']) ?>" method="post">
+                                                        <?= csrf_field(); ?>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label for="keperluan">Keperluan</label>
+                                                                <input type="text" class="form-control" name="keperluan" id="keperluan" value="<?= $pengeluaran['keperluan'] ?>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="tanggal">Tanggal</label>
+                                                                <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= $pengeluaran['tanggal'] ?>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="jumlah">Nominal</label>
+                                                                <input type="text" class="form-control" name="nominal" id="nominal" value="<?= $pengeluaran['nominal'] ?>">
+                                                            </div>
+                                                            <div align="center">
+                                                                <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN PERUBAHAN</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     <?php
                                     endforeach
                                     ?>

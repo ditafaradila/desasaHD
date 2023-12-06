@@ -12,8 +12,8 @@ $routes->get('/supply', 'SupplyController::index');
 $routes->get('/tambahSupply', 'SupplyController::tambahS');
 $routes->post('/storeSupply','SupplyController::storeSupply');
 $routes->get('/editSupply/(:num)','SupplyController::editSupply/$1');
-$routes->post('/updateSupply/(:num)','SupplyController::updateSupply/$1');
-$routes->delete('/hapusSupply/(:num)', 'SupplyController::hapusSupply/$1');
+$routes->add('/updateSupply/(:segment)','SupplyController::updateSupply/$1');
+$routes->get('/hapusSupply/(:segment)', 'SupplyController::hapusSupply/$1');
 
 $routes->get('/produk', 'ProdukController::viewProduk');
 $routes->post('/storeProduk','ProdukController::storeProduk');
@@ -28,13 +28,13 @@ $routes->get('/keuangan', 'KeuanganController::index');
 $routes->get('/tambahPemasukan', 'KeuanganController::tambahK');
 $routes->post('/storeK','KeuanganController::storeK');
 $routes->get('/editPemasukan/(:num)','KeuanganController::editPemasukan/$1');
-$routes->post('/updatePemasukan/(:num)','KeuanganController::updatePemasukan/$1');
-$routes->delete('/hapusPemasukan/(:num)', 'KeuanganController::hapusPemasukan/$1');
+$routes->add('/updatePemasukan/(:segment)','KeuanganController::updatePemasukan/$1');
+$routes->get('/hapusPemasukan/(:segment)', 'KeuanganController::hapusPemasukan/$1');
 $routes->get('/tambahPengeluaran', 'KeuanganController::tambahPengeluaran');
 $routes->post('/storePengeluaran','KeuanganController::storePengeluaran');
 $routes->get('/editPengeluaran/(:num)','KeuanganController::editPengeluaran/$1');
-$routes->post('/updatePengeluaran/(:num)','KeuanganController::updatePengeluaran/$1');
-$routes->delete('/hapusPengeluaran/(:num)', 'KeuanganController::hapusPengeluaran/$1');
+$routes->add('/updatePengeluaran/(:segment)','KeuanganController::updatePengeluaran/$1');
+$routes->get('/hapusPengeluaran/(:segment)', 'KeuanganController::hapusPengeluaran/$1');
 
 
 

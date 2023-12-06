@@ -211,7 +211,7 @@
                                                 id="foto_produk" required accept=".jpg, .png, .jpeg">
                                         </div>
                                     </div>
-                                    <div class="col-8 text-end">
+                                    <div align="center">
                                         <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
                                     </div>
                                 </form>
