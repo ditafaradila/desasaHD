@@ -6,6 +6,9 @@ use App\Controllers\BaseController;
 
 class TransaksiController extends BaseController{
     public function index(){
-        return view('toko/transaksi');
+        $data = [
+            'title' => 'Transaksi',
+        ];
+        return view('toko/transaksi', $data);
     }
 }

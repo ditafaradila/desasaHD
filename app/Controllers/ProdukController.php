@@ -10,6 +10,7 @@ class ProdukController extends BaseController{
         $produkModel = new Produk();
 
         $data = [
+            'title' => 'Produk',
             'produk' => $produkModel->getProduk(),
         ];
 

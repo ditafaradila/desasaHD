@@ -10,6 +10,7 @@ class SupplyController extends BaseController{
         $supplyModel = new Supply();
 
         $data = [
+            'title' => 'Supply',
             'supply' => $supplyModel->getSupply(),
         ];
         

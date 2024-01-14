@@ -12,6 +12,7 @@ class KeuanganController extends BaseController{
         $pengeluaranModel = new Pengeluaran();
 
         $data = [
+            'title' => 'Keuangan',
             'pemasukan' => $pemasukanModel->getPemasukan(),
             'pengeluaran' => $pengeluaranModel->getPengeluaran(),
         ];
