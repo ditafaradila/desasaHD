@@ -6,6 +6,9 @@ use App\Controllers\BaseController;
 
 class DashboardController extends BaseController{
     public function dashboard(){
-        return view('toko/dashboard');
+        $data = [
+            'title' => 'Dashboard',
+        ];
+        return view('toko/dashboard', $data);
     }
 }

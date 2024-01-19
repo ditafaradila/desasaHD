@@ -3,14 +3,18 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\BarangKeluar;
 use App\Models\Supply;
 
 class SupplyController extends BaseController{
     public function index(){
         $supplyModel = new Supply();
+        $barangKeluarModel = new BarangKeluar();
 
         $data = [
+            'title' => 'Supply',
             'supply' => $supplyModel->getSupply(),
+            'barangKeluar' => $barangKeluarModel->getbarangKeluar()
         ];
         
         return view('toko/supply', $data);
@@ -68,6 +72,40 @@ class SupplyController extends BaseController{
     public function hapusSupply($id_supply){
         $supplyModel = new Supply();
         $supplyModel->delete($id_supply);
+
+        return redirect()->to('/supply');
+    }
+
+    public function tambahBarangKeluar(){
+        $barangKeluarModel = new BarangKeluar();
+        $supplyModel = new Supply();
+        $supply = $supplyModel->findAll();
+
+        $data = [
+            'title' => 'Tambah Data Barang Keluar',
+            'supply' => $supply,
+            'barangKeluar' => $barangKeluarModel,
+        ];
+
+        return view('toko/tambahBarangKeluar', $data);
+    }
+
+    public function storeBK(){
+        $barangKeluarModel = new BarangKeluar();
+        $data = [
+            'id_barangKeluar' => $this->request->getPost('id_barangKeluar'),
+            'id_supply' => $this->request->getPost('id_supply'),
+            'jumlah_barangKeluar' => $this->request->getPost('jumlah_barangKeluar'),
+            'tanggal_barangKeluar' => $this->request->getPost('tanggal_barangKeluar'),
+        ];
+
+        $barangKeluarModel->save($data);
+        return redirect()->to('/supply');
+    }
+
+    public function hapusBK($id_barangKeluar){
+        $barangKeluarModel = new BarangKeluar();
+        $barangKeluarModel->delete($id_barangKeluar);
 
         return redirect()->to('/supply');
     }

@@ -14,6 +14,10 @@ $routes->post('/storeSupply','SupplyController::storeSupply');
 $routes->get('/editSupply/(:num)','SupplyController::editSupply/$1');
 $routes->add('/updateSupply/(:segment)','SupplyController::updateSupply/$1');
 $routes->get('/hapusSupply/(:segment)', 'SupplyController::hapusSupply/$1');
+$routes->get('/tambahBarangKeluar', 'SupplyController::tambahBarangKeluar');
+$routes->post('/storeBK','SupplyController::storeBK');
+$routes->get('/hapusBK/(:segment)', 'SupplyController::hapusBK/$1');
+
 
 $routes->get('/produk', 'ProdukController::viewProduk');
 $routes->post('/storeProduk','ProdukController::storeProduk');
