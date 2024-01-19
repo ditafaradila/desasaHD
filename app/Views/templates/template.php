@@ -57,7 +57,7 @@
                                             </g>
                                         </g>
                                     </g>
-                                </g>
+                                </g>    
                             </svg>
                         </div>
                         <span class="nav-link-text ms-1">Dashboard</span>
@@ -91,7 +91,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+<<<<<<< HEAD
                 <a class="nav-link  <?= ($title == "Produk") ? 'active' : '' ?> " href="/produk">
+=======
+                    <a class="nav-link  <?= ($title == "Produk") ? 'active' : '' ?> " href="/produk">
+>>>>>>> 6ee0968dbc3e05e6eeb29bc8b77af45ae6acac10
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
@@ -118,7 +122,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+<<<<<<< HEAD
                 <a class="nav-link  <?= ($title == "Keuangan") ? 'active' : '' ?> " href="/keuangan">
+=======
+                    <a class="nav-link  <?= ($title == "Keuangan") ? 'active' : '' ?> " href="/keuangan">
+>>>>>>> 6ee0968dbc3e05e6eeb29bc8b77af45ae6acac10
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1"
