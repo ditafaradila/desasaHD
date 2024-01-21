@@ -25,10 +25,11 @@
                         <div class="table-responsive p-0">
                             <form>
                                 <div class="form-group">
-                                    <label for="nama_supply">Jenis</label>
-                                    <select name="nama_supply" id="nama_supply" class="form-control">
-                                        <option value="Bunga">Bunga</option>
-                                        <option value="Pot">Pot</option>
+                                    <label for="jenisBarang" class="form-label">Nama Barang</label><br>
+                                    <select name="id_jenisBarang" id="id_jenisBarang">
+                                        <?php foreach ($jenisBarang as $jenisBarang) : ?>
+                                            <option value="<?= $jenisBarang['id_jenisBarang'] ?>"><?= $jenisBarang['jenis_barang'] ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="form-group">

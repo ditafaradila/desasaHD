@@ -4,39 +4,39 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Supply extends Migration
+class Keuangan extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-			'id_supply' => [
+			'id_keuangan' => [
                 'type' => 'INT',
                 'constraint' => 20,
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'id_jenisBarang'         => [
+            'keterangan'         => [
                 'type'          => 'VARCHAR',
-                'constraint'    => 30
+                'constraint'    => 20
             ],
-			'jumlah_supply'       => [
-				'type'           => 'VARCHAR',
-                'constraint'    => 10,
+			'tanggal'       => [
+				'type'           => 'DATE',
 			],
-			'harga_supply' => [
+			'debit' => [
 				'type'           => 'VARCHAR',
 				'constraint'     => 25,
 			],
-            'tanggal_supply' => [
-				'type'           => 'DATE',
+            'kredit' => [
+				'type'           => 'VARCHAR',
+				'constraint'     => 25,
 			],
 		]);
-		$this->forge->addKey('id_supply', true);
-		$this->forge->createTable('tbl_supply');
+		$this->forge->addKey('id_keuangan', true);
+		$this->forge->createTable('tbl_keuangan');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tbl_supply');
+        //
     }
 }

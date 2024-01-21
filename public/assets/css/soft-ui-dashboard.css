@@ -5876,9 +5876,11 @@ fieldset:disabled .btn {
 }
 
 .alert-danger {
-  color: #8c0404;
-  background-color: #fbcdcd;
-  border-color: #f9b4b4;
+  color: #dc3545;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .alert-danger .alert-link {
@@ -19841,6 +19843,20 @@ fieldset:disabled .btn {
 
 .oblique .oblique-image {
   transform: skewX(10deg);
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: #cb0c9f;
+  color: #fff;
+  border-color: #cb0c9f;
+  border: none;
+  border-radius: 100%;
+  padding: 20px 25px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 .fixed-plugin .fixed-plugin-button {

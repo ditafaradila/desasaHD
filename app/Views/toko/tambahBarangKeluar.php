@@ -28,7 +28,9 @@
                                     <label for="supply" class="form-label">Nama Barang</label><br>
                                     <select name="id_supply" id="id_supply">
                                         <?php foreach ($supply as $supply) : ?>
-                                            <option value="<?= $supply['id_supply'] ?>"><?= $supply['nama_supply'] ?></option>
+                                            <option value="<?= $supply['id_supply']?>">
+                                                <?= $supply['jenis_barang']?> / <?= $supply['jumlah_supply']?> / <?= $supply['tanggal_supply']?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

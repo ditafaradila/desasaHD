@@ -14,6 +14,17 @@ class BarangKeluar extends Model
     public function getbarangKeluar(){
         return $this->db->table('tbl_barangKeluar')
         ->join('tbl_supply', 'tbl_supply.id_supply=tbl_barangKeluar.id_supply')
+        ->join('tbl_jenisbarang', 'tbl_jenisbarang.id_jenisBarang=tbl_supply.id_jenisBarang')
         ->get()->getResultArray();
+    }
+
+    public function getTotalOut(){
+        return $this->db->table('tbl_barangKeluar')
+        ->select('tbl_supply.id_supply, tbl_jenisbarang.jenis_barang, SUM(tbl_barangKeluar.jumlah_barangKeluar) as total_jumlah_barangKeluar, MAX(tbl_barangKeluar.tanggal_barangKeluar) as max_tanggal_barangKeluar')
+        ->join('tbl_supply', 'tbl_supply.id_supply=tbl_barangKeluar.id_supply')
+        ->join('tbl_jenisbarang', 'tbl_jenisbarang.id_jenisBarang=tbl_supply.id_jenisBarang')
+        ->groupBy('tbl_supply.id_supply')
+        ->get()
+        ->getResultArray();
     }
 }

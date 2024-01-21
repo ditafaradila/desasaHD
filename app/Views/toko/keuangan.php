@@ -1,6 +1,12 @@
 <?= $this->extend('templates/template') ?>
 <?= $this->section('content') ?>
 
+<head>
+    <!-- Menggunakan Bootstrap Icons melalui CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+</head>
+
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
     <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
@@ -14,6 +20,7 @@
 </nav>
 
 <div class="container-fluid py-4">
+    <a href="/listKeuangan" class="floating-button"><i class="fa fa-money"></i></a>
     <div class="row">
         <!-- Pemasukan -->
         <div class="col-6">
@@ -164,7 +171,7 @@
                                         </td>
                                         <td class="align-middle text-center">
                                             <span class="text-secondary text-xs font-weight-bold">Rp
-                                                <?= number_format($pengeluaran['nominal']) ?></span>
+                                                <?= number_format((float)$pengeluaran['nominal']) ?></span>
                                         </td>
                                         <td>
                                             <div class="d-flex">

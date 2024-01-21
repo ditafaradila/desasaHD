@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Keuangan;
 use App\Models\Pemasukan;
 use App\Models\Pengeluaran;
 
@@ -20,6 +21,27 @@ class KeuanganController extends BaseController{
         return view('toko/keuangan', $data);
     }
 
+    public function indexx(){
+        $keuanganModel = new Keuangan();
+        $totalDebitResult = $keuanganModel->select('SUM(debit) as totalDebit')->first();
+        $totalKreditResult = $keuanganModel->select('SUM(kredit) as totalKredit')->first();
+        
+        $totalDebit = $totalDebitResult['totalDebit'];
+        $totalKredit = $totalKreditResult['totalKredit'];
+
+        $totalUang = $totalDebit - $totalKredit;
+
+        $data = [
+            'title' => 'Keuangan',
+            'keuangan' => $keuanganModel->getkeuangan(),
+            'totalDebit' =>$totalDebit,
+            'totalKredit' =>$totalKredit,
+            'totalUang' =>$totalUang
+        ];
+        
+        return view('toko/listKeuangan', $data);
+    }
+
     public function tambahK(){
         $data = [
             'title' => 'Tambah Data Keuangan',
@@ -30,14 +52,23 @@ class KeuanganController extends BaseController{
 
     public function storeK(){
         $pemasukanModel = new Pemasukan();
+        $keuanganModel = new Keuangan();
+
         $data = [
             'id_pemasukan' => $this->request->getPost('id_pemasukan'),
             'sumber' => $this->request->getPost('sumber'),
             'tanggal' => $this->request->getPost('tanggal'),
             'jumlah' => $this->request->getPost('jumlah'),
         ];
-
         $pemasukanModel->save($data);
+
+        $data = [
+            'id_keuangan' => $this->request->getPost('id_keuangan'),
+            'keterangan' => $this->request->getPost('sumber'),
+            'tanggal' => $this->request->getPost('tanggal'),
+            'debit' => $this->request->getPost('jumlah'),
+        ];
+        $keuanganModel->save($data);
         return redirect()->to('/keuangan');
     }
 
@@ -83,14 +114,22 @@ class KeuanganController extends BaseController{
 
     public function storePengeluaran(){
         $pengeluaranModel = new Pengeluaran();
+        $keuanganModel = new Keuangan();
         $data = [
             'id_pengeluaran' => $this->request->getPost('id_pengeluaran'),
             'keperluan' => $this->request->getPost('keperluan'),
             'tanggal' => $this->request->getPost('tanggal'),
             'nominal' => $this->request->getPost('nominal'),
         ];
-
         $pengeluaranModel->save($data);
+
+        $data = [
+            'id_keuangan' => $this->request->getPost('id_keuangan'),
+            'keterangan' => $this->request->getPost('keperluan'),
+            'tanggal' => $this->request->getPost('tanggal'),
+            'kredit' => $this->request->getPost('nominal'),
+        ];
+        $keuanganModel->save($data);
         return redirect()->to('/keuangan');
     }
 

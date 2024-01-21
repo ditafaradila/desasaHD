@@ -27,9 +27,7 @@
                             <form>
                                 <div class="form-group">
                                     <label for="sumber">Sumber</label>
-                                    <select name="sumber" id="sumber" class="form-control">
-                                        <option value="Toko">Toko</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="sumber" id="sumber">
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal">Tanggal</label>
