@@ -75,4 +75,49 @@ class TransaksiController extends BaseController{
 
         return redirect()->to('/transaksi');
     }
+
+    public function updateTransaksi($id_transaksi){
+        $transaksiModel = new Transaksi();
+        $keuanganModel = new Keuangan();
+        $pemasukanModel = new Pemasukan();
+        
+        $id_produk = $this->request->getPost('id_produk');
+        $harga_produk = $transaksiModel->getHargaProduk($id_produk);
+        $diskon = (float) $this->request->getPost('diskon'); 
+
+        $nominal = $harga_produk - $diskon;
+        
+        $data = [
+            'waktu' => $this->request->getPost('waktu'),
+            'metode_bayar' => $this->request->getPost('metode_bayar'),
+            'diskon' => $diskon,
+            'nominal' => $nominal,
+            'id_produk' => $this->request->getPost('id_produk'),
+        ];
+        $transaksiModel->update($id_transaksi, $data);
+
+        $id_pemasukan = $this->request->getPost('id_pemasukan');
+        $dataPemasukan = [
+            'sumber' => 'Toko',
+            'tanggal' => $this->request->getPost('waktu'),
+            'jumlah' => $nominal,
+        ];
+        $pemasukanModel->update($id_pemasukan, $dataPemasukan);
+
+        $id_keuangan = $this->request->getPost('id_keuangan');
+        $dataKeuangan = [
+            'keterangan' => 'Toko',
+            'tanggal' => $this->request->getPost('waktu'),
+            'debit' => $nominal,
+        ];
+        $keuanganModel->update($id_keuangan, $dataKeuangan);
+        return redirect()->to('/transaksi');
+    }    
+
+    public function hapusTransaksi($id_transaksi){
+        $transaksiModel = new Transaksi();
+        $transaksiModel->delete($id_transaksi);
+
+        return redirect()->to('/transaksi');
+    }
 }

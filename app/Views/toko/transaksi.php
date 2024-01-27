@@ -172,7 +172,7 @@
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Harga</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Detail</th>
+                                            Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -193,9 +193,15 @@
                                                 <p class="text-xs font-weight-bold mb-0"><?= $transaksi['nominal'] ?></p>
                                             </td>
                                             <td class="align-middle text-center">
-                                                <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#detailToko-<?= $transaksi['id_transaksi'] ?>">
-                                                    <i class="fa fa-eye"></i>
-                                                </button>
+                                                <div>
+                                                    <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editTransaksi-<?= $transaksi['id_transaksi'] ?>">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
+                                                    <a href="<?= base_url('/hapusTransaksi/' . $transaksi['id_transaksi']) ?>" class="btn btn-link text-center text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
+                                                    <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#detailToko-<?= $transaksi['id_transaksi'] ?>">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
 
@@ -240,6 +246,53 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal Edit Supply -->
+                                        <div class="modal fade" id="editTransaksi-<?= $transaksi['id_transaksi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title" id="exampleModalLabel">Edit Transaksi Toko</h6>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
+                                                    </div>
+                                                    <form action="<?= base_url('/updateTransaksi/' . $transaksi['id_transaksi']) ?>" method="post">
+                                                        <?= csrf_field(); ?>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label for="produk" class="form-label">Nama Barang</label><br>
+                                                                <select name="id_produk" id="id_produk">
+                                                                    <option value="" disabled selected>Pilih produk</option>
+                                                                    <?php foreach ($produkList as $produkItem) : ?>
+                                                                        <option value="<?= $produkItem->id_produk ?>" data-harga="<?= $produkItem->harga_produk ?>">
+                                                                            <span class="shorten-text"><?= $produkItem->nama_produk ?></span> / <?= $produkItem->harga_produk ?>
+                                                                        </option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="metode_bayar">Metode Bayar</label>
+                                                                <input type="text" class="form-control" name="metode_bayar" id="metode_barang" value="<?= $transaksi['metode_bayar'] ?>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="diskon">Diskon</label>
+                                                                <input type="text" class="form-control" name="diskon" id="diskon" value="<?= $transaksi['diskon'] ?>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="waktu">Tanggal Pembelian</label>
+                                                                <input type="date" class="form-control" name="waktu" id="waktu" value="<?= $transaksi['waktu'] ?>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="harga_produk" class="form-label">Harga Barang</label>
+                                                                <input type="text" class="form-control" name="harga_produk" id="harga_produk" readonly>
+                                                            </div>
+                                                            <div align="center">
+                                                                <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN PERUBAHAN</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
