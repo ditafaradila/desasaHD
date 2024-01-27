@@ -9757,6 +9757,13 @@ fieldset:disabled .btn {
   line-height: 2 !important;
 }
 
+.shorten-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px; /* Sesuaikan dengan lebar maksimum yang diinginkan */
+}
+
 .text-start {
   text-align: left !important;
 }

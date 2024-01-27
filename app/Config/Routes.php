@@ -34,6 +34,8 @@ $routes->add('produk/edit/(:segment)', 'ProdukController::edit/$1');
 $routes->get('produk/delete/(:segment)', 'ProdukController::delete/$1');
 
 $routes->get('/transaksi', 'TransaksiController::index');
+$routes->get('get_harga/(:num)', 'TransaksiController::getHarga/$1');
+$routes->post('/storeTransaksi','TransaksiController::storeTransaksi');
 
 $routes->get('/keuangan', 'KeuanganController::index');
 $routes->get('/listKeuangan', 'KeuanganController::indexx');
@@ -47,6 +49,7 @@ $routes->post('/storePengeluaran','KeuanganController::storePengeluaran');
 $routes->get('/editPengeluaran/(:num)','KeuanganController::editPengeluaran/$1');
 $routes->add('/updatePengeluaran/(:segment)','KeuanganController::updatePengeluaran/$1');
 $routes->get('/hapusPengeluaran/(:segment)', 'KeuanganController::hapusPengeluaran/$1');
+$routes->get('/laporanKeuangan', 'KeuanganController::cetak');
 
 
 

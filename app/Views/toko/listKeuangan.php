@@ -1,6 +1,7 @@
 <?= $this->extend('templates/template') ?>
 <?= $this->section('content') ?>
 
+
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
     <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
@@ -91,8 +92,11 @@
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class="col-12 d-flex align-items-center">
-                        <div class="col-9">
+                        <div class="col-7">
                             <h6 class="mb-0">Data Keuangan</h6>
+                        </div>
+                        <div class="col-5 text-end">
+                            <a href="/laporanKeuangan" type="button" class="btn btn-outline-primary btn-sm mb-0"><i class="fa fa-download" style="font-size: 12px;"></i> Laporan</a>
                         </div>
                     </div>
                 </div>
@@ -116,26 +120,32 @@
                                 <?php $no = 1;
                                 foreach ($keuangan as $keuangan) :
                                 ?>
-                                    <tr>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['keterangan'] ?></p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['tanggal'] ?></p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['debit'] ?></p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['kredit'] ?></p>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['keterangan'] ?></p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['tanggal'] ?></p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['debit'] ?></p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['kredit'] ?></p>
+                                            </td>
+                                        </tr>
                                 <?php
                                 endforeach
                                 ?>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="align-middle text-center">Total</td>
+                                    <td colspan="2" class="align-middle text-center">Rp <?php echo number_format((float)$totalUang) ?></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
