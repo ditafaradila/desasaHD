@@ -73,7 +73,7 @@
                                                 <?= number_format($pemasukan['jumlah']) ?></span>
                                         </td>
                                         <td>
-                                            <div class="d-flex">
+                                            <div class="align-middle text-center text-sm">
                                                 <a href="<?= base_url('/hapusPemasukan/' . $pemasukan['id_pemasukan']) ?>" class="btn btn-link text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
                                                 <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editPemasukan-<?= $pemasukan['id_pemasukan'] ?>">
                                                     <i class="fa fa-pencil"></i>
@@ -94,9 +94,7 @@
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <label for="sumber">Sumber</label>
-                                                            <select name="sumber" id="sumber" class="form-control">
-                                                                <option value="Toko">Toko</option>
-                                                            </select>
+                                                            <input type="text" class="form-control" name="sumber" id="sumber" value="<?= $pemasukan['sumber'] ?>">
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="tanggal">Tanggal</label>
@@ -174,7 +172,7 @@
                                                 <?= number_format((float)$pengeluaran['nominal']) ?></span>
                                         </td>
                                         <td>
-                                            <div class="d-flex">
+                                            <div class="align-middle text-center text-sm">
                                                 <a href="<?= base_url('/hapusPengeluaran/' . $pengeluaran['id_pengeluaran']) ?>" class="btn btn-link text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
                                                 <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editPengeluaran-<?= $pengeluaran['id_pengeluaran'] ?>">
                                                     <i class="fa fa-pencil"></i>

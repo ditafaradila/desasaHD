@@ -7,6 +7,7 @@ use App\Models\Keuangan;
 use App\Models\Pemasukan;
 use App\Models\Produk;
 use App\Models\Transaksi;
+use App\Libraries\MY_TCPDF AS TCPDF;
 
 class TransaksiController extends BaseController{
     public function index(){
@@ -26,10 +27,10 @@ class TransaksiController extends BaseController{
         return view('toko/transaksi', $data);
     }
 
-    public function getHarga($id)
+    public function getHarga($id_produk)
     {
         $transaksiModel = new Transaksi();
-        $hargaProduk = $transaksiModel->getHargaProduk($id);
+        $hargaProduk = $transaksiModel->getHargaProduk($id_produk);
 
         // Mengembalikan data dalam format JSON
         return $this->response->setJSON(['harga_produk' => $hargaProduk]);
@@ -39,6 +40,7 @@ class TransaksiController extends BaseController{
         $transaksiModel = new Transaksi();
         $keuanganModel = new Keuangan();
         $pemasukanModel = new Pemasukan();
+        
 
         $id_produk = $this->request->getPost('id_produk');
         $harga_produk = $transaksiModel->getHargaProduk($id_produk);
@@ -54,10 +56,11 @@ class TransaksiController extends BaseController{
             'id_produk' => $this->request->getPost('id_produk'),
         ];
         $transaksiModel->save($data);
-
+        $id_transaksi = $transaksiModel->insertID();
 
         $data = [
             'id_pemasukan' => $this->request->getPost('id_pemasukan'),
+            'id_transaksi' => $id_transaksi,
             'sumber' => 'Toko',
             'tanggal' => $this->request->getPost('waktu'),
             'jumlah' => $nominal,
@@ -67,6 +70,7 @@ class TransaksiController extends BaseController{
         $data = [
             'id_keuangan' => $this->request->getPost('id_keuangan'),
             'id_pemasukan' => $this->request->getPost('id_pemasukan'),
+            'id_transaksi' => $id_transaksi,
             'keterangan' => 'Toko',
             'tanggal' => $this->request->getPost('waktu'),
             'debit' => $nominal,
@@ -80,11 +84,12 @@ class TransaksiController extends BaseController{
         $transaksiModel = new Transaksi();
         $keuanganModel = new Keuangan();
         $pemasukanModel = new Pemasukan();
+        $pemasukanData = $pemasukanModel->where('id_transaksi', $id_transaksi)->first(); 
+        $keuanganData = $keuanganModel->where('id_transaksi', $id_transaksi)->first(); 
         
         $id_produk = $this->request->getPost('id_produk');
         $harga_produk = $transaksiModel->getHargaProduk($id_produk);
         $diskon = (float) $this->request->getPost('diskon'); 
-
         $nominal = $harga_produk - $diskon;
         
         $data = [
@@ -96,28 +101,105 @@ class TransaksiController extends BaseController{
         ];
         $transaksiModel->update($id_transaksi, $data);
 
-        $id_pemasukan = $this->request->getPost('id_pemasukan');
-        $dataPemasukan = [
-            'sumber' => 'Toko',
-            'tanggal' => $this->request->getPost('waktu'),
-            'jumlah' => $nominal,
-        ];
-        $pemasukanModel->update($id_pemasukan, $dataPemasukan);
+        if ($pemasukanData) {
+            $id_pemasukan = $pemasukanData['id_pemasukan'];
+            $dataPemasukan = [
+                'id_pemasukan' => $this->request->getPost('id_pemasukan'),
+                'sumber' => 'Toko',
+                'tanggal' => $this->request->getPost('waktu'),
+                'jumlah' => $nominal,
+            ];
+            $pemasukanModel->update($id_pemasukan, $dataPemasukan);
+        }
 
-        $id_keuangan = $this->request->getPost('id_keuangan');
-        $dataKeuangan = [
-            'keterangan' => 'Toko',
-            'tanggal' => $this->request->getPost('waktu'),
-            'debit' => $nominal,
-        ];
-        $keuanganModel->update($id_keuangan, $dataKeuangan);
+        if ($keuanganData) {
+            $id_keuangan = $keuanganData['id_keuangan'];
+            $datakeuangan = [
+                'id_keuangan' => $this->request->getPost('id_keuangan'),
+                'id_pemasukan' => $this->request->getPost('id_pemasukan'),
+                'keterangan' => 'Toko',
+                'tanggal' => $this->request->getPost('waktu'),
+                'debit' => $nominal,
+            ];
+            $keuanganModel->update($id_keuangan, $datakeuangan);
+        }
         return redirect()->to('/transaksi');
     }    
 
     public function hapusTransaksi($id_transaksi){
+        $keuanganModel = new Keuangan();
+        $pemasukanModel = new Pemasukan();
+        $pemasukanData = $pemasukanModel->where('id_transaksi', $id_transaksi)->first(); 
+        $keuanganData = $keuanganModel->where('id_transaksi', $id_transaksi)->first(); 
+
+        if ($keuanganData) {
+            $id_keuangan = $keuanganData['id_keuangan'];
+            $keuanganModel->where('id_keuangan', $id_keuangan)->delete();
+        }
+        if ($pemasukanData){
+            $id_pemasukan = $pemasukanData['id_pemasukan'];
+            $pemasukanModel->where('id_pemasukan', $id_pemasukan)->delete();
+        }
         $transaksiModel = new Transaksi();
-        $transaksiModel->delete($id_transaksi);
+        $transaksiModel->where('id_transaksi', $id_transaksi)->delete();
 
         return redirect()->to('/transaksi');
+    }
+
+    public function cetakToko(){
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->setPrintHeader(true);
+        $pdf->setPrintFooter(true);
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+        $pdf->SetFont('dejavusans', '', 14, '', true);
+        $pdf->AddPage();
+
+        $transaksiModel = new Transaksi();
+        $produkModel = new Produk();
+        $produk = $produkModel->findAll();
+
+        $data = [
+            'title' => 'Transaksi',
+            'transaksi' => $transaksiModel->getTransaksi(),
+            'produkList' => $produk,
+        ];
+        $html = view('toko/laporanToko', $data);
+        
+        $pdf->setHeaderData('', 0, 'Laporan Toko', 'Tanggal: ' . date('Y-m-d'));
+        $pdf->setFooterData(['0', '', ''], [0, '', '']);
+        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+        $this->response->setContentType('application/pdf');
+        $pdf->Output('laporan-Toko.pdf', 'I');
+    }
+    
+    public function getOrders(){
+        $client = \Config\Services::curlrequest();
+
+        // Ganti URL sesuai dengan API yang ingin Anda akses
+        $url = 'https://fake-store-api.mock.beeceptor.com/api/orders';
+
+        // Lakukan permintaan GET ke API
+        $response = $client->get($url);
+
+        // Periksa apakah permintaan berhasil
+        if ($response->getStatusCode() == 200) {
+            // Proses data JSON yang diterima
+            $data['orders'] = json_decode($response->getBody(), true);
+
+            // Tampilkan data ke view atau lakukan operasi lainnya
+            return view('api_result', $data);
+        } else {
+            // Tampilkan pesan kesalahan jika permintaan tidak berhasil
+            return 'Error: ' . $response->getStatusCode();
+        }
     }
 }

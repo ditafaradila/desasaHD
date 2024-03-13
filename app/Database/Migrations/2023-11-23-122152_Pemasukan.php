@@ -15,6 +15,12 @@ class Pemasukan extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'id_transaksi' => [
+                'type' => 'INT',
+                'constraint' => 5,
+                'unsigned' => true,
+                'not_null' => true,
+            ],
             'sumber'         => [
                 'type'          => 'VARCHAR',
                 'constraint'    => 20
@@ -29,6 +35,7 @@ class Pemasukan extends Migration
 			],
 		]);
 		$this->forge->addKey('id_pemasukan', true);
+        $this->forge->addForeignKey('id_transaksi', 'tbl_transaksi', 'id_transaksi', 'CASCADE', 'CASCADE');
 		$this->forge->createTable('tbl_pemasukan');
     }
 

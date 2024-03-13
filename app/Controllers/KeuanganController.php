@@ -88,31 +88,40 @@ class KeuanganController extends BaseController{
     }
 
     public function updatePemasukan($id_pemasukan){
-        $pemasukanModel = new Pemasukan();
+        $pemasukanModel = new Pemasukan();  
+        $keuanganModel = new Keuangan();  
+        $keuanganData = $keuanganModel->where('id_pemasukan', $id_pemasukan)->first();    
+
         $data = [
-            // 'id_pemasukan' => $this->request->getPost('id_pemasukan'),
             'sumber' => $this->request->getPost('sumber'),
             'tanggal' => $this->request->getPost('tanggal'),
             'jumlah' => $this->request->getPost('jumlah'),
         ];
-
         $pemasukanModel->update($id_pemasukan, $data);
+
+        if ($keuanganData) {
+            $id_keuangan = $keuanganData['id_keuangan'];  // pastikan ini sesuai dengan nama kolom ID di tbl_keuangan
+            $dataKeuangan = [
+                'keterangan' => $this->request->getPost('sumber'),
+                'tanggal' => $this->request->getPost('tanggal'),
+                'debit' => $this->request->getPost('jumlah'),
+            ];
+    
+            // Update data keuangan
+            $keuanganModel->update($id_keuangan, $dataKeuangan);
+        }
         return redirect()->to('/keuangan');    
     }
 
     public function hapusPemasukan($id_pemasukan){
         $keuanganModel = new Keuangan();
-
-        // Ambil id_keuangan dari tabel keuangan menggunakan id_pemasukan
         $keuanganData = $keuanganModel->where('id_pemasukan', $id_pemasukan)->first();
 
-        // Hapus data di tabel keuangan
         if ($keuanganData) {
             $id_keuangan = $keuanganData['id_keuangan'];
             $keuanganModel->delete($id_keuangan);
         }
 
-        // Hapus data di tabel pemasukan
         $pemasukanModel = new Pemasukan();
         $pemasukanModel->delete($id_pemasukan);
 
@@ -164,29 +173,38 @@ class KeuanganController extends BaseController{
 
     public function updatePengeluaran($id_pengeluaran){
         $pengeluaranModel = new Pengeluaran();
+        $keuanganModel = new Keuangan();
+        $keuanganData = $keuanganModel->where('id_pengeluaran', $id_pengeluaran)->first();    
+
         $data = [
             'keperluan' => $this->request->getPost('keperluan'),
             'tanggal' => $this->request->getPost('tanggal'),
             'nominal' => $this->request->getPost('nominal'),
         ];
-
         $pengeluaranModel->update($id_pengeluaran, $data);
+
+        if ($keuanganData) {
+            $id_keuangan = $keuanganData['id_keuangan'];  // pastikan ini sesuai dengan nama kolom ID di tbl_keuangan
+            $dataKeuangan = [
+                'keterangan' => $this->request->getPost('keperluan'),
+                'tanggal' => $this->request->getPost('tanggal'),
+                'kredit' => $this->request->getPost('nominal'),
+            ];
+    
+            // Update data keuangan
+            $keuanganModel->update($id_keuangan, $dataKeuangan);
+        }
         return redirect()->to('/keuangan');    
     }
 
     public function hapusPengeluaran($id_pengeluaran){
         $keuanganModel = new Keuangan();
-
-        // Ambil id_keuangan dari tabel keuangan menggunakan id_pemasukan
         $keuanganData = $keuanganModel->where('id_pengeluaran', $id_pengeluaran)->first();
 
-        // Hapus data di tabel keuangan
         if ($keuanganData) {
             $id_keuangan = $keuanganData['id_keuangan'];
             $keuanganModel->delete($id_keuangan);
         }
-
-        // Hapus data di tabel pengeluaran
         $pengeluaranModel = new Pengeluaran();
         $pengeluaranModel->delete($id_pengeluaran);
 

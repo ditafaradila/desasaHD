@@ -27,6 +27,12 @@ class Keuangan extends Migration
                 'unsigned' => true,
                 'not_null' => true,
             ],
+            'id_transaksi' => [
+                'type' => 'INT',
+                'constraint' => 5,
+                'unsigned' => true,
+                'not_null' => true,
+            ],
             'keterangan'         => [
                 'type'          => 'VARCHAR',
                 'constraint'    => 20
@@ -48,6 +54,7 @@ class Keuangan extends Migration
 		$this->forge->addKey('id_keuangan', true);
         $this->forge->addForeignKey('id_pemasukan', 'tbl_pemasukan', 'id_pemasukan', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_pengeluaran', 'tbl_pengeluaran', 'id_pengeluaran', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('id_transaksi', 'tbl_transaksi', 'id_transaksi', 'CASCADE', 'CASCADE');
 		$this->forge->createTable('tbl_keuangan');
     }
 

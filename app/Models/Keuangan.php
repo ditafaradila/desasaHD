@@ -9,7 +9,7 @@ class Keuangan extends Model
     protected $table            = 'tbl_keuangan';
     protected $primaryKey       = 'id_keuangan';
     protected $useAutoIncrement = true;
-    protected $allowedFields    = ['id_keuangan', 'id_pemasukan', 'id_pengeluaran','keterangan', 'tanggal', 'debit', 'kredit'];
+    protected $allowedFields    = ['id_keuangan', 'id_pemasukan', 'id_pengeluaran', 'id_transaksi', 'keterangan', 'tanggal', 'debit', 'kredit'];
 
     public function getkeuangan(){
         return $this->db->table('tbl_keuangan')
@@ -22,4 +22,5 @@ class Keuangan extends Model
         ->selectSum('debit')
         ->get()->getResultArray();
     }
+
 }

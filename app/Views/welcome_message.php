@@ -22,7 +22,11 @@
 </head>
 
 <body class="">
-  <main class="main-content  mt-0">
+  <?php if(session()->getFlashdata('msg')): ?>
+    <div><?= session()->getFlashdata('msg') ?></div>
+  <?php endif; ?>
+
+  <main class="main-content mt-0">
     <section>
       <div class="page-header min-vh-75">
         <div class="container">
@@ -31,24 +35,24 @@
               <div class="card card-plain mt-8">
                 <div class="card-header pb-0 text-left bg-transparent">
                   <h3 class="font-weight-bolder text-info text-gradient">Selamat Datang!</h3>
-                  <p class="mb-0">Masukan email dan password untuk masuk</p>
+                  <p class="mb-0">Masukan username dan password untuk masuk</p>
                 </div>
                 <div class="card-body">
-                  <form role="form">
-                    <label>Email</label>
+                  <form action="/login" method="POST">
+                    <label>Username</label>
                     <div class="mb-3">
-                      <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                      <input type="username" id="username" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="email-addon">
                     </div>
                     <label>Password</label>
                     <div class="mb-3">
-                      <input type="email" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                      <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
                     </div>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
                       <label class="form-check-label" for="rememberMe">Ingat saya!</label>
                     </div>
                     <div class="text-center">
-                      <button type="button" class="btn bg-gradient-info w-100 mt-4 mb-0">Masuk</button>
+                      <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Masuk</button>
                     </div>
                   </form>
                 </div>

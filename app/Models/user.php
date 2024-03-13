@@ -15,4 +15,15 @@ class user extends Model
         return $this->db->table('tbl_user')
         ->get()->getResultArray();
     }
+
+    public function login($username, $password)
+    {
+        $user = $this->db->table('tbl_user')
+            ->where('username', $username)
+            ->where('password', $password)
+            ->get()
+            ->getRowArray();
+
+        return $user;
+    }
 }

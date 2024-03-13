@@ -18,8 +18,7 @@ class Transaksi extends Model
         ->get()->getResultArray();
     }
 
-    public function getHargaProduk($id_produk)
-    {
+    public function getHargaProduk($id_produk){
         return $this->db->table('tbl_produk')
             ->where('id_produk', $id_produk)
             ->get()->getRow('harga_produk');

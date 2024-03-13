@@ -58,7 +58,7 @@
                                             <p class="text-xs font-weight-bold mb-0 text-center"><?= $jenisBarang['jenis_barang'] ?></p>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <div class="d-flex text-center">
+                                            <div class="align-middle text-center text-sm">
                                                 <a href="<?= base_url('/hapusjenisBarang/' . $jenisBarang['id_jenisBarang']) ?>" class="btn btn-link text-center text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
                                                 <button type="button" class="btn btn-link text-dark px-1 mb-0 text-center" data-bs-toggle="modal" data-bs-target="#editBahanBaku-<?= $jenisBarang['id_jenisBarang'] ?>">
                                                     <i class="fa fa-pencil"></i>
@@ -118,7 +118,7 @@
                             <input type="text" class="form-control" name="jenis_barang" id="jenis_barang">
                         </div>
                         <div align="center">
-                            <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN PERUBAHAN</button>
+                            <button type="submit" class="btn bg-gradient-dark mb-0">TAMBAH</button>
                         </div>
                     </div>
                 </form>

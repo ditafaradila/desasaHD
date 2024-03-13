@@ -6,9 +6,13 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
-$routes->get('/dashboard', 'DashboardController::dashboard');
+$routes->get('/login', 'Home::index');
+$routes->get('/dashboard', 'DashboardController::dashboard', ['filter' => 'auth']);
+$routes->post('login', 'Auth::login'); // Menangani permintaan POST untuk login
+$routes->post('/logout', 'Auth::logout');
 
-$routes->get('/supply', 'SupplyController::index');
+
+$routes->get('/supply', 'SupplyController::index',['filter' => 'auth']);
 $routes->get('/detailBarangMasuk', 'SupplyController::detail');
 $routes->get('/tambahSupply', 'SupplyController::tambahS');
 $routes->post('/storeSupply','SupplyController::storeSupply');
@@ -21,25 +25,27 @@ $routes->post('/storeBK','SupplyController::storeBK');
 $routes->add('/updateBK/(:segment)','SupplyController::updateBK/$1');
 $routes->get('/hapusBK/(:segment)', 'SupplyController::hapusBK/$1');
 
-$routes->get('/bahanbaku', 'BarangController::index');
+$routes->get('/bahanbaku', 'BarangController::index',['filter' => 'auth']);
 $routes->post('/storeBahanBaku','BarangController::storeBahanBaku');
 $routes->get('/hapusjenisBarang/(:segment)', 'BarangController::hapusjenisBarang/$1');
 $routes->add('/updateBahanBaku/(:segment)','BarangController::updateBahanBaku/$1');
 
-$routes->get('/produk', 'ProdukController::viewProduk');
+$routes->get('/produk', 'ProdukController::viewProduk',['filter' => 'auth']);
 $routes->post('/storeProduk','ProdukController::storeProduk');
 $routes->post('/kurangjumlahProduk/(:num)','ProdukController::kurangjumlahProduk/$1');
 $routes->post('/tambahjumlahProduk/(:num)','ProdukController::tambahjumlahProduk/$1');
 $routes->add('produk/edit/(:segment)', 'ProdukController::edit/$1');
 $routes->get('produk/delete/(:segment)', 'ProdukController::delete/$1');
 
-$routes->get('/transaksi', 'TransaksiController::index');
+$routes->get('/transaksi', 'TransaksiController::index',['filter' => 'auth']);
 $routes->get('get_harga/(:num)', 'TransaksiController::getHarga/$1');
 $routes->post('/storeTransaksi','TransaksiController::storeTransaksi');
 $routes->get('/hapusTransaksi/(:segment)', 'TransaksiController::hapusTransaksi/$1');
 $routes->add('/updateTransaksi/(:segment)','TransaksiController::updateTransaksi/$1');
+$routes->get('/laporanToko', 'TransaksiController::cetakToko');
+$routes->get('api_result', 'TransaksiController::getOrders');
 
-$routes->get('/keuangan', 'KeuanganController::index');
+$routes->get('/keuangan', 'KeuanganController::index',['filter' => 'auth']);
 $routes->get('/listKeuangan', 'KeuanganController::indexx');
 $routes->get('/tambahPemasukan', 'KeuanganController::tambahK');
 $routes->post('/storeK','KeuanganController::storeK');
