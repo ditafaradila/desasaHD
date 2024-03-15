@@ -36,7 +36,7 @@
                     <div class="row">
                         <div class="col col-lg-6">
                             <div class="d-flex flex-column h-100">
-                                <h5 class="font-weight-bolder">Halo, Admin!</h5>
+                                <h5 class="font-weight-bolder">Halo, <?= session()->get('nama') ?>!</h5>
                                 <p class="mb-5">Selamat datang di Website Administrasi Desasa Homedecor!</p>
                             </div>
                         </div>

@@ -20,7 +20,6 @@ class Auth extends BaseController
         if ($user) {
             session()->set([
                 'logged_in' => true,
-                //'role' => $user['role'], // Simpan peran pengguna (owner atau karyawan)
                 'username' => $username, // Simpan nama pengguna
                 'nama' => $user['nama'],
             ]);
@@ -42,7 +41,9 @@ class Auth extends BaseController
 
     public function logout(){
         session()->destroy();
-
+        $data = [
+            'title' => 'Logout',
+        ];
         return redirect()->to(base_url('/login'));
     }
 }

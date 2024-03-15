@@ -9,7 +9,7 @@ $routes->get('/', 'Home::index');
 $routes->get('/login', 'Home::index');
 $routes->get('/dashboard', 'DashboardController::dashboard', ['filter' => 'auth']);
 $routes->post('login', 'Auth::login'); // Menangani permintaan POST untuk login
-$routes->post('/logout', 'Auth::logout');
+$routes->get('/logout', 'Auth::logout');
 
 
 $routes->get('/supply', 'SupplyController::index',['filter' => 'auth']);
