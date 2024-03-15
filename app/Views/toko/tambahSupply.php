@@ -34,11 +34,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_supply">Jumlah</label>
-                                    <input type="text" class="form-control" name="jumlah_supply" id="jumlah_supply">
+                                    <input type="text" class="form-control" name="jumlah_supply" id="jumlah_supply" placeholder="Masukkan angka. Contoh: 20">
                                 </div>
                                 <div class="form-group">
                                     <label for="harga_supply">Nominal</label>
-                                    <input type="text" class="form-control" id="harga_supply" name="harga_supply">
+                                    <input type="text" class="form-control" id="harga_supply" name="harga_supply" placeholder="Masukkan nominal tanpa titik. Contoh: 20000">
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_supply">Tanggal Supply</label>

@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah">Nominal</label>
-                                    <input type="text" class="form-control" name="jumlah" id="jumlah">
+                                    <input type="text" class="form-control" name="jumlah" id="jumlah" placeholder="Masukkan nominal tanpa titik. Contoh: 20000">
                                 </div>
                                 <div class="col-6 text-end">
                                     <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>

@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_barangKeluar">Jumlah</label>
-                                    <input type="text" class="form-control" name="jumlah_barangKeluar" id="jumlah_barangKeluar">
+                                    <input type="text" class="form-control" name="jumlah_barangKeluar" id="jumlah_barangKeluar" placeholder="Masukkan angka. Contoh: 20">
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_barangKeluar">Tanggal Barang Keluar</label>

@@ -403,7 +403,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="diskon">Diskon</label>
-                                <input type="text" class="form-control" name="diskon" id="diskon">
+                                <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan diskon yang sedang berlaku. Contoh: 10%.">
                             </div>
                             <div class="form-group">
                                 <label for="waktu">Tanggal Pembelian</label>
