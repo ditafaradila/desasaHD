@@ -11,6 +11,9 @@ $routes->get('/dashboard', 'DashboardController::dashboard', ['filter' => 'auth'
 $routes->post('login', 'Auth::login'); // Menangani permintaan POST untuk login
 $routes->get('/logout', 'Auth::logout');
 
+//$routes->get('/api', 'ShopeeController::index');
+$routes->get('/api', 'ShopeeController::auth');
+$routes->post('/process', 'ShopeeController::process');
 
 $routes->get('/supply', 'SupplyController::index',['filter' => 'auth']);
 $routes->get('/detailBarangMasuk', 'SupplyController::detail');
