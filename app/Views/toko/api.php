@@ -6,9 +6,9 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                 <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-                <li class="breadcrumb-item text-sm text-dark active" aria-current="page">API</li>
+                <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Autenfikasi</li>
             </ol>
-            <h6 class="font-weight-bolder mb-0">API</h6>
+            <h6 class="font-weight-bolder mb-0">Autenfikasi</h6>
         </nav>
     </div>
 </nav>
@@ -21,9 +21,9 @@
         <div class="col-lg-4 mb-lg-0 mb-4">
             <div class="card h-100">
                 <div class="card-header pb-0">
-                    <h6>1. Shop Authenticate</h6>
+                    <h6>1. Autentifikasi Toko</h6>
                     <p class="text-sm">
-                        <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
+                        <span class="font-weight-bold">Klik tautan berikut untuk mengautentikasi toko Anda:</span>
                     </p>
                     <div align="center">
                         <a href="<?= $auth_url ?>" type="button" class="btn bg-gradient-dark mb-0">Authenticate Shop</a>
@@ -35,9 +35,6 @@
             <div class="card h-100">
                 <div class="card-header pb-0">
                     <h6>2. Dapatkan Token</h6>
-                    <p class="text-sm">
-                        <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
-                    </p>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="<?= base_url('/process') ?>" id="getToken">
@@ -47,11 +44,11 @@
                                     <form>
                                         <div class="form-group">
                                             <label for="shop_id">Shop ID</label>
-                                            <input type="text" class="form-control" name="shop_id" id="shop_id">
+                                            <input type="text" class="form-control" name="shop_id" id="shop_id" placeholder="masukkan Shop ID">
                                         </div>
                                         <div class="form-group">
                                             <label for="code">Code</label>
-                                            <input type="text" class="form-control" name="code" id="code">
+                                            <input type="text" class="form-control" name="code" id="code" placeholder="masukkan Code">
                                         </div>
                                         <div align="center">
                                             <button type="submit" class="btn bg-gradient-dark mb-0">Dapatkan Token</button>
@@ -69,7 +66,7 @@
                 <div class="card-header pb-0">
                     <h6>2. Meminta Data API</h6>
                     <p class="text-sm">
-                        <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
+                        <span class="font-weight-bold">Klik tombol untuk mengauntentifikasi toko</span>
                     </p>
                     <div align="center">
                         <a href="<?= $auth_url ?>" type="button" class="btn bg-gradient-dark mb-0">Authenticate Shop</a>
