@@ -3,122 +3,187 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
+use CodeIgniter\HTTP\Request;
 
-class ShopeeController extends Controller
-{
-  // public function index(){
-  //   // Inisialisasi cURL
-  //   $curl = curl_init();
+class ShopeeController extends Controller{
+  protected $host = "https://partner.shopeemobile.com";
+  protected $partnerId = 2007160;
+  protected $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
 
-  //   // Set opsi cURL
-  //   curl_setopt_array($curl, array(
-  //     CURLOPT_URL => 'https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token=61694c577056556e485859577a594268&item_status=NORMAL&offset=0&page_size=10&partner_id=2007160&shop_id=55694070&sign=e81e4624e96203f0759ab7fc5e35c30f3e58d0311695565f3bb0f3212881dab9&timestamp=1710697676&update_time_from=1611311600&update_time_to=1611311631',
-  //     CURLOPT_RETURNTRANSFER => true,
-  //     CURLOPT_ENCODING => '',
-  //     CURLOPT_MAXREDIRS => 10,
-  //     CURLOPT_TIMEOUT => 0,
-  //     CURLOPT_FOLLOWLOCATION => true,
-  //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  //     CURLOPT_CUSTOMREQUEST => 'GET',
-  //     CURLOPT_HTTPHEADER => array(
-  //       'Content-Type: application/json'
-  //     ),
-  //   ));
-
-  //   // Eksekusi permintaan cURL dan simpan responsnya
-  //   $response = curl_exec($curl);
-
-  //   // Tutup sumber cURL dan lepaskan sumber daya yang dialokasikan
-  //   curl_close($curl);
-
-  //   // Menguraikan respons JSON menjadi array asosiatif
-  //   $data['items'] = json_decode($response, true);
-  //   // Debug the response structure
-  //   var_dump($data['items']);
-
-  //   // Periksa kesalahan dalam proses decoding JSON
-  //   if (json_last_error() !== JSON_ERROR_NONE) {
-  //     echo "Terjadi kesalahan dalam decoding JSON: " . json_last_error_msg();
-  //   }
-
-  //   // Kirim data ke view untuk ditampilkan
-  //   return view('toko/item_list', $data);
-  // }
-
-  // public function index(){
-  //   $data = [
-  //     'title' => 'API',
-  //   ];
-  //   return view('toko/api.php', $data);
-  // }
+  public function index()
+  {
+    $data = [
+      'title' => 'API',
+    ];
+    return view('toko/api.php', $data);
+  }
 
   public function auth()
   {
-    $timest = time();
     $host = "https://partner.shopeemobile.com";
     $path = "/api/v2/shop/auth_partner";
-    $redirect_url = "https://www.google.com/";
-    $partner_id = 2007160;
-    $partner_key = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
+    $redirectUrl = "https://open.shopee.com";
+    $partnerId = 2007160;
+    $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
 
-    $base_string = $partner_id . $path . $timest;
-    $sign = hash_hmac("sha256", $base_string, $partner_key);
+    $timest = time();
+    $baseString = $partnerId . $path . $timest;
+    $sign = hash_hmac('sha256', $baseString, $partnerKey);
 
-    $data['auth_url'] = $host . $path . "?partner_id=$partner_id&timestamp=$timest&sign=$sign&redirect=$redirect_url";
+    $url = $host . $path . "?partner_id=" . $partnerId . "&timestamp=" . $timest . "&sign=" . $sign . "&redirect=" . urlencode($redirectUrl);
 
-    $extra_data = [
-      'title' => 'API'
-    ];
+    return redirect()->to($url);
+  }
 
-    // Gabungkan array $data dengan $extra_data
-    $data = array_merge($data, $extra_data);
+  // public function process(){
+  //   $host = "https://partner.shopeemobile.com";
+  //   $path = "/api/v2/auth/token/get";
+  //   // Ambil inputan dari form
+  //   $request = service('request');
+  //   $shopId = 55694070;
+  //   $code = "644f54624d5542695270484470596267";
+  //   $partnerId = 2007160;
+  //   $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
+  //   $timest = time();
 
-    return view('toko/api.php', $data);
+  //   $body = array("code" => $code,  "shop_id" => $shopId, "partner_id" => $partnerId);
+  //   $baseString = sprintf("%s%s%s", $partnerId, $path, $timest);
+  //   $sign = hash_hmac('sha256', $baseString, $partnerKey);
+  //   $url = sprintf("%s%s?partner_id=%s&timestamp=%s&sign=%s", $host, $path, $partnerId, $timest, $sign);
+
+  //   $c = curl_init($url);
+  //   curl_setopt($c, CURLOPT_POST, 1);
+  //   curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($body));
+  //   curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+  //   curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+  //   $resp = curl_exec($c);
+  //   echo "raw result: $resp";
+
+  //   $ret = json_decode($resp, true);
+  //   $accessToken = $ret["access_token"];
+  //   $newRefreshToken = $ret["refresh_token"];
+  //   echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken raw: $ret"."\n";
+  //   var_dump($ret);
+  //   //return $ret;
+
+  //   //return view('auth_token_modal', $data);
+  // }
+
+  public function getTokenShopLevel($code, $partnerId, $partnerKey, $shopId)
+  {
+    $host = "https://partner.shopeemobile.com";
+    $path = "/api/v2/auth/token/get";
+    $shopId = (int) $shopId;
+    $timest = time();
+    $body = array("code" => $code, "shop_id" => $shopId, "partner_id" => $partnerId);
+    $baseString = sprintf("%s%s%s", $partnerId, $path, $timest);
+    $sign = hash_hmac('sha256', $baseString, $partnerKey);
+    $url = sprintf("%s%s?partner_id=%s&timestamp=%s&sign=%s", $host, $path, $partnerId, $timest, $sign);
+
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($body));
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $resp = curl_exec($curl);
+
+    $ret = json_decode($resp, true);
+    $accessToken = $ret["access_token"] ?? null;
+    $newRefreshToken = $ret["refresh_token"] ?? null;
+    echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken raw: $resp" . "\n";
+    //return $ret;
   }
 
   public function process()
   {
-    // Ambil inputan dari form
     $request = service('request');
-    $shop_id = $request->getPost('shop_id');
     $code = $request->getPost('code');
-    $partner_id = 2007160;
-    $tmp_partner_key = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
-    $timest = time();
-
-    // Konfigurasi GuzzleHttp Client
-    $client = service('curlrequest', [
-      'base_uri' => 'https://partner.shopeemobile.com',
-      'headers' => ['Content-Type' => 'application/json']
-    ]);
-
-    // Membuat body request dalam bentuk JSON
-    $body = json_encode([
-      'code' => $code,
-      'shop_id' => $shop_id,
-      'partner_id' => $partner_id
-    ]);
-
-    // Membuat tanda tangan HMAC
-    $path = "/api/v2/auth/token/get";
-    $tmp_base_string = $partner_id . $path . $timest;
-    $base_string = hash_hmac("sha256", $tmp_base_string, $tmp_partner_key);
-
-    // Membuat URL request
-    $url = $path . "?partner_id=$partner_id&timestamp=$timest&sign=$base_string";
-
-    // Melakukan request POST menggunakan GuzzleHttp Client
-    $response = $client->post($url, ['body' => $body]);
-
-    // Mendapatkan response
-    $ret = json_decode($response->getBody(), true);
-    $access_token = $ret['access_token'];
-    $new_refresh_token = $ret['refresh_token'];
-
-    // Tampilkan hasil token dalam modal
-    $data['access_token'] = $access_token;
-    $data['refresh_token'] = $new_refresh_token;
-
-    return view('auth_token_modal', $data);
+    $shopId = $request->getPost('shop_id');
+    if (!is_numeric($shopId)) {
+      return "Shop ID harus berupa angka yang valid";
+    }
+    $partnerId = 2007160;
+    $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
+    return $this->getTokenShopLevel($code, $partnerId, $partnerKey, $shopId);
   }
+
+  public function getItemList(){
+    $request = service('request');
+    // Menangani paging
+    $page = $request->getPost('page') ?? 1;
+    $pageSize = $request->getPost('page_size') ?? 10;
+
+    $partnerId = 2007160; // Ganti dengan partner ID Anda
+    $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243"; // Ganti dengan partner key Anda
+
+    // Mendapatkan nilai access_token dari inputan di view
+    $accessToken = $request->getPost('access_token');
+    $shopId = $request->getPost('shop_id');
+    $timest = time();
+    $path = "/api/v2/product/get_item_list";
+    $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
+    $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
+
+    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&offset=0&page_size=10&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+
+    // Membuat permintaan GET ke API Shopee
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    $data = json_decode($response, true);
+
+    // Menampilkan respons dalam bentuk tabel di view
+    return [
+      'items' => $data['response']['item'],
+      'totalCount' => $data['response']['total_count']
+    ];
+  }
+
+  public function getOrderList(){
+    $request = service('request');
+    // Menangani paging
+    $page = $request->getPost('page') ?? 1;
+    $pageSize = $request->getPost('page_size') ?? 10;
+
+    $partnerId = 2007160; // Ganti dengan partner ID Anda
+    $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243"; // Ganti dengan partner key Anda
+
+    // Mendapatkan nilai access_token dari inputan di view
+    $accessToken = $request->getPost('access_token');
+    $shopId = $request->getPost('shop_id');
+    $timest = time();
+    $path = "/api/v2/order/get_order_list";
+    $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
+    $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
+
+    //$url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}&item_status=NORMAL&offset=0&page_size=10&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+    $url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}&cursor=%22%22&order_status=COMPLETED&page_size=20&partner_id={$partnerId}&response_optional_fields=order_status&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+    // Membuat permintaan GET ke API Shopee
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    $data = json_decode($response, true);
+
+    // Menampilkan respons dalam bentuk tabel di view
+    return [
+      'orders' => $data['response']['order_list'],
+      'totalCount' => $data['response']['total_count']
+    ];
+  }
+
+  public function displayData(){
+    $itemList = $this->getItemList();
+    $orderList = $this->getOrderList();
+
+    // Meneruskan data ke view
+    return view('toko/display_data', [
+        'itemList' => $itemList,
+        'orderList' => $orderList
+    ]);
+  }
+
 }

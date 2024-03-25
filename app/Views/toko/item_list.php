@@ -1,31 +1,36 @@
-<!-- app/Views/shopee_view.php -->
+<table>
+    <thead>
+        <tr>
+            <th>Item ID</th>
+            <th>Item Status</th>
+            <th>Update Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($items as $item): ?>
+            <tr>
+                <td><?= $item['item_id'] ?></td>
+                <td><?= $item['item_status'] ?></td>
+                <td><?= $item['update_time'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopee Items</title>
-</head>
-
-<body>
-    <h1>Shopee Items</h1>
-    <ul>
-    <?php if (isset($items['response']['item'])) : ?>
-            <?php foreach ($items['response']['item'] as $item) : ?>
-                <li>
-                    <strong>Item ID:</strong> <?php echo $item['item_id']; ?><br>
-                    <strong>Item Status:</strong> <?php echo $item['item_status']; ?><br>
-                    <strong>Update Time:</strong> <?php echo $item['update_time']; ?><br>
-                    <!-- Tambahkan atribut lainnya sesuai kebutuhan -->
-                    <hr>
-                </li>
-            <?php endforeach; ?>
-        <?php else : ?>
-            <li>No items found</li>
-        <?php endif; ?>
-    </ul>
-</body>
-
-</html>
+<table>
+    <thead>
+        <tr>
+            <th>Order SN</th>
+            <th>Item Status</th>
+            <th>Update Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($items as $item): ?>
+            <tr>
+                <td><?= $item['order_sn'] ?></td>
+                <td><?= $item['order_status'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

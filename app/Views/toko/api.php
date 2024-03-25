@@ -15,9 +15,6 @@
 
 <div class="container-fluid py-4">
     <div class="row">
-        <!-- <div class="col-6 text-end">
-        <a href="/api" type="button" class="btn btn-outline-primary btn-sm mb-0">Tambah</a>
-    </div> -->
         <div class="col-lg-4 mb-lg-0 mb-4">
             <div class="card h-100">
                 <div class="card-header pb-0">
@@ -26,7 +23,9 @@
                         <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
                     </p>
                     <div align="center">
-                        <a href="<?= $auth_url ?>" type="button" class="btn bg-gradient-dark mb-0">Authenticate Shop</a>
+                        <form method="POST" action="/auth">
+                            <button type="submit" class="btn bg-gradient-dark mb-0">Authenticate Shop</a>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -67,17 +66,36 @@
         <div class="col-lg-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header pb-0">
-                    <h6>2. Meminta Data API</h6>
+                    <h6>2. Meminta Produk Data API</h6>
                     <p class="text-sm">
                         <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
                     </p>
-                    <div align="center">
-                        <a href="<?= $auth_url ?>" type="button" class="btn bg-gradient-dark mb-0">Authenticate Shop</a>
-                    </div>
-                </div>                
+                    <form method="POST" action="<?= base_url('/displayData') ?>">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive p-0">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="shop_id">Shop ID</label>
+                                            <input type="text" class="form-control" name="shop_id" id="shop_id">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="access_token">Access Token</label>
+                                            <input type="text" class="form-control" name="access_token" id="access_token">
+                                        </div>
+                                        <div align="center">
+                                            <button type="submit" class="btn bg-gradient-dark mb-0">Tampilkan Data</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <?= $this->endSection() ?>
