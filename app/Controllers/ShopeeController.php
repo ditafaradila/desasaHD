@@ -5,7 +5,8 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\Request;
 
-class ShopeeController extends Controller{
+class ShopeeController extends Controller
+{
   protected $host = "https://partner.shopeemobile.com";
   protected $partnerId = 2007160;
   protected $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
@@ -22,18 +23,18 @@ class ShopeeController extends Controller{
   {
     $host = "https://partner.shopeemobile.com";
     $path = "/api/v2/shop/auth_partner";
-    $redirectUrl = "https://open.shopee.com";
+    $redirectUrl = "https://www.google.com/";
     $partnerId = 2007160;
-    $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
+    $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275";
 
     $timest = time();
     $baseString = $partnerId . $path . $timest;
     $sign = hash_hmac('sha256', $baseString, $partnerKey);
 
     $url = $host . $path . "?partner_id=" . $partnerId . "&timestamp=" . $timest . "&sign=" . $sign . "&redirect=" . urlencode($redirectUrl);
-
     return redirect()->to($url);
   }
+
 
   // public function process(){
   //   $host = "https://partner.shopeemobile.com";
@@ -103,18 +104,19 @@ class ShopeeController extends Controller{
       return "Shop ID harus berupa angka yang valid";
     }
     $partnerId = 2007160;
-    $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
+    $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275";
     return $this->getTokenShopLevel($code, $partnerId, $partnerKey, $shopId);
   }
 
-  public function getItemList(){
+  public function getItemList()
+  {
     $request = service('request');
     // Menangani paging
     $page = $request->getPost('page') ?? 1;
     $pageSize = $request->getPost('page_size') ?? 10;
 
     $partnerId = 2007160; // Ganti dengan partner ID Anda
-    $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243"; // Ganti dengan partner key Anda
+    $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275"; // Ganti dengan partner key Anda
 
     // Mendapatkan nilai access_token dari inputan di view
     $accessToken = $request->getPost('access_token');
@@ -135,55 +137,58 @@ class ShopeeController extends Controller{
     $data = json_decode($response, true);
 
     // Menampilkan respons dalam bentuk tabel di view
-    return [
-      'items' => $data['response']['item'],
-      'totalCount' => $data['response']['total_count']
-    ];
+    return $data['response']['item'];
   }
 
-  public function getOrderList(){
+  public function showItemList()
+  {
+    // Memanggil method getItemList untuk mendapatkan data item
+    $items = $this->getItemList();
+
+    // Menampilkan view item_list.php bersama dengan data item
+    return view('toko/item_list.php', ['items' => $items]);
+  }
+
+  public function getOrderList()
+  {
     $request = service('request');
-    // Menangani paging
-    $page = $request->getPost('page') ?? 1;
-    $pageSize = $request->getPost('page_size') ?? 10;
 
-    $partnerId = 2007160; // Ganti dengan partner ID Anda
-    $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243"; // Ganti dengan partner key Anda
-
-    // Mendapatkan nilai access_token dari inputan di view
+    // Ganti nilai-nilai ini dengan nilai yang sesuai
     $accessToken = $request->getPost('access_token');
     $shopId = $request->getPost('shop_id');
-    $timest = time();
+    $partnerId = 2007160; // Ganti dengan partner ID Anda
+    $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275"; // Ganti dengan partner key Anda
+    $timestamp = time();
+    $timest = strtotime("-14 days");
     $path = "/api/v2/order/get_order_list";
-    $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
-    $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
+    $baseStringTmp = $partnerId . $path . $timestamp . $accessToken . $shopId;
+    $sign = hash_hmac('sha256', $baseStringTmp, $partnerKey);
 
-    //$url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}&item_status=NORMAL&offset=0&page_size=10&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
-    $url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}&cursor=%22%22&order_status=COMPLETED&page_size=20&partner_id={$partnerId}&response_optional_fields=order_status&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
-    // Membuat permintaan GET ke API Shopee
-    $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($curl);
-    curl_close($curl);
+    // Konfigurasi panggilan API
+    $url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}&cursor=0&order_status=COMPLETED&page_size=20&partner_id={$partnerId}&response_optional_fields=order_status&shop_id={$shopId}&sign={$sign}&time_range_field=create_time&time_from={$timest}&time_to={$timestamp}&timestamp={$timestamp}";
 
-    $data = json_decode($response, true);
-
-    // Menampilkan respons dalam bentuk tabel di view
-    return [
-      'orders' => $data['response']['order_list'],
-      'totalCount' => $data['response']['total_count']
-    ];
-  }
-
-  public function displayData(){
-    $itemList = $this->getItemList();
-    $orderList = $this->getOrderList();
-
-    // Meneruskan data ke view
-    return view('toko/display_data', [
-        'itemList' => $itemList,
-        'orderList' => $orderList
+    // Panggil API menggunakan HTTP Client
+    $client = service('curlrequest');
+    $response = $client->request('GET', $url, [
+      'headers' => [
+        'Content-Type' => 'application/json'
+      ]
     ]);
+
+    // Ambil respons dari API
+    $data = $response->getBody();
+
+    // Tampilkan respons
+    echo $data;
   }
 
+
+  public function showOrderList()
+  {
+    // Memanggil method getItemList untuk mendapatkan data item
+    $orders = $this->getOrderList();
+
+    // Menampilkan view item_list.php bersama dengan data item
+    return view('toko/order.php', ['order_list' => $orders]);
+  }
 }

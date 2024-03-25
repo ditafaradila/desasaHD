@@ -15,8 +15,9 @@ $routes->get('/api', 'ShopeeController::index');
 $routes->post('/auth', 'ShopeeController::auth');
 $routes->post('/process', 'ShopeeController::process');
 $routes->post('/getItemList', 'ShopeeController::getItemList');
-$routes->post('/displayData', 'ShopeeController::displayData');
-$routes->post('/getItemBaseInfo', 'ShopeeController::getItemBaseInfo');
+$routes->post('/showItemList', 'ShopeeController::showItemList');
+$routes->post('/getOrderList', 'ShopeeController::getOrderList');
+$routes->post('/showOrderList', 'ShopeeController::showOrderList');
 
 $routes->get('/supply', 'SupplyController::index',['filter' => 'auth']);
 $routes->get('/detailBarangMasuk', 'SupplyController::detail');

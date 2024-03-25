@@ -16,21 +16,3 @@
         <?php endforeach; ?>
     </tbody>
 </table>
-
-<table>
-    <thead>
-        <tr>
-            <th>Order SN</th>
-            <th>Item Status</th>
-            <th>Update Time</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($items as $item): ?>
-            <tr>
-                <td><?= $item['order_sn'] ?></td>
-                <td><?= $item['order_status'] ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
