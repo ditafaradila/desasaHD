@@ -101,7 +101,7 @@
                     <p class="text-sm">
                         <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
                     </p>
-                    <form method="POST" action="<?= base_url('/getOrderList') ?>">
+                    <form method="POST" action="<?= base_url('/showOrderList') ?>">
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive p-0">

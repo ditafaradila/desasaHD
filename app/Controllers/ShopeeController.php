@@ -108,8 +108,7 @@ class ShopeeController extends Controller
     return $this->getTokenShopLevel($code, $partnerId, $partnerKey, $shopId);
   }
 
-  public function getItemList()
-  {
+  public function getItemList(){
     $request = service('request');
     // Menangani paging
     $page = $request->getPost('page') ?? 1;
@@ -149,8 +148,7 @@ class ShopeeController extends Controller
     return view('toko/item_list.php', ['items' => $items]);
   }
 
-  public function getOrderList()
-  {
+  public function getOrderList(){
     $request = service('request');
 
     // Ganti nilai-nilai ini dengan nilai yang sesuai
@@ -179,16 +177,16 @@ class ShopeeController extends Controller
     $data = $response->getBody();
 
     // Tampilkan respons
-    echo $data;
+    return $data;
   }
 
 
   public function showOrderList()
   {
     // Memanggil method getItemList untuk mendapatkan data item
-    $orders = $this->getOrderList();
+    $orders = json_decode($this->getOrderList(), true);
 
     // Menampilkan view item_list.php bersama dengan data item
-    return view('toko/order.php', ['order_list' => $orders]);
+    return view('toko/order.php', ['orders' => $orders['response']['order_list']]);
   }
 }
