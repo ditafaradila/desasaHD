@@ -7,9 +7,29 @@ use App\Models\BarangKeluar;
 use App\Models\JenisBarang;
 use App\Models\Supply;
 
-class SupplyController extends BaseController
-{
+class SupplyController extends BaseController{
     public function index(){
+        $supplyModel = new Supply();
+        $barangKeluarModel = new BarangKeluar();
+        $totalBarangKeluar = $barangKeluarModel->getTotalOut();
+        //var_dump($totalBarangKeluar);
+        $jenisModel = new JenisBarang();
+        $jenisBarang = $jenisModel->findAll();
+
+        $data = [
+            'title' => 'Supply',
+            'totalSupply' => $supplyModel->getTotalSupply(),
+            'supply' => $supplyModel->getSupply(),
+            'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
+            'totalBarangKeluar' => $totalBarangKeluar,
+            'jenisBarang' => $jenisBarang,
+        ];
+
+        return view('toko/supply', $data);
+    }
+
+    public function detail()
+    {
         $supplyModel = new Supply();
         $barangKeluarModel = new BarangKeluar();
         $barangKeluar = $barangKeluarModel->getbarangKeluar();
@@ -21,25 +41,6 @@ class SupplyController extends BaseController
             'totalSupply' => $supplyModel->getTotalSupply(),
             'supply' => $supplyModel->getSupply(),
             'barangKeluar' => $barangKeluar,
-            'totalBarangKeluar' => $barangKeluarModel->getTotalOut(),
-            'jenisBarang' => $jenisBarang,
-        ];
-
-        return view('toko/supply', $data);
-    }
-
-    public function detail()
-    {
-        $supplyModel = new Supply();
-        $barangKeluarModel = new BarangKeluar();
-        $jenisModel = new JenisBarang();
-        $jenisBarang = $jenisModel->findAll();
-
-        $data = [
-            'title' => 'Supply',
-            'totalSupply' => $supplyModel->getTotalSupply(),
-            'supply' => $supplyModel->getSupply(),
-            'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
             'jenisBarang' => $jenisBarang,
         ];
 
@@ -138,7 +139,7 @@ class SupplyController extends BaseController
         $supplyModel = new Supply();
 
         $data = [
-            'id_barangKeluar' => $this->request->getPost('id_barangKeluar'),
+            //'id_barangKeluar' => $this->request->getPost('id_barangKeluar'),
             'id_supply' => $this->request->getPost('id_supply'),
             'jumlah_barangKeluar' => $this->request->getPost('jumlah_barangKeluar'),
             'tanggal_barangKeluar' => date('Y-m-d'),
@@ -165,7 +166,7 @@ class SupplyController extends BaseController
         }
 
         $barangKeluarModel->save($data);
-        return redirect()->to('/detailBarangKeluar');
+        return redirect()->to('/supply');
     }
 
     public function updateBK($id_barangKeluar)

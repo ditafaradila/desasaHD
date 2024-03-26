@@ -18,15 +18,6 @@ class KeuanganController extends BaseController{
             'pemasukan' => $pemasukanModel->getPemasukan(),
             'pengeluaran' => $pengeluaranModel->getPengeluaran(),
         ];
-
-        
-
-        // if ($idRole == 1) {
-        //     return view('toko/keuangan', $data);
-        // } else {
-        //     // Redirect ke halaman dashboard jika peran tidak dikenali
-        //     return redirect()->to(base_url('dashboard'));
-        // }
         return view('toko/keuangan', $data);
     }
 

@@ -60,7 +60,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Total Uang -->
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
@@ -78,6 +77,30 @@
                             <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
                                 <i class="fa fa-money text-lg opacity-10" aria-hidden="true"></i>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Detail Keuangan -->
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Detail</p>
+                                <h5 class="font-weight-bolder mb-0">
+                                    Keuangan
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <a href="/keuangan">
+                                <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                    <i class="fa fa-info-circle text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -107,9 +130,9 @@
                                 <tr>
                                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">No</th>
                                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Keterangan</th>
-                                    <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Tanggal</th>
+                                    <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Keterangan</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Debit</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -120,23 +143,23 @@
                                 <?php $no = 1;
                                 foreach ($keuangan as $keuangan) :
                                 ?>
-                                        <tr>
-                                            <td class="align-middle text-center">
-                                                <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['keterangan'] ?></p>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['tanggal'] ?></p>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['debit'] ?></p>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['kredit'] ?></p>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td class="align-middle text-center">
+                                            <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['tanggal'] ?></p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['keterangan'] ?></p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['debit'] ?></p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['kredit'] ?></p>
+                                        </td>
+                                    </tr>
                                 <?php
                                 endforeach
                                 ?>
