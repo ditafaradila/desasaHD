@@ -3,36 +3,38 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Database\Seeds\jenisBarang as SeedsJenisBarang;
 use App\Models\BarangKeluar;
 use App\Models\JenisBarang;
 use App\Models\Supply;
 
-class SupplyController extends BaseController{
+class SupplyController extends BaseController
+{
     public function index(){
         $supplyModel = new Supply();
         $barangKeluarModel = new BarangKeluar();
+        $barangKeluar = $barangKeluarModel->getbarangKeluar();
         $jenisModel = new JenisBarang();
         $jenisBarang = $jenisModel->findAll();
-        
+
         $data = [
             'title' => 'Supply',
             'totalSupply' => $supplyModel->getTotalSupply(),
             'supply' => $supplyModel->getSupply(),
-            'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
+            'barangKeluar' => $barangKeluar,
             'totalBarangKeluar' => $barangKeluarModel->getTotalOut(),
             'jenisBarang' => $jenisBarang,
         ];
-        
+
         return view('toko/supply', $data);
     }
 
-    public function detail(){
+    public function detail()
+    {
         $supplyModel = new Supply();
         $barangKeluarModel = new BarangKeluar();
         $jenisModel = new JenisBarang();
         $jenisBarang = $jenisModel->findAll();
-        
+
         $data = [
             'title' => 'Supply',
             'totalSupply' => $supplyModel->getTotalSupply(),
@@ -40,11 +42,12 @@ class SupplyController extends BaseController{
             'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
             'jenisBarang' => $jenisBarang,
         ];
-        
+
         return view('toko/detailBarangMasuk', $data);
     }
 
-    public function tambahS(){
+    public function tambahS()
+    {
         $jenisModel = new JenisBarang();
         $jenisBarang = $jenisModel->findAll();
         $data = [
@@ -55,14 +58,15 @@ class SupplyController extends BaseController{
         return view('toko/tambahSupply', $data);
     }
 
-    public function storeSupply(){
+    public function storeSupply()
+    {
         $supplyModel = new Supply();
         $data = [
             'id_supply' => $this->request->getPost('id_supply'),
             'id_jenisBarang' => $this->request->getPost('id_jenisBarang'),
             'jumlah_supply' => $this->request->getPost('jumlah_supply'),
             'harga_supply' => $this->request->getPost('harga_supply'),
-            'tanggal_supply' => $this->request->getPost('tanggal_supply'),
+            'tanggal_supply' => date('Y-m-d'),
         ];
 
         $supplyModel->save($data);
@@ -70,44 +74,31 @@ class SupplyController extends BaseController{
     }
 
 
-    public function updateSupply($id_supply){
+    public function updateSupply($id_supply)
+    {
         $supplyModel = new Supply();
         $data = [
             // 'id_supply' => $this->request->getPost('id_supply'),
             'id_jenisBarang' => $this->request->getPost('id_jenisBarang'),
             'jumlah_supply' => $this->request->getPost('jumlah_supply'),
             'harga_supply' => $this->request->getPost('harga_supply'),
-            'tanggal_supply' => $this->request->getPost('tanggal_supply'),
+            'tanggal_supply' => date('Y-m-d'),
         ];
 
         $supplyModel->update($id_supply, $data);
-        return redirect()->to('/detailBarangMasuk');    
+        return redirect()->to('/detailBarangMasuk');
     }
 
-    public function hapusSupply($id_supply){
+    public function hapusSupply($id_supply)
+    {
         $supplyModel = new Supply();
         $supplyModel->delete($id_supply);
 
         return redirect()->to('/detailBarangMasuk');
     }
 
-    public function detailBarangKeluar(){
-        $supplyModel = new Supply();
-        $barangKeluarModel = new BarangKeluar();
-        $jenisModel = new JenisBarang();
-        $jenisBarang = $jenisModel->findAll();
-        
-        $data = [
-            'title' => 'Supply',
-            'supply' => $supplyModel->getSupply(),
-            'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
-            'jenisBarang' => $jenisBarang,
-        ];
-        
-        return view('toko/detailBarangKeluar', $data);
-    }
-
-    public function tambahBarangKeluar(){
+    public function tambahBarangKeluar()
+    {
         $barangKeluarModel = new BarangKeluar();
         $barangKeluar = $barangKeluarModel->findAll();
         $supplyModel = new Supply();
@@ -125,6 +116,23 @@ class SupplyController extends BaseController{
         return view('toko/tambahBarangKeluar', $data);
     }
 
+    public function detailBarangKeluar()
+    {
+        $supplyModel = new Supply();
+        $barangKeluarModel = new BarangKeluar();
+        $jenisModel = new JenisBarang();
+        $jenisBarang = $jenisModel->findAll();
+
+        $data = [
+            'title' => 'Supply',
+            'supply' => $supplyModel->getSupply(),
+            'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
+            'jenisBarang' => $jenisBarang,
+        ];
+
+        return view('toko/detailBarangKeluar', $data);
+    }
+
     public function storeBK(){
         $barangKeluarModel = new BarangKeluar();
         $supplyModel = new Supply();
@@ -133,32 +141,35 @@ class SupplyController extends BaseController{
             'id_barangKeluar' => $this->request->getPost('id_barangKeluar'),
             'id_supply' => $this->request->getPost('id_supply'),
             'jumlah_barangKeluar' => $this->request->getPost('jumlah_barangKeluar'),
-            'tanggal_barangKeluar' => $this->request->getPost('tanggal_barangKeluar'),
+            'tanggal_barangKeluar' => date('Y-m-d'),
         ];
 
         $existingSupplyData = $supplyModel->find($data['id_supply']);
-
-        if ($existingSupplyData) {
-            $newJumlahSupply = $existingSupplyData['jumlah_supply'] - $data['jumlah_barangKeluar'];
-            if ($newJumlahSupply < 0) {
-                // Jika jumlah_supply kurang dari 0, beri pesan kesalahan
-                return redirect()->to('/supply')->with('error', 'Stok enggak cukup nih');
-            } elseif ($newJumlahSupply == 0) {
-                // Jika jumlah_supply habis, hapus data di tabel Supply
-                $supplyModel->delete(['id_supply' => $data['id_supply']]);
-            } else {
-                // Jika masih ada stok, update jumlah_supply
-                $supplyModel->update(['id_supply' => $data['id_supply']], ['jumlah_supply' => $newJumlahSupply]);
-            }
-        } else {
-            echo "Error: Supply data not found";
+        if (!$existingSupplyData) {
+            return redirect()->to('/supply')->with('error', 'Data pasokan tidak ditemukan.');
         }
-        
+
+        // Memeriksa apakah stok supply mencukupi
+        $newJumlahSupply = $existingSupplyData['jumlah_supply'] - $data['jumlah_barangKeluar'];
+        if ($newJumlahSupply < 0) {
+            return redirect()->to('/supply')->with('error', 'Stok tidak mencukupi.');
+        }
+
+        // Jika stok supply mencukupi, lanjutkan operasi
+        if ($newJumlahSupply == 0) {
+            // Jika stok habis, hapus data supply
+            $supplyModel->delete(['id_supply' => $data['id_supply']]);
+        } else {
+            // Jika masih ada stok, update jumlah supply
+            $supplyModel->update(['id_supply' => $data['id_supply']], ['jumlah_supply' => $newJumlahSupply]);
+        }
+
         $barangKeluarModel->save($data);
         return redirect()->to('/detailBarangKeluar');
     }
 
-    public function updateBK($id_barangKeluar){
+    public function updateBK($id_barangKeluar)
+    {
         $barangKeluarModel = new BarangKeluar();
         $supplyModel = new Supply();
 
@@ -171,7 +182,7 @@ class SupplyController extends BaseController{
         // Ambil data dari form
         $data = [
             'jumlah_barangKeluar' => $this->request->getPost('jumlah_barangKeluar'),
-            'tanggal_barangKeluar' => $this->request->getPost('tanggal_barangKeluar'),
+            'tanggal_barangKeluar' => date('Y-m-d'),
         ];
 
         // Update data barang keluar
@@ -191,7 +202,8 @@ class SupplyController extends BaseController{
         return redirect()->to('/detailBarangKeluar');
     }
 
-    public function hapusBK($id_barangKeluar){
+    public function hapusBK($id_barangKeluar)
+    {
         $barangKeluarModel = new BarangKeluar();
         $barangKeluarModel->delete($id_barangKeluar);
 

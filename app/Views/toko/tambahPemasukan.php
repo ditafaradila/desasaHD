@@ -31,10 +31,10 @@
                                         <option value="Shopee">Shopee</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="tanggal">Tanggal</label>
                                     <input type="date" class="form-control" name="tanggal" id="tanggal">
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <label for="jumlah">Nominal</label>
                                     <input type="text" class="form-control" name="jumlah" id="jumlah" placeholder="Masukkan nominal tanpa titik. Contoh: 20000">

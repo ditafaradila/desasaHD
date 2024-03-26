@@ -256,12 +256,12 @@
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                     Rp <?= number_format($transaksi['diskon']) ?></p>
                                                             </div>
-                                                            <div class="timeline-content mb-3 col-6">
+                                                            <!-- <div class="timeline-content mb-3 col-6">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Tanggal
                                                                     Transaksi</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                     <?= $transaksi['waktu'] ?></p>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                         <div class="row">
                                                             <div class="timeline-content mb-3 col-6">
@@ -315,13 +315,12 @@
                                                                 <label for="diskon">Diskon</label>
                                                                 <input type="text" class="form-control" name="diskon" id="diskon" value="<?= $transaksi['diskon'] ?>">
                                                             </div>
-                                                            <div class="form-group">
+                                                            <!-- <div class="form-group">
                                                                 <label for="waktu">Tanggal Pembelian</label>
                                                                 <input type="date" class="form-control" name="waktu" id="waktu" value="<?= $transaksi['waktu'] ?>">
-                                                            </div>
+                                                            </div> -->
                                                             <div class="form-group">
-                                                                <label for="harga_produk" class="form-label">Harga
-                                                                    Barang</label>
+                                                                <label for="harga_produk" class="form-label">Harga Barang</label>
                                                                 <input type="text" class="form-control" name="harga_produk" id="harga_produk" readonly>
                                                             </div>
                                                             <div align="center">
@@ -369,10 +368,10 @@
                                 <label for="diskon">Diskon</label>
                                 <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan diskon yang sedang berlaku. Contoh: 10%.">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="waktu">Tanggal Pembelian</label>
                                 <input type="date" class="form-control" name="waktu" id="waktu">
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="produk" class="form-label">Nama Barang</label><br>
                                 <select name="id_produk" id="id_produk">

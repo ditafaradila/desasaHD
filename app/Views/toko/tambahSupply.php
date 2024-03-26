@@ -40,10 +40,10 @@
                                     <label for="harga_supply">Nominal</label>
                                     <input type="text" class="form-control" id="harga_supply" name="harga_supply" placeholder="Masukkan nominal tanpa titik. Contoh: 20000">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="tanggal_supply">Tanggal Supply</label>
                                     <input type="date" class="form-control" id="tanggal_supply" name="tanggal_supply">
-                                </div>
+                                </div> -->
                                 <div class="col-6 text-end">
                                     <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
                                 </div>

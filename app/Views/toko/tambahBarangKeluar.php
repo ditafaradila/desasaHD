@@ -38,10 +38,10 @@
                                     <label for="jumlah_barangKeluar">Jumlah</label>
                                     <input type="text" class="form-control" name="jumlah_barangKeluar" id="jumlah_barangKeluar" placeholder="Masukkan angka. Contoh: 20">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="tanggal_barangKeluar">Tanggal Barang Keluar</label>
                                     <input type="date" class="form-control" id="tanggal_barangKeluar" name="tanggal_barangKeluar">
-                                </div>
+                                </div> -->
                                 <div class="col-6 text-end">
                                     <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
                                 </div>

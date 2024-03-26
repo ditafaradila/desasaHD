@@ -97,10 +97,10 @@
                                                                 <option value="Toko">Toko</option>
                                                             </select>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <!-- <div class="form-group">
                                                             <label for="tanggal">Tanggal</label>
                                                             <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= $pemasukan['tanggal'] ?>">
-                                                        </div>
+                                                        </div> -->
                                                         <div class="form-group">
                                                             <label for="jumlah">Nominal</label>
                                                             <input type="text" class="form-control" name="jumlah" id="jumlah" value="<?= $pemasukan['jumlah'] ?>">
@@ -195,10 +195,10 @@
                                                             <label for="keperluan">Keperluan</label>
                                                             <input type="text" class="form-control" name="keperluan" id="keperluan" value="<?= $pengeluaran['keperluan'] ?>">
                                                         </div>
-                                                        <div class="form-group">
+                                                        <!-- <div class="form-group">
                                                             <label for="tanggal">Tanggal</label>
                                                             <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= $pengeluaran['tanggal'] ?>">
-                                                        </div>
+                                                        </div> -->
                                                         <div class="form-group">
                                                             <label for="jumlah">Nominal</label>
                                                             <input type="text" class="form-control" name="nominal" id="nominal" value="<?= $pengeluaran['nominal'] ?>">

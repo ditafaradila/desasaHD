@@ -29,10 +29,10 @@
                                     <label for="sumber">Keperluan</label>
                                     <input type="text" class="form-control" name="keperluan" id="keperluan" placeholder="Masukkan huruf. Contoh: Membeli akrilik.">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="tanggal">Tanggal</label>
                                     <input type="date" class="form-control" name="tanggal" id="tanggal">
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <label for="jumlah">Nominal</label>
                                     <input type="text" class="form-control" name="nominal" id="nominal" placeholder="Masukkan nominal tanpa titik. Contoh: 20000">

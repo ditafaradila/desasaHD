@@ -49,7 +49,7 @@ class TransaksiController extends BaseController{
         
         $data = [
             'id_transaksi' => $this->request->getPost('id_transaksi'),
-            'waktu' => $this->request->getPost('waktu'),
+            'waktu' => date('Y-m-d'),
             'metode_bayar' => $this->request->getPost('metode_bayar'),
             'diskon' => $diskon,
             'nominal' => $nominal,
@@ -62,7 +62,7 @@ class TransaksiController extends BaseController{
             'id_pemasukan' => $this->request->getPost('id_pemasukan'),
             'id_transaksi' => $id_transaksi,
             'sumber' => 'Toko',
-            'tanggal' => $this->request->getPost('waktu'),
+            'tanggal' => date('Y-m-d'),
             'jumlah' => $nominal,
         ];
         $pemasukanModel->save($data);
@@ -72,7 +72,7 @@ class TransaksiController extends BaseController{
             'id_pemasukan' => $this->request->getPost('id_pemasukan'),
             'id_transaksi' => $id_transaksi,
             'keterangan' => 'Toko',
-            'tanggal' => $this->request->getPost('waktu'),
+            'tanggal' => date('Y-m-d'),
             'debit' => $nominal,
         ];
         $keuanganModel->save($data);
@@ -93,7 +93,7 @@ class TransaksiController extends BaseController{
         $nominal = $harga_produk - $diskon;
         
         $data = [
-            'waktu' => $this->request->getPost('waktu'),
+            'waktu' => date('Y-m-d'),
             'metode_bayar' => $this->request->getPost('metode_bayar'),
             'diskon' => $diskon,
             'nominal' => $nominal,
@@ -106,7 +106,7 @@ class TransaksiController extends BaseController{
             $dataPemasukan = [
                 'id_pemasukan' => $this->request->getPost('id_pemasukan'),
                 'sumber' => 'Toko',
-                'tanggal' => $this->request->getPost('waktu'),
+                'tanggal' => date('Y-m-d'),
                 'jumlah' => $nominal,
             ];
             $pemasukanModel->update($id_pemasukan, $dataPemasukan);
@@ -118,7 +118,7 @@ class TransaksiController extends BaseController{
                 'id_keuangan' => $this->request->getPost('id_keuangan'),
                 'id_pemasukan' => $this->request->getPost('id_pemasukan'),
                 'keterangan' => 'Toko',
-                'tanggal' => $this->request->getPost('waktu'),
+                'tanggal' => date('Y-m-d'),
                 'debit' => $nominal,
             ];
             $keuanganModel->update($id_keuangan, $datakeuangan);

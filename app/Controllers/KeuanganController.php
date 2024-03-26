@@ -65,7 +65,7 @@ class KeuanganController extends BaseController{
 
         $data = [
             'sumber' => $this->request->getPost('sumber'),
-            'tanggal' => $this->request->getPost('tanggal'),
+            'tanggal' => date('Y-m-d'),
             'jumlah' => $this->request->getPost('jumlah'),
         ];
         $pemasukanModel->save($data);
@@ -76,7 +76,7 @@ class KeuanganController extends BaseController{
             'id_keuangan' => $this->request->getPost('id_keuangan'),
             'id_pemasukan' => $id_pemasukan,
             'keterangan' => $this->request->getPost('sumber'),
-            'tanggal' => $this->request->getPost('tanggal'),
+            'tanggal' => date('Y-m-d'),
             'debit' => $this->request->getPost('jumlah'),
         ];
         $keuanganModel->save($data);
@@ -102,7 +102,7 @@ class KeuanganController extends BaseController{
 
         $data = [
             'sumber' => $this->request->getPost('sumber'),
-            'tanggal' => $this->request->getPost('tanggal'),
+            'tanggal' => date('Y-m-d'),
             'jumlah' => $this->request->getPost('jumlah'),
         ];
         $pemasukanModel->update($id_pemasukan, $data);
@@ -111,7 +111,7 @@ class KeuanganController extends BaseController{
             $id_keuangan = $keuanganData['id_keuangan'];  // pastikan ini sesuai dengan nama kolom ID di tbl_keuangan
             $dataKeuangan = [
                 'keterangan' => $this->request->getPost('sumber'),
-                'tanggal' => $this->request->getPost('tanggal'),
+                'tanggal' => date('Y-m-d'),
                 'debit' => $this->request->getPost('jumlah'),
             ];
     
@@ -149,7 +149,7 @@ class KeuanganController extends BaseController{
         $keuanganModel = new Keuangan();
         $data = [
             'keperluan' => $this->request->getPost('keperluan'),
-            'tanggal' => $this->request->getPost('tanggal'),
+            'tanggal' => date('Y-m-d'),
             'nominal' => $this->request->getPost('nominal'),
         ];
         $pengeluaranModel->save($data);
@@ -160,7 +160,7 @@ class KeuanganController extends BaseController{
             'id_keuangan' => $this->request->getPost('id_keuangan'),
             'id_pengeluaran' => $id_pengeluaran,
             'keterangan' => $this->request->getPost('keperluan'),
-            'tanggal' => $this->request->getPost('tanggal'),
+            'tanggal' => date('Y-m-d'),
             'kredit' => $this->request->getPost('nominal'),
         ];
         $keuanganModel->save($data);
@@ -186,7 +186,7 @@ class KeuanganController extends BaseController{
 
         $data = [
             'keperluan' => $this->request->getPost('keperluan'),
-            'tanggal' => $this->request->getPost('tanggal'),
+            'tanggal' => date('Y-m-d'),
             'nominal' => $this->request->getPost('nominal'),
         ];
         $pengeluaranModel->update($id_pengeluaran, $data);
@@ -195,7 +195,7 @@ class KeuanganController extends BaseController{
             $id_keuangan = $keuanganData['id_keuangan'];  // pastikan ini sesuai dengan nama kolom ID di tbl_keuangan
             $dataKeuangan = [
                 'keterangan' => $this->request->getPost('keperluan'),
-                'tanggal' => $this->request->getPost('tanggal'),
+                'tanggal' => date('Y-m-d'),
                 'kredit' => $this->request->getPost('nominal'),
             ];
     
