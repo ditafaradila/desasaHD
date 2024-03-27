@@ -52,8 +52,8 @@ $routes->add('/updateTransaksi/(:segment)','TransaksiController::updateTransaksi
 $routes->get('/laporanToko', 'TransaksiController::cetakToko');
 $routes->get('api_result', 'TransaksiController::getOrders');
 
-$routes->get('/keuangan', 'KeuanganController::index',['filter' => 'auth']);
 $routes->get('/listKeuangan', 'KeuanganController::indexx');
+$routes->get('/keuangan', 'KeuanganController::index');
 $routes->get('/tambahPemasukan', 'KeuanganController::tambahK');
 $routes->post('/storeK','KeuanganController::storeK');
 $routes->get('/editPemasukan/(:num)','KeuanganController::editPemasukan/$1');

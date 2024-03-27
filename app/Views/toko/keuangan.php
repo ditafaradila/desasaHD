@@ -20,7 +20,7 @@
 </nav>
 
 <div class="container-fluid py-4">
-    <a href="/listKeuangan" class="floating-button"><i class="fa fa-money"></i></a>
+    <!-- <a href="/listKeuangan" class="floating-button"><i class="fa fa-money"></i></a> -->
     <div class="row">
         <!-- Pemasukan -->
         <div class="col-6">
