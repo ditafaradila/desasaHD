@@ -15,4 +15,20 @@ class Pengeluaran extends Model
         return $this->db->table('tbl_pengeluaran')
         ->get()->getResultArray();
     }
+
+    public function getTotalOut(){
+        $pengeluaran= $this->db->table('tbl_pengeluaran')
+                        ->select('tanggal, SUM(nominal) as total_pengeluaran')
+                        ->groupBy('tanggal')
+                        ->get()
+                        ->getResultArray();
+        return $pengeluaran;
+    }
+
+    public function getDetailPengeluaranByDate($tanggal){
+        return $this->db->table('tbl_pengeluaran')
+                        ->where('tanggal', $tanggal)
+                        ->get()
+                        ->getResultArray();
+    }
 }

@@ -10,13 +10,17 @@ use App\Libraries\MY_TCPDF AS TCPDF;
 
 class KeuanganController extends BaseController{
     public function index(){
+        helper('url');
         $pemasukanModel = new Pemasukan();
         $pengeluaranModel = new Pengeluaran();
 
+        $bulan = $this->request->getVar('bulan') ?? date('m');
+        $tahun = $this->request->getVar('tahun') ?? date('Y');
+        
         $data = [
             'title' => 'Keuangan',
-            'pemasukan' => $pemasukanModel->getPemasukan(),
-            'pengeluaran' => $pengeluaranModel->getPengeluaran(),
+            'pemasukan' => $pemasukanModel->getTotalIn($bulan, $tahun),
+            'pengeluaran' => $pengeluaranModel->getTotalOut(),
         ];
         return view('toko/keuangan', $data);
     }
@@ -40,6 +44,28 @@ class KeuanganController extends BaseController{
         ];
         
         return view('toko/listKeuangan', $data);
+    }
+
+    public function detailIn($tanggal){
+        $pemasukanModel = new Pemasukan();
+        $detailPemasukan = $pemasukanModel->getDetailPemasukanByDate($tanggal);
+
+        $data = [
+            'title' => 'Keuangan',
+            'pemasukan' => $detailPemasukan,
+        ];
+        return view('toko/detailPemasukan', $data);
+    }
+
+    public function detailOut($tanggal){
+        $pengeluaranModel = new Pengeluaran();
+        $detailPengeluaran = $pengeluaranModel->getDetailPengeluaranByDate($tanggal);
+
+        $data = [
+            'title' => 'Keuangan',
+            'pengeluaran' => $detailPengeluaran,
+        ];
+        return view('toko/detailPengeluaran', $data);
     }
 
     public function tambahK(){

@@ -65,6 +65,7 @@ class ProdukController extends BaseController{
         $data = [
             'nama_produk' => $this->request->getPost('nama_produk'),
             'harga_produk' => $this->request->getPost('harga_produk'),
+            'jumlah_produk' => $this->request->getPost('jumlah_produk'),
             'foto_produk' => $fileName,
         ];
 

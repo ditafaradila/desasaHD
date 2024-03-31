@@ -14,7 +14,7 @@ class Transaksi extends Model
     public function gettransaksi(){
         return $this->db->table('tbl_transaksi')
         ->join('tbl_produk', 'tbl_produk.id_produk=tbl_transaksi.id_produk')
-        ->orderBy('waktu', 'ASC')
+        ->orderBy('waktu', 'DESC')
         ->get()->getResultArray();
     }
 

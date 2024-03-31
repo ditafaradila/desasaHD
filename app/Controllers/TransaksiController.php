@@ -12,15 +12,16 @@ use App\Libraries\MY_TCPDF AS TCPDF;
 class TransaksiController extends BaseController{
     public function index(){
         $transaksiModel = new Transaksi();
+        $transaksi = $transaksiModel->getTransaksi();
         $produkModel = new Produk();
         $produk = $produkModel->findAll();
 
         $totalTokoResult = $transaksiModel->select('count(id_transaksi) as totalToko')->first();
         $totalToko = !empty($totalTokoResult) ? $totalTokoResult['totalToko'] : 0;
-
+        
         $data = [
             'title' => 'Transaksi',
-            'transaksi' => $transaksiModel->getTransaksi(),
+            'transaksi' => $transaksi,
             'produkList' => $produk,
             'totalToko' =>$totalToko,
         ];

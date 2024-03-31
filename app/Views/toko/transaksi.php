@@ -315,10 +315,6 @@
                                                                 <label for="diskon">Diskon</label>
                                                                 <input type="text" class="form-control" name="diskon" id="diskon" value="<?= $transaksi['diskon'] ?>">
                                                             </div>
-                                                            <!-- <div class="form-group">
-                                                                <label for="waktu">Tanggal Pembelian</label>
-                                                                <input type="date" class="form-control" name="waktu" id="waktu" value="<?= $transaksi['waktu'] ?>">
-                                                            </div> -->
                                                             <div class="form-group">
                                                                 <label for="harga_produk" class="form-label">Harga Barang</label>
                                                                 <input type="text" class="form-control" name="harga_produk" id="harga_produk" readonly>
@@ -368,10 +364,6 @@
                                 <label for="diskon">Diskon</label>
                                 <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan diskon yang sedang berlaku. Contoh: 10%.">
                             </div>
-                            <!-- <div class="form-group">
-                                <label for="waktu">Tanggal Pembelian</label>
-                                <input type="date" class="form-control" name="waktu" id="waktu">
-                            </div> -->
                             <div class="form-group">
                                 <label for="produk" class="form-label">Nama Barang</label><br>
                                 <select name="id_produk" id="id_produk">

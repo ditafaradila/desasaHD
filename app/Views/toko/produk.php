@@ -66,34 +66,8 @@
                                                     class="far fa-trash-alt me-2"></i></a>
                                         </div>
                                     </div>
-                                    <p class="card-text">Rp <?= number_format($produk['harga_produk']) ?></p>
-                                </div>
-                            </div>
-                            <div align="center">
-                                <div class="row d-flex align-items-center">
-                                    <div class="col">
-                                        <form method="POST" action="/kurangjumlahProduk/<?= $produk['id_produk'] ?>">
-                                            <input type="hidden" name="jumlah_produk"
-                                                value="<?php echo ($produk['jumlah_produk']) - 1 ?>">
-                                            <button type="submit" name="submit" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" class="btn btn-outline-dark">
-                                                <i class="fa fa-minus py-2"> </i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="col">
-                                        <p class="form-text"><?= ($produk['jumlah_produk']) ?></p>
-                                    </div>
-                                    <div class="col">
-                                        <form method="POST" action="/tambahjumlahProduk/<?= $produk['id_produk'] ?>">
-                                            <input type="hidden" name="jumlah_produk"
-                                                value="<?php echo ($produk['jumlah_produk']) + 1 ?>">
-                                            <button type="submit" name="submit" data-bs-toggle="tooltip"
-                                                data-bs-placement="top" class="btn btn-outline-dark">
-                                                <i class="fa fa-plus py-2"> </i>
-                                            </button>
-                                        </form>
-                                    </div>
+                                    <p class="card-text">Rp <?= number_format($produk['harga_produk']) ?></p>                                    
+                                    <p class="form-text">Jumlah Stok: <?= ($produk['jumlah_produk']) ?></p>
                                 </div>
                             </div>
                         </div>
@@ -119,6 +93,11 @@
                                     <label for="nama_produk">Name</label>
                                     <input type="text" name="nama_produk" class="form-control" id="nama_produk"
                                         value="<?= $produk['nama_produk'] ?>" placeholder="produk nama_produk" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jumlah_produk">Jumlah Stok</label>
+                                    <input type="text" name="jumlah_produk" class="form-control" id="jumlah_produk"
+                                        value="<?= $produk['jumlah_produk'] ?>" placeholder="produk jumlah_produk" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="harga_produk">Harga Produk</label>

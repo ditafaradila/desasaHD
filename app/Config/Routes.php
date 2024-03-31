@@ -54,6 +54,8 @@ $routes->get('api_result', 'TransaksiController::getOrders');
 
 $routes->get('/listKeuangan', 'KeuanganController::indexx');
 $routes->get('/keuangan', 'KeuanganController::index');
+$routes->get('/detailPemasukan/(:any)', 'KeuanganController::detailIn/$1');
+$routes->get('/detailPengeluaran/(:any)', 'KeuanganController::detailOut/$1');
 $routes->get('/tambahPemasukan', 'KeuanganController::tambahK');
 $routes->post('/storeK','KeuanganController::storeK');
 $routes->get('/editPemasukan/(:num)','KeuanganController::editPemasukan/$1');
