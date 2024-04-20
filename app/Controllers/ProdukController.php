@@ -3,15 +3,18 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\detailItemModel;
 use App\Models\Produk;
 
 class ProdukController extends BaseController{
     public function viewProduk(){
         $produkModel = new Produk();
+        $detailModel = new detailItemModel();
 
         $data = [
             'title' => 'Produk',
             'produk' => $produkModel->getProduk(),
+            'items2' => $detailModel->findAll(),
         ];
 
         return view('toko/produk', $data);

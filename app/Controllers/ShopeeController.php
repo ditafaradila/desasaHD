@@ -163,8 +163,11 @@ class ShopeeController extends Controller
   }
 
   public function getItemBaseInfo(){
-    // Set item_id yang ingin Anda minta informasinya
-    $item_id = 12048275043;
+    // // Set item_id yang ingin Anda minta informasinya
+    //$item_id = 12048275043;
+
+    $itemModel = new ItemModel();
+    $items = $itemModel->findAll();
 
     $request = service('request');
     $partnerId = 2007160; // Ganti dengan partner ID Anda
@@ -177,29 +180,32 @@ class ShopeeController extends Controller
     $path = "/api/v2/product/get_item_base_info";
     $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
     $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
-
-    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_base_info?access_token={$accessToken}&item_id_list={$item_id}&need_complaint_policy=true&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
     
-    // Membuat permintaan GET ke API Shopee
-    $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($curl);
-    curl_close($curl);
+    //menyimpan respon untuk setiap item_id
+    $result = [];
+    foreach ($items as $item){
+      $url = "https://partner.shopeemobile.com/api/v2/product/get_item_base_info?access_token={$accessToken}&item_id_list={$item['item_id']}&need_complaint_policy=true&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
 
-    $data = json_decode($response, true);
+      // Membuat permintaan GET ke API Shopee
+      $curl = curl_init($url);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $response = curl_exec($curl);
+      curl_close($curl);
 
-    $detailModel = new detailItemModel();
-    foreach ($data['response']['item_list'] as $item) {
-      $existingItem = $detailModel->where('item_id', $item['item_id'])->first();
+      $result = json_decode($response, true);
 
-      if (!$existingItem) {
-        $detailModel->saveItem($item);
-      } else {
+      $detailModel = new detailItemModel();
+      foreach ($result['response']['item_list'] as $item) {
+        $existingItem = $detailModel->where('item_id', $item['item_id'])->first();
+
+        if (!$existingItem) {
+          $detailModel->saveItem($item);
+        } else {
+
+        }
       }
-    }
-
-    // Menampilkan respons dalam bentuk tabel di view
-    return $data['response']['item_list'];
+    }  
+    return $result['response']['item_list']; 
   }
 
   public function getOrderList()
