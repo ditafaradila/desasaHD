@@ -162,8 +162,7 @@ class ShopeeController extends Controller
     return view('toko/item_list.php', ['items' => $items, 'items2' => $items2]);
   }
 
-  public function getItemBaseInfo()
-  {
+  public function getItemBaseInfo(){
     // Set item_id yang ingin Anda minta informasinya
     $item_id = 12048275043;
 
