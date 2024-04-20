@@ -117,23 +117,6 @@ class SupplyController extends BaseController{
         return view('toko/tambahBarangKeluar', $data);
     }
 
-    public function detailBarangKeluar()
-    {
-        $supplyModel = new Supply();
-        $barangKeluarModel = new BarangKeluar();
-        $jenisModel = new JenisBarang();
-        $jenisBarang = $jenisModel->findAll();
-
-        $data = [
-            'title' => 'Supply',
-            'supply' => $supplyModel->getSupply(),
-            'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
-            'jenisBarang' => $jenisBarang,
-        ];
-
-        return view('toko/detailBarangKeluar', $data);
-    }
-
     public function storeBK(){
         $barangKeluarModel = new BarangKeluar();
         $supplyModel = new Supply();
@@ -167,6 +150,22 @@ class SupplyController extends BaseController{
 
         $barangKeluarModel->save($data);
         return redirect()->to('/supply');
+    }
+
+    public function detailBarangKeluar(){
+        $supplyModel = new Supply();
+        $barangKeluarModel = new BarangKeluar();
+        $jenisModel = new JenisBarang();
+        $jenisBarang = $jenisModel->findAll();
+
+        $data = [
+            'title' => 'Supply',
+            'supply' => $supplyModel->getSupply(),
+            'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
+            'jenisBarang' => $jenisBarang,
+        ];
+
+        return view('toko/detailBarangKeluar', $data);
     }
 
     public function updateBK($id_barangKeluar)

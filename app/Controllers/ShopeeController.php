@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Models\detailItemModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\Request;
+use App\Models\ItemModel;
 
 class ShopeeController extends Controller
 {
@@ -108,7 +110,8 @@ class ShopeeController extends Controller
     return $this->getTokenShopLevel($code, $partnerId, $partnerKey, $shopId);
   }
 
-  public function getItemList(){
+  public function getItemList()
+  {
     $request = service('request');
     // Menangani paging
     $page = $request->getPost('page') ?? 1;
@@ -125,7 +128,7 @@ class ShopeeController extends Controller
     $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
     $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
 
-    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&offset=0&page_size=10&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&offset=0&page_size=100&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
 
     // Membuat permintaan GET ke API Shopee
     $curl = curl_init($url);
@@ -135,6 +138,16 @@ class ShopeeController extends Controller
 
     $data = json_decode($response, true);
 
+    $itemsModel = new ItemModel();
+    foreach ($data['response']['item'] as $item) {
+      $existingItem = $itemsModel->where('item_id', $item['item_id'])->first();
+
+      if (!$existingItem) {
+        $itemsModel->saveItem($item);
+      } else {
+      }
+    }
+
     // Menampilkan respons dalam bentuk tabel di view
     return $data['response']['item'];
   }
@@ -143,12 +156,55 @@ class ShopeeController extends Controller
   {
     // Memanggil method getItemList untuk mendapatkan data item
     $items = $this->getItemList();
+    $items2 = $this->getItemBaseInfo();
 
     // Menampilkan view item_list.php bersama dengan data item
-    return view('toko/item_list.php', ['items' => $items]);
+    return view('toko/item_list.php', ['items' => $items, 'items2' => $items2]);
   }
 
-  public function getOrderList(){
+  public function getItemBaseInfo()
+  {
+    // Set item_id yang ingin Anda minta informasinya
+    $item_id = 12048275043;
+
+    $request = service('request');
+    $partnerId = 2007160; // Ganti dengan partner ID Anda
+    $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275"; // Ganti dengan partner key Anda
+
+    // Mendapatkan nilai access_token dari inputan di view
+    $accessToken = $request->getPost('access_token');
+    $shopId = $request->getPost('shop_id');
+    $timest = time();
+    $path = "/api/v2/product/get_item_base_info";
+    $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
+    $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
+
+    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_base_info?access_token={$accessToken}&item_id_list={$item_id}&need_complaint_policy=true&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+    
+    // Membuat permintaan GET ke API Shopee
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    $data = json_decode($response, true);
+
+    $detailModel = new detailItemModel();
+    foreach ($data['response']['item_list'] as $item) {
+      $existingItem = $detailModel->where('item_id', $item['item_id'])->first();
+
+      if (!$existingItem) {
+        $detailModel->saveItem($item);
+      } else {
+      }
+    }
+
+    // Menampilkan respons dalam bentuk tabel di view
+    return $data['response']['item_list'];
+  }
+
+  public function getOrderList()
+  {
     $request = service('request');
 
     // Ganti nilai-nilai ini dengan nilai yang sesuai
@@ -179,7 +235,6 @@ class ShopeeController extends Controller
     // Tampilkan respons
     return $data;
   }
-
 
   public function showOrderList()
   {
