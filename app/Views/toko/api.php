@@ -14,6 +14,19 @@
 </nav>
 
 <div class="container-fluid py-4">
+    <!-- notifikasi sukses dan eror -->
+    <?php if (session()->has('success')) : ?>
+        <div class="alert alert-success" role="alert">
+            <?= session('success') ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('error')) : ?>
+        <div class="alert alert-danger" role="alert">
+            <?= session('error') ?>
+        </div>
+    <?php endif; ?>
+    <!-- halaman -->
     <div class="row">
         <div class="col-lg-4 mb-lg-0 mb-4">
             <div class="card h-100">
