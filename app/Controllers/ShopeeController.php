@@ -336,7 +336,7 @@ class ShopeeController extends Controller
   public function getDetailOrderList(){
     set_time_limit(300);
     $orderModel = new OrderList();
-    $order = $orderModel->findAll();
+    $orders = $orderModel->findAll();
 
     $request = service('request');
     $partnerId = 2007160; // Ganti dengan partner ID Anda
@@ -352,9 +352,9 @@ class ShopeeController extends Controller
 
     //menyimpan respon untuk setiap order_sn
     $result = [];
-    foreach ($order as $order){
+    foreach ($orders as $order){
       try{
-        $url = "https://partner.shopeemobile.com/api/v2/order/get_order_detail?access_token={$accessToken}&item_sn_list={$order['order_sn']}&partner_id={$partnerId}&request_order_status_pending=true&response_optional_fields=total_amount,buyer_username,buyer_user_id,estimated_shipping_fee,recipient_address,shipping_carrier,payment_method&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+        $url = "https://partner.shopeemobile.com/api/v2/order/get_order_detail?access_token={$accessToken}&item_sn_list={$order['order_sn']}&partner_id={$partnerId}&request_order_status_pending=false&response_optional_fields=total_amount,buyer_username,buyer_user_id,estimated_shipping_fee,recipient_address,shipping_carrier,payment_method&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
 
         $client = service('curlrequest');
         $response = $client->request('GET', $url, [

@@ -40,6 +40,7 @@ $routes->get('/hapusjenisBarang/(:segment)', 'BarangController::hapusjenisBarang
 $routes->add('/updateBahanBaku/(:segment)','BarangController::updateBahanBaku/$1');
 
 $routes->get('/produk', 'ProdukController::viewProduk',['filter' => 'auth']);
+$routes->get('/produkShopee','ProdukController::viewShopee');
 $routes->post('/storeProduk','ProdukController::storeProduk');
 $routes->post('/kurangjumlahProduk/(:num)','ProdukController::kurangjumlahProduk/$1');
 $routes->post('/tambahjumlahProduk/(:num)','ProdukController::tambahjumlahProduk/$1');

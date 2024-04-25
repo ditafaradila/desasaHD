@@ -12,12 +12,23 @@ class ProdukController extends BaseController{
         $detailModel = new detailItemModel();
 
         $data = [
-            'title' => 'Produk',
+            'title' => 'Produk Toko',
             'produk' => $produkModel->getProduk(),
             'items2' => $detailModel->findAll(),
         ];
 
         return view('toko/produk', $data);
+    }
+
+    public function viewShopee(){
+        $detailModel = new detailItemModel();
+
+        $data = [
+            'title' => 'Produk Shopee',
+            'items2' => $detailModel->findAll(),
+        ];
+
+        return view('toko/produkShopee', $data);
     }
 
     public function storeProduk(){
