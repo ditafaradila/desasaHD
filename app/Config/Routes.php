@@ -19,6 +19,7 @@ $routes->post('/showItemList', 'ShopeeController::showItemList');
 $routes->post('/getOrderList', 'ShopeeController::getOrderList');
 $routes->post('/showOrderList', 'ShopeeController::showOrderList');
 $routes->post('/getOrderDetail', 'ShopeeController::getOrderDetail');
+$routes->post('/getDetailOrderList', 'ShopeeController::getDetailOrderList');
 
 $routes->get('/supply', 'SupplyController::index',['filter' => 'auth']);
 $routes->get('/detailBarangMasuk', 'SupplyController::detail');

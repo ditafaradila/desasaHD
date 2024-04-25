@@ -54,7 +54,7 @@
                         <div class="flex-grow-1">
                             <div class="numbers">
                                 <p class="text-white text-sm mb-0 text-capitalize font-weight-bold">Total Transaksi</p>
-                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalToko ?> Produk
+                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalTransaksi ?> Produk
                                 </h5>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                         <div class="flex-grow-1">
                             <div class="numbers">
                                 <p class="text-white text-sm mb-0 text-capitalize font-weight-bold">Transaksi Shopee</p>
-                                <h5 class="text-white font-weight-bolder mb-0 text-end"> 5 Produk </h5>
+                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalShopee ?> Produk </h5>
                             </div>
                         </div>
                     </div>
@@ -142,23 +142,31 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">1</span>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">Kucing</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <p class="text-xs font-weight-bold mb-0">1</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <p class="text-xs font-weight-bold mb-0">10/10/2024</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <p class="text-xs font-weight-bold mb-0">Rp 150.000</p>
-                                        </td>
-                                    </tr>
+                                    <?php $no = 1;
+                                    foreach ($order as $order) :
+                                    ?>
+                                        <tr>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
+                                            </td>
+                                            <td>
+                                                <p class="shorten-text text-xs font-weight-bold mb-0">
+                                                    <?= $order['order_sn'] ?></p>
+                                            </td>
+                                            <td>
+                                                <p class="shorten-text text-xs font-weight-bold mb-0">
+                                                    <?= $order['order_status'] ?></p>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <p class="text-xs font-weight-bold mb-0">-</p>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <p class="text-xs font-weight-bold mb-0">Rp </p>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    endforeach
+                                    ?>
                                 </tbody>
                             </table>
                         </div>

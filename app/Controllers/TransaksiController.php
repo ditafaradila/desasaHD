@@ -8,6 +8,7 @@ use App\Models\Pemasukan;
 use App\Models\Produk;
 use App\Models\Transaksi;
 use App\Libraries\MY_TCPDF AS TCPDF;
+use App\Models\OrderList;
 
 class TransaksiController extends BaseController{
     public function index(){
@@ -15,15 +16,23 @@ class TransaksiController extends BaseController{
         $transaksi = $transaksiModel->getTransaksi();
         $produkModel = new Produk();
         $produk = $produkModel->findAll();
+        $orderModel = new OrderList();
+        $order = $orderModel->findAll();
 
+        $totalShopeeResult = $orderModel->select('count(order_sn) as totalShopee')->first();
+        $totalShopee = !empty($totalShopeeResult) ? $totalShopeeResult['totalShopee'] : 0;
         $totalTokoResult = $transaksiModel->select('count(id_transaksi) as totalToko')->first();
         $totalToko = !empty($totalTokoResult) ? $totalTokoResult['totalToko'] : 0;
-        
+        $totalTransaksi = $totalShopee + $totalToko;
+
         $data = [
             'title' => 'Transaksi',
             'transaksi' => $transaksi,
             'produkList' => $produk,
             'totalToko' =>$totalToko,
+            'order' =>$order,
+            'totalShopee' =>$totalShopee,
+            'totalTransaksi' =>$totalTransaksi
         ];
         return view('toko/transaksi', $data);
     }
