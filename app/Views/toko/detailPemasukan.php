@@ -19,7 +19,7 @@
 
 <div class="container-fluid py-4">
     <div class="row">
-        <div class="col-6">
+        <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class="row">
@@ -64,8 +64,8 @@
                                             <span class="text-secondary text-xs font-weight-bold">Rp
                                                 <?= number_format($pemasukan['jumlah']) ?></span>
                                         </td>
-                                        <td>
-                                            <div class="d-flex">
+                                        <td class="align-middle text-center">
+                                            <div>
                                                 <a href="<?= base_url('/hapusPemasukan/' . $pemasukan['id_pemasukan']) ?>" class="btn btn-link text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
                                                 <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editPemasukan-<?= $pemasukan['id_pemasukan'] ?>">
                                                     <i class="fa fa-pencil"></i>

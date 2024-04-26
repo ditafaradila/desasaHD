@@ -8,7 +8,9 @@ use CodeIgniter\Controller;
 use CodeIgniter\HTTP\Request;
 use App\Controllers\Services;
 use App\Models\ItemModel;
+use App\Models\Keuangan;
 use App\Models\OrderList;
+use App\Models\Pemasukan;
 
 class ShopeeController extends Controller
 {
@@ -283,58 +285,8 @@ class ShopeeController extends Controller
     // // Tampilkan respons
     // return $data;
   }
-
-  // public function getDetailOrderList(){
-  //   $orderModel = new OrderList();
-  //   $orders = $orderModel->findAll();
-
-  //   $request = service('request');
-  //   $partnerId = 2007160; // Ganti dengan partner ID Anda
-  //   $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275"; // Ganti dengan partner key Anda
-
-  //   // Mendapatkan nilai access_token dari inputan di view
-  //   $accessToken = $request->getPost('access_token');
-  //   $shopId = $request->getPost('shop_id');
-  //   $timest = time();
-  //   $path = "/api/v2/order/get_order_detail";
-  //   $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
-  //   $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
-    
-  //   //menyimpan respon untuk setiap item_id
-  //   $result = [];
-  //   foreach ($orders as $order){
-  //     try{
-  //       $url = "https://partner.shopeemobile.com/api/v2/order/get_order_detail?access_token={$accessToken}&item_sn_list={$order['order_sn']}&partner_id={$partnerId}&request_order_status_pending=true&response_optional_fields=total_amount,buyer_username,buyer_user_id,estimated_shipping_fee,recipient_address,shipping_carrier,payment_method&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
-        
-  //       // Membuat permintaan GET ke API Shopee
-  //       $curl = curl_init($url);
-  //       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  //       $response = curl_exec($curl);
-  //       curl_close($curl);
-
-  //       $result = json_decode($response, true);
-
-  //       $detailOrderModel = new detailOrderList();
-  //       foreach ($result['response']['order_list'] as $order) {
-  //         $existingItem = $detailOrderModel->where('order_sn', $order['order_sn'])->first();
-
-  //         if (!$existingItem) {
-  //           $detailOrderModel->saveItem($order);
-  //         } else {
-
-  //         }
-  //       }
-  //     } catch (\Exception $e){
-  //       // Tangani kesalahan dengan mencatatnya ke log atau melakukan tindakan yang sesuai
-  //       error_log('Error: ' . $e->getMessage());
-  //       continue; // Lanjutkan ke item berikutnya
-  //     }
-  //   }  
-  //   //return $result['response']['order_list']; 
-  // }
   
   public function getDetailOrderList(){
-    set_time_limit(300);
     $orderModel = new OrderList();
     $orders = $orderModel->findAll();
 
@@ -349,26 +301,23 @@ class ShopeeController extends Controller
     $path = "/api/v2/order/get_order_detail";
     $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
     $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
-
-    //menyimpan respon untuk setiap order_sn
+    
+    //menyimpan respon untuk setiap item_id
     $result = [];
+    $pemasukanModel = new Pemasukan();
+    $keuanganModel = new Keuangan();
     foreach ($orders as $order){
       try{
-        $url = "https://partner.shopeemobile.com/api/v2/order/get_order_detail?access_token={$accessToken}&item_sn_list={$order['order_sn']}&partner_id={$partnerId}&request_order_status_pending=false&response_optional_fields=total_amount,buyer_username,buyer_user_id,estimated_shipping_fee,recipient_address,shipping_carrier,payment_method&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+        $url = "https://partner.shopeemobile.com/api/v2/order/get_order_detail?access_token={$accessToken}&order_sn_list={$order['order_sn']}&request_order_status_pending=false&response_optional_fields=order_sn,region,currency,cod,total_amount,pending_terms,order_status,shipping_carrier,payment_method,estimated_shipping_fee,message_to_seller,create_time,update_time,days_to_ship,ship_by_date,buyer_user_id,buyer_username&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
 
-        $client = service('curlrequest');
-        $response = $client->request('GET', $url, [
-          'headers' => [
-            'Content-Type' => 'application/json'
-          ]
-        ]);
+        // Membuat permintaan GET ke API Shopee
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        curl_close($curl);
 
-        // Ambil respons dari API
-        $responseBody = $response->getBody();
-        $result = json_decode($responseBody, true);
-        $results[] = $result;
+        $result = json_decode($response, true);
 
-        //Menyimpan detail pesanan ke database
         $detailOrderModel = new detailOrderList();
         foreach ($result['response']['order_list'] as $order) {
           $existingItem = $detailOrderModel->where('order_sn', $order['order_sn'])->first();
@@ -376,7 +325,41 @@ class ShopeeController extends Controller
           if (!$existingItem) {
             $detailOrderModel->saveItem($order);
           } else {
+            $detailOrderModel->update($existingItem['order_sn'], $order); // Anda perlu mengganti 'id' dengan nama kolom id yang sesuai
+          }
 
+          // Simpan data pemasukan di luar loop detail order
+          $existingPemasukan = $pemasukanModel->where('id_pemasukan', $order['order_sn'])->first();
+          if (!$existingPemasukan) {
+            // Data pemasukan belum ada, simpan sebagai entri baru
+            $dataPemasukan = [
+              'order_sn' => $order['order_sn'],
+              'sumber' => 'Shopee',
+              'tanggal' => date('Y-m-d'),
+              'jumlah' => $order['total_amount'],
+            ];
+            $pemasukanModel->save($dataPemasukan);
+          } else {
+            // Data pemasukan sudah ada, lakukan pembaruan
+            $pemasukanModel->update($existingPemasukan['id_pemasukan'], [
+                'jumlah' => $order['total_amount'],
+            ]);
+          }
+
+          // Simpan data keuangan
+          $existingKeuangan = $keuanganModel->where('id_keuangan', $order['order_sn'])->first();
+          if (!$existingKeuangan) {
+            $dataKeuangan = [
+              'id_pemasukan' => $order['order_sn'],
+              'tanggal' => date('Y-m-d'),
+              'keterangan' => "Shopee",
+              'debit' => $order['total_amount'],
+            ];
+            $keuanganModel->save($dataKeuangan);
+          } else {
+            $keuanganModel->update($existingKeuangan['id_keuangan'], [
+                'debit' => $order['total_amount'],
+            ]);
           }
         }
       } catch (\Exception $e){
@@ -385,7 +368,7 @@ class ShopeeController extends Controller
         continue; // Lanjutkan ke item berikutnya
       }
     }  
-    return $result; 
+    return $result['response']['order_list']; 
   }
   
   public function showOrderList()

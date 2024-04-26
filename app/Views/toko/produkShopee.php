@@ -40,39 +40,35 @@
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <div class="col-12 d-flex align-items-center">
-                            <div class="col-7">
+                            <div class="col-8">
                                 <h6 class="mb-0">Produk Shopee</h6>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="input-group">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                        </svg>
+                                    </span>
+                                    <input type="text" class="form-control border border-primary" placeholder="Cari..." onkeyup="search(this.value)">
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-4 pb-2">
                         <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
+                            <table class="table align-items-center mb-0 id=" MyTable"">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Item ID</th>
                                         <th>Nama Produk</th>
                                         <th>Aksi</th>
-                                        <!-- <th>Deskripsi</th>
-                                        <th>Item SKU</th>
-                                        <th>Mata Rupiah</th>
-                                        <th>Harga Original</th>
-                                        <th>Harga Sekarang</th>
-                                        <th>Type Stock</th>
-                                        <th>Stock Sekarang</th>
-                                        <th>Normal Stock</th>
-                                        <th>Foto Produk</th>
-                                        <th>Berat Produk</th>
-                                        <th>Kondisi</th>
-                                        <th>Ukuran</th>
-                                        <th>Status</th>
-                                        <th>Deboost</th> -->
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="bodyTable">
                                     <?php $no = 1;
-                                        foreach ($items2 as $item2) : 
+                                    foreach ($items2 as $item2) :
                                     ?>
                                         <tr>
                                             <td class="align-middle text-center">
@@ -90,11 +86,11 @@
                                                         <i class="fa fa-eye"></i>
                                                     </button>
                                                 </div>
-                                            </td>                                            
+                                            </td>
                                         </tr>
                                         <!-- Modal Detail Transaksi -->
                                         <div class="modal fade" id="detailProduk-<?= $item2['item_id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h6 class="modal-title" id="exampleModalLabel">Detail Data Produk</h6>
@@ -105,7 +101,7 @@
                                                         <div class="row">
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Nama Produk</h6>
-                                                                <p class="shorten-text text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                     <?= $item2['item_name'] ?></p>
                                                             </div>
                                                             <div class="timeline-content mb-3 col-6">
@@ -114,11 +110,11 @@
                                                                     <?= $item2['category_id'] ?></p>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="timeline-content mb-3 col-6">
+                                                        <div>
+                                                            <div class="mb-3 col-10" style="margin-left: 45px;">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Deskripsi</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    Rp <?= ($item2['description']) ?></p>
+                                                                    <?= ($item2['description']) ?></p>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -137,12 +133,12 @@
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Harga Original</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    <?= $item2['original_price'] ?></p>
+                                                                    Rp <?= $item2['original_price'] ?></p>
                                                             </div>
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Harga Saat Ini</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    <?= $item2['current_price'] ?></p>
+                                                                    Rp <?= $item2['current_price'] ?></p>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -158,11 +154,6 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Gambar Produk</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    <?= $item2['image_url_list'] ?></p>
-                                                            </div>
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Berat Produk</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
@@ -193,6 +184,20 @@
                                                                     <?= $item2['deboost'] ?></p>
                                                             </div>
                                                         </div>
+                                                        <div>
+                                                            <div class="mb-3 col-12" style="margin-left: 45px; margin-right: 45px;">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Gambar Produk</h5>
+                                                                <?php
+                                                                // Pisahkan URL gambar menjadi array
+                                                                $image_urls = explode(',', $item2['image_url_list']);
+
+                                                                // Lakukan iterasi melalui setiap URL gambar
+                                                                foreach ($image_urls as $image_url) {
+                                                                    echo '    <img src="' . $image_url . '" class="img-fluid" alt="Gambar Produk" hight="200px" width="200px">';
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -207,5 +212,18 @@
         </div>
     </div>
 </body>
+
+<script>
+    function search(get) {
+        $('table tbody tr').each(function() {
+            var content = $(this).find('td').text();
+            if (content.toLowerCase().includes(get.trim().toLowerCase())) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
 
 <?= $this->endSection() ?>

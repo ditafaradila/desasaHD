@@ -1,6 +1,13 @@
 <?= $this->extend('templates/template') ?>
 <?= $this->section('content') ?>
 
+<!-- Tambahkan kode notifikasi di sini -->
+<?php if (session()->has('pesan')) : ?>
+    <div class="alert alert-danger" role="alert">
+        <?= session('pesan') ?>
+    </div>
+<?php endif; ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -7,17 +7,22 @@ use App\Models\Keuangan;
 use App\Models\Pemasukan;
 use App\Models\Produk;
 use App\Models\Transaksi;
-use App\Libraries\MY_TCPDF AS TCPDF;
+use App\Libraries\MY_TCPDF as TCPDF;
+use App\Models\detailOrderList;
 use App\Models\OrderList;
 
-class TransaksiController extends BaseController{
-    public function index(){
+class TransaksiController extends BaseController
+{
+    public function index()
+    {
         $transaksiModel = new Transaksi();
         $transaksi = $transaksiModel->getTransaksi();
         $produkModel = new Produk();
         $produk = $produkModel->findAll();
         $orderModel = new OrderList();
         $order = $orderModel->findAll();
+        $detailOrder = new detailOrderList();
+        $orders = $detailOrder->findAll();
 
         $totalShopeeResult = $orderModel->select('count(order_sn) as totalShopee')->first();
         $totalShopee = !empty($totalShopeeResult) ? $totalShopeeResult['totalShopee'] : 0;
@@ -29,10 +34,12 @@ class TransaksiController extends BaseController{
             'title' => 'Transaksi',
             'transaksi' => $transaksi,
             'produkList' => $produk,
-            'totalToko' =>$totalToko,
-            'order' =>$order,
-            'totalShopee' =>$totalShopee,
-            'totalTransaksi' =>$totalTransaksi
+            'totalToko' => $totalToko,
+            'order' => $order,
+            'orders' => $detailOrder->paginate(5),
+            'pager' => $detailOrder->pager,
+            'totalShopee' => $totalShopee,
+            'totalTransaksi' => $totalTransaksi
         ];
         return view('toko/transaksi', $data);
     }
@@ -46,62 +53,91 @@ class TransaksiController extends BaseController{
         return $this->response->setJSON(['harga_produk' => $hargaProduk]);
     }
 
-    public function storeTransaksi(){
+    public function storeTransaksi()
+    {
         $transaksiModel = new Transaksi();
         $keuanganModel = new Keuangan();
         $pemasukanModel = new Pemasukan();
-        
+        $produkModel = new Produk();
+
 
         $id_produk = $this->request->getPost('id_produk');
         $harga_produk = $transaksiModel->getHargaProduk($id_produk);
-        $diskon = (float) $this->request->getPost('diskon');        
+        $diskon = (float) $this->request->getPost('diskon');
         $nominal = $harga_produk - $diskon;
-        
-        $data = [
-            'id_transaksi' => $this->request->getPost('id_transaksi'),
-            'waktu' => date('Y-m-d'),
-            'metode_bayar' => $this->request->getPost('metode_bayar'),
-            'diskon' => $diskon,
-            'nominal' => $nominal,
-            'id_produk' => $this->request->getPost('id_produk'),
-        ];
-        $transaksiModel->save($data);
-        $id_transaksi = $transaksiModel->insertID();
 
-        $data = [
-            'id_pemasukan' => $this->request->getPost('id_pemasukan'),
-            'id_transaksi' => $id_transaksi,
-            'sumber' => 'Toko',
-            'tanggal' => date('Y-m-d'),
-            'jumlah' => $nominal,
-        ];
-        $pemasukanModel->save($data);
+        // Ambil stok produk
+        $produk = $produkModel->find($id_produk);
+        $stok_sekarang = $produk->jumlah_produk;
 
-        $data = [
-            'id_keuangan' => $this->request->getPost('id_keuangan'),
-            'id_pemasukan' => $this->request->getPost('id_pemasukan'),
-            'id_transaksi' => $id_transaksi,
-            'keterangan' => 'Toko',
-            'tanggal' => date('Y-m-d'),
-            'debit' => $nominal,
-        ];
-        $keuanganModel->save($data);
+        // Pastikan stok masih tersedia sebelum menyimpan transaksi
+        if ($stok_sekarang > 0) {
+            // Data transaksi
+            $data = [
+                'id_transaksi' => $this->request->getPost('id_transaksi'),
+                'waktu' => date('Y-m-d'),
+                'metode_bayar' => $this->request->getPost('metode_bayar'),
+                'diskon' => $diskon,
+                'nominal' => $nominal,
+                'id_produk' => $this->request->getPost('id_produk'),
+            ];
+
+            // Simpan transaksi
+            $transaksiModel->save($data);
+            $id_transaksi = $transaksiModel->insertID();
+
+            // Simpan data pemasukan
+            $data = [
+                'id_pemasukan' => $this->request->getPost('id_pemasukan'),
+                'id_transaksi' => $id_transaksi,
+                'sumber' => 'Toko',
+                'tanggal' => date('Y-m-d'),
+                'jumlah' => $nominal,
+            ];
+            $pemasukanModel->save($data);
+
+            // Simpan data keuangan
+            $data = [
+                'id_keuangan' => $this->request->getPost('id_keuangan'),
+                'id_pemasukan' => $this->request->getPost('id_pemasukan'),
+                'id_transaksi' => $id_transaksi,
+                'keterangan' => 'Toko',
+                'tanggal' => date('Y-m-d'),
+                'debit' => $nominal,
+            ];
+            $keuanganModel->save($data);
+
+            // Kurangi stok produk
+            $stok_baru = $stok_sekarang - 1; // Misalnya, di sini asumsi setiap transaksi hanya mengurangi stok satu unit
+            $produkModel->update($id_produk, ['jumlah_produk' => $stok_baru]);
+
+            // Cek apakah stok habis
+            if ($stok_baru <= 0) {
+                // Tampilkan notifikasi bahwa produk habis
+                // Contoh menggunakan session flash data
+                session()->setFlashdata('pesan', 'Produk telah habis.');
+            }
+        } else {
+            // Jika stok habis, kembalikan ke halaman sebelumnya dan tampilkan pesan
+            return redirect()->back()->with('error', 'Stok produk telah habis.');
+        }
 
         return redirect()->to('/transaksi');
     }
 
-    public function updateTransaksi($id_transaksi){
+    public function updateTransaksi($id_transaksi)
+    {
         $transaksiModel = new Transaksi();
         $keuanganModel = new Keuangan();
         $pemasukanModel = new Pemasukan();
-        $pemasukanData = $pemasukanModel->where('id_transaksi', $id_transaksi)->first(); 
-        $keuanganData = $keuanganModel->where('id_transaksi', $id_transaksi)->first(); 
-        
+        $pemasukanData = $pemasukanModel->where('id_transaksi', $id_transaksi)->first();
+        $keuanganData = $keuanganModel->where('id_transaksi', $id_transaksi)->first();
+
         $id_produk = $this->request->getPost('id_produk');
         $harga_produk = $transaksiModel->getHargaProduk($id_produk);
-        $diskon = (float) $this->request->getPost('diskon'); 
+        $diskon = (float) $this->request->getPost('diskon');
         $nominal = $harga_produk - $diskon;
-        
+
         $data = [
             'waktu' => date('Y-m-d'),
             'metode_bayar' => $this->request->getPost('metode_bayar'),
@@ -134,19 +170,20 @@ class TransaksiController extends BaseController{
             $keuanganModel->update($id_keuangan, $datakeuangan);
         }
         return redirect()->to('/transaksi');
-    }    
+    }
 
-    public function hapusTransaksi($id_transaksi){
+    public function hapusTransaksi($id_transaksi)
+    {
         $keuanganModel = new Keuangan();
         $pemasukanModel = new Pemasukan();
-        $pemasukanData = $pemasukanModel->where('id_transaksi', $id_transaksi)->first(); 
-        $keuanganData = $keuanganModel->where('id_transaksi', $id_transaksi)->first(); 
+        $pemasukanData = $pemasukanModel->where('id_transaksi', $id_transaksi)->first();
+        $keuanganData = $keuanganModel->where('id_transaksi', $id_transaksi)->first();
 
         if ($keuanganData) {
             $id_keuangan = $keuanganData['id_keuangan'];
             $keuanganModel->where('id_keuangan', $id_keuangan)->delete();
         }
-        if ($pemasukanData){
+        if ($pemasukanData) {
             $id_pemasukan = $pemasukanData['id_pemasukan'];
             $pemasukanModel->where('id_pemasukan', $id_pemasukan)->delete();
         }
@@ -156,12 +193,13 @@ class TransaksiController extends BaseController{
         return redirect()->to('/transaksi');
     }
 
-    public function cetakToko(){
+    public function cetakToko()
+    {
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->setPrintHeader(true);
         $pdf->setPrintFooter(true);
-        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
@@ -182,7 +220,7 @@ class TransaksiController extends BaseController{
             'produkList' => $produk,
         ];
         $html = view('toko/laporanToko', $data);
-        
+
         $pdf->setHeaderData('', 0, 'Laporan Toko', 'Tanggal: ' . date('Y-m-d'));
         $pdf->setFooterData(['0', '', ''], [0, '', '']);
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
@@ -190,8 +228,9 @@ class TransaksiController extends BaseController{
         $this->response->setContentType('application/pdf');
         $pdf->Output('laporan-Toko.pdf', 'I');
     }
-    
-    public function getOrders(){
+
+    public function getOrders()
+    {
         $client = \Config\Services::curlrequest();
 
         // Ganti URL sesuai dengan API yang ingin Anda akses

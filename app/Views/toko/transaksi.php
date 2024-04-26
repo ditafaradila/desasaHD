@@ -1,6 +1,13 @@
 <?= $this->extend('templates/template') ?>
 <?= $this->section('content') ?>
 
+<!-- Tambahkan kode notifikasi di sini -->
+<?php if (session()->has('pesan')) : ?>
+    <div class="alert alert-danger" role="alert">
+        <?= session('pesan') ?>
+    </div>
+<?php endif; ?>
+
 <head>
     <style>
         #id_produk {
@@ -132,18 +139,18 @@
                                             No
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Nama Produk</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Jumlah</th>
+                                            Nama Pembeli</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Tanggal</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Harga</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $no = 1;
-                                    foreach ($order as $order) :
+                                    foreach ($orders as $order) :
                                     ?>
                                         <tr>
                                             <td class="align-middle text-center">
@@ -151,24 +158,142 @@
                                             </td>
                                             <td>
                                                 <p class="shorten-text text-xs font-weight-bold mb-0">
-                                                    <?= $order['order_sn'] ?></p>
+                                                    <?= $order['buyer_username'] ?></p>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['update_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                </p>
                                             </td>
                                             <td>
                                                 <p class="shorten-text text-xs font-weight-bold mb-0">
-                                                    <?= $order['order_status'] ?></p>
+                                                    Rp <?= number_format($order['total_amount']) ?></p>
                                             </td>
-                                            <td class="align-middle text-center text-sm">
-                                                <p class="text-xs font-weight-bold mb-0">-</p>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                <p class="text-xs font-weight-bold mb-0">Rp </p>
+                                            <td class="align-middle text-center">
+                                                <div>
+                                                    <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#detailShopee-<?= $order['id_orderList'] ?>">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
+                                        
+                                        <!-- Modal Detail Transaksi -->
+                                        <div class="modal fade" id="detailShopee-<?= $order['id_orderList'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title" id="exampleModalLabel">Detail Data Transaksi Shopee</h6>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
+                                                    </div>
+                                                    <?= csrf_field(); ?>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">ID Order</h6>
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['order_sn'] ?></p>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Negara</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['region'] ?></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Currency</h6>
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['currency'] ?></p>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">COD</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['cod'] == 1 ? 'Iya' : 'Tidak' ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Total Transaksi</h6>
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    Rp <?= number_format($order['total_amount']) ?></p>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Pending Terms</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['pending_terms'] ?></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Order Status</h6>
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['order_status'] ?></p>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Shipping Carrier</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['shipping_carrier'] ?></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Payment Method</h6>
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['payment_method'] ?></p>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Estimated Shipping Fee</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    Rp <?= number_format($order['estimated_shipping_fee']) ?></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Message to Seller</h6>
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['message_to_seller'] ?></p>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Create Time</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['create_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Update Time</h6>
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['update_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Days to Ship</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['days_to_ship'] ?></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Ship By Date</h6>
+                                                                <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['ship_by_date'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Nama Pembeli</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= $order['buyer_username'] ?></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     <?php
                                     endforeach
                                     ?>
                                 </tbody>
                             </table>
+                            <?= $pager->links() ?>
                         </div>
                     </div>
                 </div>
@@ -222,10 +347,10 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <div>
-                                                    <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editTransaksi-<?= $transaksi['id_transaksi'] ?>">
+                                                    <!-- <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editTransaksi-<?= $transaksi['id_transaksi'] ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
-                                                    <a href="<?= base_url('/hapusTransaksi/' . $transaksi['id_transaksi']) ?>" class="btn btn-link text-center text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
+                                                    <a href="<?= base_url('/hapusTransaksi/' . $transaksi['id_transaksi']) ?>" class="btn btn-link text-center text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a> -->
                                                     <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#detailToko-<?= $transaksi['id_transaksi'] ?>">
                                                         <i class="fa fa-eye"></i>
                                                     </button>

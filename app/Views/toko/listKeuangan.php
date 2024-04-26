@@ -153,7 +153,7 @@
                                             <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['keterangan'] ?></p>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['debit'] ?></p>
+                                            <p class="text-xs font-weight-bold mb-0 text-center">Rp <?= number_format($keuangan['debit']) ?></p>
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0 text-center"><?= $keuangan['kredit'] ?></p>
