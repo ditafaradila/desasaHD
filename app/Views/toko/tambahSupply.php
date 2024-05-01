@@ -16,6 +16,13 @@
 <form method="POST" action="/storeSupply">
     <div class="container-fluid py-4">
         <div class="row">
+            <?php if (session()->has('error')) : ?>
+                <div class="alert alert-danger text-white">
+                    <?php echo session('error'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">

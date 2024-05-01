@@ -16,11 +16,10 @@ class Pemasukan extends Model
         ->get()->getResultArray();
     }
 
-    public function getTotalIn($bulan, $tahun){
+    public function getTotalIn($bulan){
         $pemasukan = $this->db->table('tbl_pemasukan')
                         ->select('tanggal, SUM(jumlah) as total_pemasukan')
                         ->where('MONTH(tanggal)', $bulan)
-                        ->where('YEAR(tanggal)', $tahun)
                         ->groupBy('tanggal')
                         ->get()
                         ->getResultArray();

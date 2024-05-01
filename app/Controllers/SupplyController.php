@@ -62,6 +62,19 @@ class SupplyController extends BaseController{
     public function storeSupply()
     {
         $supplyModel = new Supply();
+        $jumlahSupply = $this->request->getPost('jumlah_supply');
+        $hargaSupply = $this->request->getPost('harga_supply');
+
+        if (!is_numeric($jumlahSupply)) {
+            return redirect()->to('/tambahSupply')->with('error', 'Jumlah Supply harus angka!');
+        }
+        if (!is_numeric($hargaSupply)) {
+            return redirect()->to('/tambahSupply')->with('error', 'Harga Supply harus angka!');
+        }
+        if ($jumlahSupply <= 0) {
+            return redirect()->to('/tambahSupply')->with('error', 'Jumlah Supply harus lebih dari 0!');
+        }
+
         $data = [
             'id_supply' => $this->request->getPost('id_supply'),
             'id_jenisBarang' => $this->request->getPost('id_jenisBarang'),
@@ -125,6 +138,14 @@ class SupplyController extends BaseController{
         // Ambil stok produk
         $supply = $supplyModel->find($id_supply);
         $stok_sekarang = $supply['jumlah_supply'];
+        $jumlahBarangKeluar = $this->request->getPost('jumlah_barangKeluar');
+
+        if (!is_numeric($this->request->getPost('jumlah_barangKeluar'))) {
+            return redirect()->to('/tambahBarangKeluar')->with('error', 'Jumlah Barang harus angka!');
+        }
+        if ($jumlahBarangKeluar <= 0) {
+            return redirect()->to('/tambahBarangKeluar')->with('error', 'Jumlah Supply harus lebih dari 0!');
+        }
 
         $data = [
             //'id_barangKeluar' => $this->request->getPost('id_barangKeluar'),

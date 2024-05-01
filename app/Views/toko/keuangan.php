@@ -21,6 +21,35 @@
 
 <div class="container-fluid py-4">
     <div class="row">
+        <div class="col-6">
+            <form action="<?= base_url('keuangan') ?>" method="GET">
+                <div class="row align-items-end">
+                    <div class="col-4">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Bulan
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" name="bulan" id="bulan">
+                                <?php
+                                $bulan_list = [
+                                    '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
+                                    '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
+                                    '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+                                ];
+                                $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('m');
+                                foreach ($bulan_list as $key => $value) {
+                                    $selected = ($key == $bulan) ? 'selected' : '';
+                                    echo '<li><a class="dropdown-item" href="?bulan=' . $key . '">' . $value . '</a></li>';
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
         <!-- Pemasukan -->
         <div class="col-6">
             <div class="card mb-4">
@@ -91,7 +120,7 @@
                             <a href="/tambahPengeluaran" type="button" class="btn btn-outline-primary btn-sm mb-0"><i class="fa fa-plus" style="font-size: 12px;"></i> Tambah</a>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
@@ -122,7 +151,7 @@
                                         </td>
                                         <td class="align-middle text-center">
                                             <span class="text-secondary text-xs font-weight-bold">Rp
-                                            <?= number_format($pengeluaran['total_pengeluaran']) ?></span>
+                                                <?= number_format($pengeluaran['total_pengeluaran']) ?></span>
                                         </td>
                                         <td>
                                             <div class="align-middle text-center text-sm">

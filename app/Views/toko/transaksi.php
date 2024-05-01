@@ -154,7 +154,7 @@
                                     ?>
                                         <tr>
                                             <td class="align-middle text-center">
-                                                <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
+                                                <span class="text-secondary text-xs font-weight-bold"><?= $startingNumber++ ?></span>
                                             </td>
                                             <td>
                                                 <p class="shorten-text text-xs font-weight-bold mb-0">
@@ -255,17 +255,17 @@
                                                                     <?= $order['message_to_seller'] ?></p>
                                                             </div>
                                                             <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Create Time</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['create_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="timeline-content mb-3 col-6">
                                                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Update Time</h6>
                                                                 <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                 <?= CodeIgniter\I18n\Time::createFromTimestamp($order['update_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
                                                             </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Create Time</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['create_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                            </div>                                                            
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Days to Ship</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
@@ -293,7 +293,7 @@
                                     ?>
                                 </tbody>
                             </table>
-                            <?= $pager->links() ?>
+                            <?= $pager->links('orders', 'bootstrap_pagination') ?>
                         </div>
                     </div>
                 </div>
@@ -495,7 +495,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="diskon">Diskon</label>
-                                <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan diskon yang sedang berlaku. Contoh: 10%.">
+                                <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan diskon yang sedang berlaku. Contoh: 10000.">
                             </div>
                             <div class="form-group">
                                 <label for="produk" class="form-label">Nama Barang</label><br>

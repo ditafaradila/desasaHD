@@ -35,6 +35,25 @@ class ProdukController extends BaseController{
         $produkModel = new Produk();
         $dataBerkas = $this->request->getFile('foto_produk');
         $fileName = $dataBerkas->getName();
+        $jumlahProduk = $this->request->getPost('jumlah_produk');
+        $hargaProduk = $this->request->getPost('harga_produk');
+
+        if (!is_numeric($jumlahProduk)) {
+            return redirect()->to('/produk')->with('error', 'Jumlah Produk harus angka!');
+        }
+        if ($jumlahProduk <= 0) {
+            return redirect()->to('/produk')->with('error', 'Jumlah Produk harus lebih dari 0!');
+        }
+        if (!is_numeric($hargaProduk)) {
+            return redirect()->to('/produk')->with('error', 'Harga Produk harus angka!');
+        }
+
+        // Validasi ekstensi file
+        $allowedExtensions = ['png', 'jpeg', 'jpg'];
+        $fileExt = $dataBerkas->getClientExtension();
+        if (!in_array($fileExt, $allowedExtensions)) {
+            return redirect()->to('/produk')->with('error', 'Ekstensi file harus PNG, JPEG, atau JPG!');
+        }
 
         $produkModel->insert([
             'id_produk' => $this->request->getPost('id_produk'),
@@ -75,6 +94,26 @@ class ProdukController extends BaseController{
         $produkModel = new Produk();
         $dataBerkas = $this->request->getFile('foto_produk');
         $fileName = $dataBerkas->getName();
+        $jumlahProduk = $this->request->getPost('jumlah_produk');
+        $hargaProduk = $this->request->getPost('harga_produk');
+        
+
+        if (!is_numeric($jumlahProduk)) {
+            return redirect()->to('/produk')->with('error', 'Jumlah Produk harus angka!');
+        }
+        if ($jumlahProduk <= 0) {
+            return redirect()->to('/produk')->with('error', 'Jumlah Produk harus lebih dari 0!');
+        }
+        if (!is_numeric($hargaProduk)) {
+            return redirect()->to('/produk')->with('error', 'Harga Produk harus angka!');
+        }
+
+        // Validasi ekstensi file
+        $allowedExtensions = ['png', 'jpeg', 'jpg'];
+        $fileExt = $dataBerkas->getClientExtension();
+        if (!in_array($fileExt, $allowedExtensions)) {
+            return redirect()->to('/produk')->with('error', 'Ekstensi file harus PNG, JPEG, atau JPG!');
+        }
 
         $data = [
             'nama_produk' => $this->request->getPost('nama_produk'),

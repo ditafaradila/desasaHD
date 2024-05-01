@@ -36,6 +36,13 @@
 
     <div class="container-fluid py-4">
         <div class="row">
+            <?php if (session()->has('error')) : ?>
+                <div class="alert alert-danger text-white">
+                    <?php echo session('error'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="row">
             <?php
             foreach ($produk as $produk) :
             ?>
@@ -94,7 +101,10 @@
                                     <div class="form-group">
                                         <label for="foto_produk">Masukkan foto</label>
                                         <div>
-                                            <input type="file" class="form-control-file" name="foto_produk" id="foto_produk" required accept=".jpg, .png, .jpeg">
+                                            <input type="file" class="form-control-file" name="foto_produk" id="foto_produk" <?= $produk['foto_produk'] ? '' : 'required' ?> accept=".jpg, .png, .jpeg" value="<?= $produk['foto_produk'] ?>">
+                                            <?php if ($produk['foto_produk']) : ?>
+                                                <img src="<?= base_url('berkas/' . $produk['foto_produk']) ?>" alt="Foto Produk" style="max-width: 200px; margin-top: 10px;">
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                     <div class="col-6 text-end" align="center">

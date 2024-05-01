@@ -43,14 +43,15 @@
         </div>
     </nav>
 
-    <?php if (session()->has('error')) : ?>
-    <div class="alert alert-danger text-white">
-        <?php echo session('error'); ?>
-    </div>
-    <?php endif; ?>
-
     <!-- data barang masuk dan keluar -->
     <div class="container-fluid py-4">
+        <div class="row">
+            <?php if (session()->has('error')) : ?>
+                <div class="alert alert-danger text-white">
+                    <?php echo session('error'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
         <!-- Tombol data bahan baku -->
         <a href="/bahanbaku" class="floating-button"><i class="fa fa-archive"></i></a>
         <div class="row">

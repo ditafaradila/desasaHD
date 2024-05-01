@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
-                <div class="card-header pb-0">
+                <div class="card-header pb-0">                    
                     <div class="row">
                         <div class="col-6 d-flex align-items-center">
                             <h6 class="mb-0">Pemasukan</h6>
@@ -33,17 +33,16 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Sumber</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Tanggal</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Nominal</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Aksi</th>
-                                    <th class="text-secondary opacity-7"></th>
+                                    <!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Aksi</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,7 +53,7 @@
                                         <td class="align-middle text-center">
                                             <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
                                         </td>
-                                        <td>
+                                        <td class="align-middle text-center text-sm">
                                             <p class="text-xs font-weight-bold mb-0"><?= $pemasukan['sumber'] ?></p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
@@ -64,14 +63,14 @@
                                             <span class="text-secondary text-xs font-weight-bold">Rp
                                                 <?= number_format($pemasukan['jumlah']) ?></span>
                                         </td>
-                                        <td class="align-middle text-center">
+                                        <!-- <td class="align-middle text-center">
                                             <div>
                                                 <a href="<?= base_url('/hapusPemasukan/' . $pemasukan['id_pemasukan']) ?>" class="btn btn-link text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
                                                 <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editPemasukan-<?= $pemasukan['id_pemasukan'] ?>">
                                                     <i class="fa fa-pencil"></i>
                                                 </button>
                                             </div>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     <!-- Modal Edit Pemasukan -->
                                     <div class="modal fade" id="editPemasukan-<?= $pemasukan['id_pemasukan'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

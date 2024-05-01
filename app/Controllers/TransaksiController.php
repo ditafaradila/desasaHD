@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\myhelper_helper;
 use App\Models\Keuangan;
 use App\Models\Pemasukan;
 use App\Models\Produk;
@@ -13,16 +14,19 @@ use App\Models\OrderList;
 
 class TransaksiController extends BaseController
 {
-    public function index()
-    {
+    public function index(){
         $transaksiModel = new Transaksi();
         $transaksi = $transaksiModel->getTransaksi();
         $produkModel = new Produk();
         $produk = $produkModel->findAll();
         $orderModel = new OrderList();
-        $order = $orderModel->findAll();
+        //$order = $orderModel->findAll();
         $detailOrder = new detailOrderList();
-        $orders = $detailOrder->findAll();
+        //$orders = $detailOrder->findAll();
+
+        // Ambil data dengan sistem penomoran halaman
+        $orders = $detailOrder->paginate(5, 'orders');
+        $pager = $detailOrder->pager;
 
         $totalShopeeResult = $orderModel->select('count(order_sn) as totalShopee')->first();
         $totalShopee = !empty($totalShopeeResult) ? $totalShopeeResult['totalShopee'] : 0;
@@ -30,16 +34,21 @@ class TransaksiController extends BaseController
         $totalToko = !empty($totalTokoResult) ? $totalTokoResult['totalToko'] : 0;
         $totalTransaksi = $totalShopee + $totalToko;
 
+        // Hitung nomor urut untuk setiap entri pada halaman saat ini
+        $currentPage = $pager->getCurrentPage();
+        $dataPerPage = 5;
+        $startingNumber = ($currentPage - 1) * $dataPerPage + 1;
+
         $data = [
             'title' => 'Transaksi',
             'transaksi' => $transaksi,
             'produkList' => $produk,
             'totalToko' => $totalToko,
-            'order' => $order,
-            'orders' => $detailOrder->paginate(5),
-            'pager' => $detailOrder->pager,
+            'orders' => $orders,
+            'pager' => $pager,
             'totalShopee' => $totalShopee,
-            'totalTransaksi' => $totalTransaksi
+            'totalTransaksi' => $totalTransaksi,
+            'startingNumber' => $startingNumber
         ];
         return view('toko/transaksi', $data);
     }
@@ -108,13 +117,12 @@ class TransaksiController extends BaseController
             $keuanganModel->save($data);
 
             // Kurangi stok produk
-            $stok_baru = $stok_sekarang - 1; // Misalnya, di sini asumsi setiap transaksi hanya mengurangi stok satu unit
+            $stok_baru = $stok_sekarang - 1;
             $produkModel->update($id_produk, ['jumlah_produk' => $stok_baru]);
 
             // Cek apakah stok habis
             if ($stok_baru <= 0) {
                 // Tampilkan notifikasi bahwa produk habis
-                // Contoh menggunakan session flash data
                 session()->setFlashdata('pesan', 'Produk telah habis.');
             }
         } else {
