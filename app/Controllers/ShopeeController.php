@@ -114,6 +114,42 @@ class ShopeeController extends Controller
     $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275";
     return $this->getTokenShopLevel($code, $partnerId, $partnerKey, $shopId);
   }
+  public function refreshToken($partnerId, $partnerKey, $shopId, $refreshToken){
+    $host = "https://partner.shopeemobile.com";
+    $path = "/api/v2/auth/access_token/get";
+    $shopId = (int) $shopId;
+    $timest = time();
+    $body = array("partner_id" => $partnerId, "shop_id" => $shopId, "refresh_token" => $refreshToken);
+    $baseString = sprintf("%s%s%s", $partnerId, $path, $timest);
+    $sign = hash_hmac('sha256', $baseString, $partnerKey);
+    $url = sprintf("%s%s?partner_id=%s&timestamp=%s&sign=%s", $host, $path, $partnerId, $timest, $sign);
+
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($body));
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $resp = curl_exec($curl);
+
+    $ret = json_decode($resp, true);
+    $accessToken = $ret["access_token"] ?? null;
+    $newRefreshToken = $ret["refresh_token"] ?? null;
+    echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken raw: $resp" . "\n";
+    return $ret;
+  }
+
+  public function processRefreshToken(){
+    $request = service('request');
+    $refreshToken = $request->getPost('refreshToken');
+    $shopId = $request->getPost('shop_id');
+    if (!is_numeric($shopId)) {
+      return "Shop ID harus berupa angka yang valid";
+    }
+    $partnerId = 2007160;
+    $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275";
+    return $this->refreshToken($partnerId, $partnerKey, $shopId, $refreshToken);
+  }
+
 
   public function getItemList()
   {
@@ -329,13 +365,13 @@ class ShopeeController extends Controller
           }
 
           // Simpan data pemasukan di luar loop detail order
-          $existingPemasukan = $pemasukanModel->where('id_pemasukan', $order['order_sn'])->first();
+          $existingPemasukan = $pemasukanModel->where('order_sn', $order['order_sn'])->first();
           if (!$existingPemasukan) {
             // Data pemasukan belum ada, simpan sebagai entri baru
             $dataPemasukan = [
               'order_sn' => $order['order_sn'],
               'sumber' => 'Shopee',
-              'tanggal' => date('Y-m-d'),
+              'tanggal' => date('Y-m-d H:i:s', $order['update_time']),
               'jumlah' => $order['total_amount'],
             ];
             $pemasukanModel->save($dataPemasukan);
@@ -343,15 +379,16 @@ class ShopeeController extends Controller
             // Data pemasukan sudah ada, lakukan pembaruan
             $pemasukanModel->update($existingPemasukan['id_pemasukan'], [
                 'jumlah' => $order['total_amount'],
+                'tanggal' => date('Y-m-d H:i:s', $order['update_time']),
             ]);
           }
 
           // Simpan data keuangan
-          $existingKeuangan = $keuanganModel->where('id_keuangan', $order['order_sn'])->first();
+          $existingKeuangan = $keuanganModel->where('id_pemasukan', $order['order_sn'])->first();
           if (!$existingKeuangan) {
             $dataKeuangan = [
               'id_pemasukan' => $order['order_sn'],
-              'tanggal' => date('Y-m-d'),
+              'tanggal' => date('Y-m-d H:i:s', $order['update_time']),
               'keterangan' => "Shopee",
               'debit' => $order['total_amount'],
             ];
@@ -359,6 +396,7 @@ class ShopeeController extends Controller
           } else {
             $keuanganModel->update($existingKeuangan['id_keuangan'], [
                 'debit' => $order['total_amount'],
+                'tanggal' => date('Y-m-d H:i:s', $order['update_time']),
             ]);
           }
         }

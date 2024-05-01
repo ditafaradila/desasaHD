@@ -18,6 +18,17 @@ class Transaksi extends Model
         ->get()->getResultArray();
     }
 
+    public function getTop3PenjualanProduk(){
+        return $this->db->table('tbl_transaksi')
+            ->join('tbl_produk', 'tbl_produk.id_produk=tbl_transaksi.id_produk')
+            ->select('tbl_produk.id_produk, tbl_produk.foto_produk, tbl_produk.nama_produk, COUNT(tbl_transaksi.id_transaksi) as jumlah_penjualan')
+            ->groupBy('tbl_produk.id_produk')
+            ->orderBy('jumlah_penjualan', 'DESC')
+            ->limit(3)
+            ->get()
+            ->getResultArray();
+    }
+
     public function getHargaProduk($id_produk){
         return $this->db->table('tbl_produk')
             ->where('id_produk', $id_produk)

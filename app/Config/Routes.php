@@ -14,6 +14,7 @@ $routes->get('/logout', 'Auth::logout');
 $routes->get('/api', 'ShopeeController::index');
 $routes->post('/auth', 'ShopeeController::auth');
 $routes->post('/process', 'ShopeeController::process');
+$routes->post('/processRefreshToken', 'ShopeeController::processRefreshToken');
 $routes->post('/getItemList', 'ShopeeController::getItemList');
 $routes->post('/showItemList', 'ShopeeController::showItemList');
 $routes->post('/getOrderList', 'ShopeeController::getOrderList');

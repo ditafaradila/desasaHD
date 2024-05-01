@@ -40,22 +40,6 @@ class KeuanganController extends BaseController{
             'totalKredit' =>$totalKredit,
             'totalUang' =>$totalUang
         ];
-
-        // Periksa apakah pengguna sudah login
-        if (!session()->get('logged_in')) {
-            return redirect()->to(base_url('/login'));
-        }
-        
-        // Periksa peran pengguna
-        $role = session()->get('role');
-        if ($role == 2) { // Jika peran adalah karyawan, redirect ke halaman dashboard
-            return redirect()->to(base_url('/dashboard'));
-        }
-
-        $role = session()->get('role');
-        if ($role == 1) { // Jika peran adalah karyawan, redirect ke halaman dashboard
-            return redirect()->to(base_url('toko/listKeuangan'));
-        }
         
         return view('toko/listKeuangan', $data);
     }

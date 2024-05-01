@@ -84,31 +84,32 @@
     <!-- Top products -->
     <div class="row mt-4">
         <div class="card-group">
-            <div class="card">
-                <img class="card-img-top" src="https://64.media.tumblr.com/9bd7832617593d2bde06438c216cfc47/4e5d88e8724e8406-63/s400x600/69963e29aa49a2615a10c7196095f08b4bd1dcac.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Top #1</h5>
-                    <p class="card-text">Buttercup
-                    </p>
-                    <p class="card-text"><small class="text-success">40 terjual</small></p>
+            <?php foreach ($top3Products as $index => $product): ?>
+                <div class="card">
+                    <img class="card-img-top" src="<?= base_url() ?>berkas/<?= $product['foto_produk']; ?>" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Top #<?= $index + 1 ?></h5>
+                        <p class="card-text"><?= $product['nama_produk'] ?></p>
+                        <p class="card-text"><small class="text-success"><?= $product['jumlah_penjualan'] ?> terjual</small></p>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="https://64.media.tumblr.com/fdfd3313f4d8ff670f7e8fe1aadcd047/4e5d88e8724e8406-4c/s400x600/192e76268eca524d2c823a1bd176922fcded7afc.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Top #2</h5>
-                    <p class="card-text">Blossom</p>
-                    <p class="card-text"><small class="text-success">30 terjual</small></p>
+                <!-- <div class="card">
+                    <img class="card-img-top" src="https://64.media.tumblr.com/fdfd3313f4d8ff670f7e8fe1aadcd047/4e5d88e8724e8406-4c/s400x600/192e76268eca524d2c823a1bd176922fcded7afc.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Top #2</h5>
+                        <p class="card-text">Blossom</p>
+                        <p class="card-text"><small class="text-success">30 terjual</small></p>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="https://64.media.tumblr.com/e6bb07eee550e3628bba5ba103fd77b1/4e5d88e8724e8406-2f/s400x600/3bbb155e3418b87b8244c4407adea0fe724d60d4.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Top #3</h5>
-                    <p class="card-text">Bubble</p>
-                    <p class="card-text"><small class="text-success">20 terjual</small></p>
-                </div>
-            </div>
+                <div class="card">
+                    <img class="card-img-top" src="https://64.media.tumblr.com/e6bb07eee550e3628bba5ba103fd77b1/4e5d88e8724e8406-2f/s400x600/3bbb155e3418b87b8244c4407adea0fe724d60d4.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Top #3</h5>
+                        <p class="card-text">Bubble</p>
+                        <p class="card-text"><small class="text-success">20 terjual</small></p>
+                    </div>
+                </div> -->
+            <?php endforeach;?>
         </div>
     </div>
     <div class="row mt-4">
@@ -121,8 +122,8 @@
                             <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
                         </div>
                     </div>
-                    <h6 class="ms-2 mt-4 mb-0"> Total Barang Terjual </h6>
-                    <p class="text-sm ms-2"><span class="font-weight-bolder"><?php echo $totalTransaksi ?></span> Produk</p>
+                    <h6 class="ms-2 mt-4 mb-0"> Total Transaksi </h6>
+                    <p class="text-sm ms-2"><span class="font-weight-bolder"><?php echo $totalTransaksi ?></span> Transaksi</p>
                 </div>
             </div>
         </div>
@@ -153,15 +154,20 @@
     new Chart(ctx, {
         type: "bar",
         data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agus", "Sept", "Okt", "Nov", "Des"],
+            labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
             datasets: [{
-                label: "Sales",
+                label: "Penjualan",
                 tension: 0.4,
                 borderWidth: 0,
                 borderRadius: 4,
                 borderSkipped: false,
                 backgroundColor: "#fff",
-                data: [<?php echo $totalTransaksi ?>, 1500, 2000, 1800, 2200, 2500, 3000, 2800, 3200, 3500, 3400, 3800],
+                data: [<?php echo max($transaksiJanuari, 1) ?>, <?php echo max($transaksiFebruari, 1) ?>,
+                      <?php echo max($transaksiMaret, 1) ?>, <?php echo max($transaksiApril, 1) ?>, 
+                      <?php echo max($transaksiMei, 1) ?>, <?php echo max($transaksiJuni, 1) ?>, 
+                      <?php echo max($transaksiJuli, 1) ?>, <?php echo max($transaksiAgustus, 1) ?>,
+                      <?php echo max($transaksiSeptember, 1) ?>, <?php echo max($transaksiOktober, 1) ?>,
+                      <?php echo max($transaksiNovember, 1) ?>, <?php echo max($transaksiDesember, 1) ?>],
                 maxBarThickness: 6
             }, ],
         },
@@ -233,7 +239,7 @@
     new Chart(ctx2, {
         type: "line",
         data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agus", "Sept", "Okt", "Nov", "Des"],
+            labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
             datasets: [{
                     label: "Pemasukan",
                     tension: 0.4,

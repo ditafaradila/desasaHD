@@ -79,10 +79,49 @@
         <div class="col-lg-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header pb-0">
-                    <h6>3. Meminta Produk Data API</h6>
+                    <h6>3. Perbarui Token</h6>
+                    <p class="text-sm">
+                        <span class="font-weight-bold">Click the following link to get refresh Token your shop:</span>
+                    </p>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="<?= base_url('/processRefreshToken') ?>">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive p-0">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="shop_id">Shop ID</label>
+                                            <input type="text" class="form-control" name="shop_id" id="shop_id">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="refreshToken">Refresh Token</label>
+                                            <input type="text" class="form-control" name="refreshToken" id="refreshToken">
+                                        </div>
+                                        <div align="center">
+                                            <button type="submit" class="btn bg-gradient-dark mb-0">Dapatkan Refresh Token</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <div class="row">
+    <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6>4. Meminta Produk Data API</h6>
                     <p class="text-sm">
                         <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
                     </p>
+                </div>
+                <div class="card-body">
                     <form method="POST" action="<?= base_url('/showItemList') ?>">
                         <div class="row">
                             <div class="col-12">
@@ -110,10 +149,12 @@
         <div class="col-lg-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header pb-0">
-                    <h6>4. Meminta Order Data API</h6>
+                    <h6>5. Meminta Order Data API</h6>
                     <p class="text-sm">
                         <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
                     </p>
+                </div>
+                <div class="card-body">
                     <form method="POST" action="<?= base_url('/showOrderList') ?>">
                         <div class="row">
                             <div class="col-12">

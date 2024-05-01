@@ -18,13 +18,13 @@ class Pemasukan extends Model
 
     public function getTotalIn($bulan){
         $pemasukan = $this->db->table('tbl_pemasukan')
-                        ->select('tanggal, SUM(jumlah) as total_pemasukan')
+                        ->select('DATE(tanggal) as tanggal, SUM(jumlah) as total_pemasukan')
                         ->where('MONTH(tanggal)', $bulan)
-                        ->groupBy('tanggal')
+                        ->groupBy('DATE(tanggal)')
                         ->get()
                         ->getResultArray();
         return $pemasukan;
-    }
+    }    
 
     public function getDetailPemasukanByDate($tanggal){
         return $this->db->table('tbl_pemasukan')
