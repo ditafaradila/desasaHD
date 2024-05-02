@@ -29,9 +29,9 @@
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                            <a href="/detailing" type="button" class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md" data-bs-toggle="modal" data-bs-target="#detailing">
                                 <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -175,6 +175,38 @@
             </div>
         </div>
     </div>
-</div>
 
-<?= $this->endSection() ?>
+    <!-- Modal tambah Transaksi -->
+    <div class="modal fade" id="detailing" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detail Pemasukan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="timeline-content mb-3 col-6">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Shopee</p>
+                                <h5 class="font-weight-bolder mb-0">
+                                    Rp <?php echo number_format((float)$totalShopee) ?>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="timeline-content mb-3 col-6">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Toko</p>
+                                <h5 class="font-weight-bolder mb-0">
+                                    Rp <?php echo number_format((float)$totalToko) ?>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <?= $this->endSection() ?>

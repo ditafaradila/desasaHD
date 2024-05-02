@@ -53,7 +53,7 @@
                     <h6>Total Penjualan</h6>
                     <p class="text-sm">
                         <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                        <span class="font-weight-bold"><?php echo $totalTransaksi ?></span> Produk bulan ini
+                        <a href="/transaksi"><span class="font-weight-bold"><?php echo $totalTransaksi ?></span> Produk bulan ini
                     </p>
                 </div>
                 <div class="card-body p-3">
@@ -64,7 +64,7 @@
                             </span>
                             <div class="timeline-content">
                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Penjualan Toko</h6>
-                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalToko ?> Produk</p>
+                                <a href="/transaksi"><p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalToko ?> Produk</p>
                             </div>
                         </div>
                         <div class="timeline-block mb-3">
@@ -73,7 +73,7 @@
                             </span>
                             <div class="timeline-content">
                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Penjualan Shopee</h6>
-                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalShopee ?> Produk</p>
+                                <a href="/transaksi"><p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalShopee ?> Produk</p>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                     <h6>Keuangan</h6>
                     <p class="text-sm">
                         <!-- <i class="fa fa-arrow-up text-success"></i> -->
-                        <span class="font-weight-bold">4% more</span> in 2021
+                        <!-- <span class="font-weight-bold">4% more</span> in 2021 -->
                     </p>
                 </div>
                 <div class="card-body p-3">

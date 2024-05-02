@@ -28,10 +28,8 @@ class Pemasukan extends Model
 
     public function getDetailPemasukanByDate($tanggal){
         return $this->db->table('tbl_pemasukan')
-                        ->where('tanggal', $tanggal)
+                        ->where('DATE_FORMAT(tanggal, "%Y-%m-%d")', $tanggal)
                         ->get()
                         ->getResultArray();
     }
-
-
 }

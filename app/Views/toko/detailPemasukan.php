@@ -47,7 +47,7 @@
                             </thead>
                             <tbody>
                                 <?php $no = 1;
-                                foreach ($pemasukan as $pemasukan) :
+                                foreach ($pemasukanDetail as $pemasukan) :
                                 ?>
                                     <tr>
                                         <td class="align-middle text-center">

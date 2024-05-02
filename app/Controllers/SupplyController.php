@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\BarangKeluar;
 use App\Models\JenisBarang;
+use App\Models\Pengeluaran;
 use App\Models\Supply;
 
 class SupplyController extends BaseController{
@@ -28,24 +29,20 @@ class SupplyController extends BaseController{
         return view('toko/supply', $data);
     }
 
-    public function detail()
-    {
+    public function detail($id_jenisBarang){
         $supplyModel = new Supply();
-        $barangKeluarModel = new BarangKeluar();
-        $barangKeluar = $barangKeluarModel->getbarangKeluar();
         $jenisModel = new JenisBarang();
         $jenisBarang = $jenisModel->findAll();
-
+    
         $data = [
             'title' => 'Supply',
-            'totalSupply' => $supplyModel->getTotalSupply(),
-            'supply' => $supplyModel->getSupply(),
-            'barangKeluar' => $barangKeluar,
+            'supply' => $supplyModel->getDetailbyID($id_jenisBarang),
             'jenisBarang' => $jenisBarang,
         ];
-
+    
         return view('toko/detailBarangMasuk', $data);
     }
+    
 
     public function tambahS()
     {
@@ -62,6 +59,7 @@ class SupplyController extends BaseController{
     public function storeSupply()
     {
         $supplyModel = new Supply();
+        $pengeluaranModel = new Pengeluaran();
         $jumlahSupply = $this->request->getPost('jumlah_supply');
         $hargaSupply = $this->request->getPost('harga_supply');
 
@@ -82,9 +80,15 @@ class SupplyController extends BaseController{
             'harga_supply' => $this->request->getPost('harga_supply'),
             'tanggal_supply' => date('Y-m-d'),
         ];
-
         $supplyModel->save($data);
-        return redirect()->to('/detailBarangMasuk');
+
+        $dataPengeluaran = [
+            'keperluan' => "Pembelian Bahan Baku",
+            'tanggal' => date('Y-m-d'),
+            'nominal' => $this->request->getPost('harga_supply'),
+        ];
+        $pengeluaranModel->save($dataPengeluaran);
+        return redirect()->to('/supply');
     }
 
 
@@ -100,7 +104,7 @@ class SupplyController extends BaseController{
         ];
 
         $supplyModel->update($id_supply, $data);
-        return redirect()->to('/detailBarangMasuk');
+        return redirect()->to('/supply');
     }
 
     public function hapusSupply($id_supply)
@@ -108,7 +112,7 @@ class SupplyController extends BaseController{
         $supplyModel = new Supply();
         $supplyModel->delete($id_supply);
 
-        return redirect()->to('/detailBarangMasuk');
+        return redirect()->to('/supply');
     }
 
     public function tambahBarangKeluar()
@@ -170,6 +174,7 @@ class SupplyController extends BaseController{
             // Cek apakah stok habis
             if ($stok_baru <= 0) {
                 // Tampilkan notifikasi bahwa produk habis
+                //$supplyModel->delete($id_supply);
                 // Contoh menggunakan session flash data
                 session()->setFlashdata('pesan', 'Produk telah habis.');
             }
@@ -180,7 +185,7 @@ class SupplyController extends BaseController{
         return redirect()->to('/supply');
     }
 
-    public function detailBarangKeluar(){
+    public function detailBarangKeluar($id_jenisBarang){
         $supplyModel = new Supply();
         $barangKeluarModel = new BarangKeluar();
         $jenisModel = new JenisBarang();
@@ -189,7 +194,7 @@ class SupplyController extends BaseController{
         $data = [
             'title' => 'Supply',
             'supply' => $supplyModel->getSupply(),
-            'barangKeluar' => $barangKeluarModel->getbarangKeluar(),
+            'barangKeluar' => $barangKeluarModel->getDetailBKID($id_jenisBarang),
             'jenisBarang' => $jenisBarang,
         ];
 

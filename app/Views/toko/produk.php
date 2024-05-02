@@ -122,60 +122,6 @@
         </div>
     </div>
 
-    <div class="fixed-plugin">
-        <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
-            <i class="fa fa-plus py-2"> </i>
-        </a>
-        <form method="POST" action="/storeProduk" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="card-header pb-0">
-                            <div class="col-12 d-flex align-items-center">
-                                <div class="col-9">
-                                    <h6 class="mb-0">Tambah Produk</h6>
-                                </div>
-                                <div class="col-3 text-end">
-                                    <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
-                                        <i class="fa fa-close"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="card-body px-4 pt-4 pb-2">
-                            <div class="table-responsive p-0">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="nama_produk">Nama Produk</label>
-                                        <input type="text" class="form-control" name="nama_produk" id="nama_produk">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="harga_produk">Harga</label>
-                                        <input type="text" class="form-control" name="harga_produk" id="harga_produk">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="jumlah_produk">Jumlah</label>
-                                        <input type="text" class="form-control" name="jumlah_produk" id="jumlah_produk">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="foto_produk">Masukkan foto</label>
-                                        <div>
-                                            <input type="file" class="form-control-file" name="foto_produk" id="foto_produk" required accept=".jpg, .png, .jpeg">
-                                        </div>
-                                    </div>
-                                    <div align="center">
-                                        <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
 </body>
 
 <?= $this->endSection() ?>

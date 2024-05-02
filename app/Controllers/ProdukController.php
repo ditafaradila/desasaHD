@@ -20,6 +20,17 @@ class ProdukController extends BaseController{
         return view('toko/produk', $data);
     }
 
+    public function tambahProduk(){
+        $produkModel = new Produk();
+
+        $data = [
+            'title' => 'Tambah Produk',
+            'produk' => $produkModel->getProduk(),
+        ];
+
+        return view('toko/tambahProduk', $data);
+    }
+
     public function viewShopee(){
         $detailModel = new detailItemModel();
 

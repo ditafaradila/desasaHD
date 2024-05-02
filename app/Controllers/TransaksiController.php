@@ -25,8 +25,7 @@ class TransaksiController extends BaseController
         //$orders = $detailOrder->findAll();
 
         // Ambil data dengan sistem penomoran halaman
-        $orders = $detailOrder->paginate(5, 'orders');
-        $pager = $detailOrder->pager;
+        $orders = $detailOrder->findAll();
 
         $totalShopeeResult = $orderModel->select('count(order_sn) as totalShopee')->first();
         $totalShopee = !empty($totalShopeeResult) ? $totalShopeeResult['totalShopee'] : 0;
@@ -34,10 +33,6 @@ class TransaksiController extends BaseController
         $totalToko = !empty($totalTokoResult) ? $totalTokoResult['totalToko'] : 0;
         $totalTransaksi = $totalShopee + $totalToko;
 
-        // Hitung nomor urut untuk setiap entri pada halaman saat ini
-        $currentPage = $pager->getCurrentPage();
-        $dataPerPage = 5;
-        $startingNumber = ($currentPage - 1) * $dataPerPage + 1;
 
         $data = [
             'title' => 'Transaksi',
@@ -45,10 +40,8 @@ class TransaksiController extends BaseController
             'produkList' => $produk,
             'totalToko' => $totalToko,
             'orders' => $orders,
-            'pager' => $pager,
             'totalShopee' => $totalShopee,
             'totalTransaksi' => $totalTransaksi,
-            'startingNumber' => $startingNumber
         ];
         return view('toko/transaksi', $data);
     }

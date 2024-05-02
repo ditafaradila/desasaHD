@@ -27,9 +27,13 @@ class KeuanganController extends BaseController{
         $keuanganModel = new Keuangan();
         $totalDebitResult = $keuanganModel->select('SUM(debit) as totalDebit')->first();
         $totalKreditResult = $keuanganModel->select('SUM(kredit) as totalKredit')->first();
+        $totalShopeeResult = $keuanganModel->where('keterangan', 'Shopee')->select('SUM(debit) as totalShopee')->first();
+        $totalTokoResult = $keuanganModel->where('keterangan', 'Toko')->select('SUM(debit) as totalToko')->first();
         
         $totalDebit = $totalDebitResult['totalDebit'];
         $totalKredit = $totalKreditResult['totalKredit'];
+        $totalShopee = $totalShopeeResult['totalShopee'];
+        $totalToko = $totalTokoResult['totalToko'];
 
         $totalUang = $totalDebit - $totalKredit;
 
@@ -38,7 +42,9 @@ class KeuanganController extends BaseController{
             'keuangan' => $keuanganModel->getkeuangan(),
             'totalDebit' =>$totalDebit,
             'totalKredit' =>$totalKredit,
-            'totalUang' =>$totalUang
+            'totalUang' =>$totalUang,
+            'totalShopee' => $totalShopee,
+            'totalToko' => $totalToko,
         ];
         
         return view('toko/listKeuangan', $data);
@@ -50,7 +56,7 @@ class KeuanganController extends BaseController{
 
         $data = [
             'title' => 'Keuangan',
-            'pemasukan' => $detailPemasukan,
+            'pemasukanDetail' => $detailPemasukan,
         ];
         return view('toko/detailPemasukan', $data);
     }

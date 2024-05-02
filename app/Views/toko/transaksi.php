@@ -9,6 +9,9 @@
 <?php endif; ?>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.slim.min.js"></script>
     <style>
         #id_produk {
             max-width: 200px;
@@ -116,11 +119,23 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12 text-end mt-4">
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                    </span>
+                    <input type="text" class="form-control border border-primary" placeholder="Cari..." onkeyup="search(this.value)">
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container-fluid py-4">
         <div class="row">
-            <!-- Transakso Shopee -->
+            <!-- Transaksi Shopee -->
             <div class="col-6">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
@@ -148,13 +163,13 @@
                                             Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="bodyTable">
                                     <?php $no = 1;
                                     foreach ($orders as $order) :
                                     ?>
                                         <tr>
                                             <td class="align-middle text-center">
-                                                <span class="text-secondary text-xs font-weight-bold"><?= $startingNumber++ ?></span>
+                                                <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
                                             </td>
                                             <td>
                                                 <p class="shorten-text text-xs font-weight-bold mb-0">
@@ -162,7 +177,7 @@
                                             </td>
                                             <td class="align-middle text-center text-sm">
                                                 <p class="text-xs font-weight-bold mb-0">
-                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['update_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                    <?= CodeIgniter\I18n\Time::createFromTimestamp($order['update_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
                                                 </p>
                                             </td>
                                             <td>
@@ -177,7 +192,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        
+
                                         <!-- Modal Detail Transaksi -->
                                         <div class="modal fade" id="detailShopee-<?= $order['id_orderList'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
@@ -257,15 +272,15 @@
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Update Time</h6>
                                                                 <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['update_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                                    <?= CodeIgniter\I18n\Time::createFromTimestamp($order['update_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Create Time</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['create_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
-                                                            </div>                                                            
+                                                                    <?= CodeIgniter\I18n\Time::createFromTimestamp($order['create_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                            </div>
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Days to Ship</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
@@ -276,7 +291,7 @@
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Ship By Date</h6>
                                                                 <p class=" text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                <?= CodeIgniter\I18n\Time::createFromTimestamp($order['ship_by_date'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                                    <?= CodeIgniter\I18n\Time::createFromTimestamp($order['ship_by_date'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
                                                             </div>
                                                             <div class="timeline-content mb-3 col-6">
                                                                 <h5 class="text-dark text-sm font-weight-bold mb-0">Nama Pembeli</h5>
@@ -293,7 +308,6 @@
                                     ?>
                                 </tbody>
                             </table>
-                            <?= $pager->links('orders', 'bootstrap_pagination') ?>
                         </div>
                     </div>
                 </div>
@@ -551,5 +565,16 @@
         document.getElementById('id_produk').addEventListener('change', updateHarga);
     });
 </script>
-
+<script>
+    function search(get) {
+        $('table tbody tr').each(function() {
+            var content = $(this).find('td').text();
+            if (content.toLowerCase().includes(get.trim().toLowerCase())) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
 <?= $this->endSection() ?>

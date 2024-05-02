@@ -23,13 +23,13 @@ $routes->post('/getOrderDetail', 'ShopeeController::getOrderDetail');
 $routes->post('/getDetailOrderList', 'ShopeeController::getDetailOrderList');
 
 $routes->get('/supply', 'SupplyController::index',['filter' => 'auth']);
-$routes->get('/detailBarangMasuk', 'SupplyController::detail');
+$routes->get('/detailBarangMasuk/(:any)', 'SupplyController::detail/$1');
 $routes->get('/tambahSupply', 'SupplyController::tambahS');
 $routes->post('/storeSupply','SupplyController::storeSupply');
 $routes->get('/editSupply/(:num)','SupplyController::editSupply/$1');
 $routes->add('/updateSupply/(:segment)','SupplyController::updateSupply/$1');
 $routes->get('/hapusSupply/(:segment)', 'SupplyController::hapusSupply/$1');
-$routes->get('/detailBarangKeluar', 'SupplyController::detailBarangKeluar');
+$routes->get('/detailBarangKeluar/(:any)', 'SupplyController::detailBarangKeluar/$1');
 $routes->get('/tambahBarangKeluar', 'SupplyController::tambahBarangKeluar');
 $routes->post('/storeBK','SupplyController::storeBK');
 $routes->add('/updateBK/(:segment)','SupplyController::updateBK/$1');
@@ -42,6 +42,7 @@ $routes->add('/updateBahanBaku/(:segment)','BarangController::updateBahanBaku/$1
 
 $routes->get('/produk', 'ProdukController::viewProduk',['filter' => 'auth']);
 $routes->get('/produkShopee','ProdukController::viewShopee');
+$routes->get('/tambahProduk','ProdukController::tambahProduk');
 $routes->post('/storeProduk','ProdukController::storeProduk');
 $routes->post('/kurangjumlahProduk/(:num)','ProdukController::kurangjumlahProduk/$1');
 $routes->post('/tambahjumlahProduk/(:num)','ProdukController::tambahjumlahProduk/$1');

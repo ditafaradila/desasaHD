@@ -19,9 +19,17 @@ class Supply extends Model
 
     public function getTotalSupply(){
         return $this->db->table('tbl_supply')
-        ->select('tbl_jenisbarang.jenis_barang, SUM(tbl_supply.jumlah_supply) as total_jumlah_supply, SUM(tbl_supply.harga_supply) as total_harga_supply, MAX(tbl_supply.tanggal_supply) as max_tanggal_supply')
-        ->join('tbl_jenisbarang', 'tbl_jenisbarang.id_jenisBarang=tbl_supply.id_jenisBarang')
-        ->groupBy('tbl_jenisbarang.jenis_barang')
-        ->get()->getResultArray();
+                        ->select('tbl_supply.id_jenisBarang, tbl_jenisbarang.jenis_barang, SUM(tbl_supply.jumlah_supply) as total_jumlah_supply, SUM(tbl_supply.harga_supply) as total_harga_supply, MAX(tbl_supply.tanggal_supply) as max_tanggal_supply')
+                        ->join('tbl_jenisbarang', 'tbl_jenisbarang.id_jenisBarang=tbl_supply.id_jenisBarang')
+                        ->groupBy('tbl_jenisbarang.jenis_barang')
+                        ->get()->getResultArray();
+    }
+
+    public function getDetailbyID($id_jenisBarang){
+        return $this->db->table('tbl_supply')
+                        ->join('tbl_jenisbarang', 'tbl_jenisbarang.id_jenisBarang=tbl_supply.id_jenisBarang')
+                        ->where('tbl_supply.id_jenisBarang', $id_jenisBarang)
+                        ->get()
+                        ->getResultArray();
     }
 }

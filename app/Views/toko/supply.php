@@ -53,7 +53,7 @@
             <?php endif; ?>
         </div>
         <!-- Tombol data bahan baku -->
-        <a href="/bahanbaku" class="floating-button"><i class="fa fa-archive"></i></a>
+        <!-- <a href="/bahanbaku" class="floating-button"><i class="fa fa-archive"></i></a> -->
         <div class="row">
             <!-- Barang Masuk -->
             <div class="col-6">
@@ -120,7 +120,7 @@
                                         </td>
                                         <td>
                                             <div class="align-middle text-center text-sm">
-                                                <a href="/detailBarangMasuk" class="btn btn-link text-dark px-1 mb-0">
+                                                <a href="/detailBarangMasuk/<?= $totalSupply['id_jenisBarang'] ?>" class="btn btn-link text-dark px-1 mb-0">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </div>
@@ -192,7 +192,7 @@
                                         </td>
                                         <td>
                                             <div class="align-middle text-center text-sm">
-                                                <a href="/detailBarangKeluar" class="btn btn-link text-dark px-1 mb-0">
+                                                <a href="/detailBarangKeluar/<?= $totalBarangKeluar['id_jenisBarang'] ?>" class="btn btn-link text-dark px-1 mb-0">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </div>
