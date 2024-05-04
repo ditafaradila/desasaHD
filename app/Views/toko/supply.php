@@ -52,8 +52,6 @@
                 </div>
             <?php endif; ?>
         </div>
-        <!-- Tombol data bahan baku -->
-        <!-- <a href="/bahanbaku" class="floating-button"><i class="fa fa-archive"></i></a> -->
         <div class="row">
             <!-- Barang Masuk -->
             <div class="col-6">

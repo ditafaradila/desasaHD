@@ -173,6 +173,7 @@
                         <span class="nav-link-text ms-1">Produk Shopee</span>
                     </a>
                 </li>
+                <?php if (session()->get('id_role') != 2): ?>
                 <li class="nav-item">
                     <a class="nav-link  <?= ($title == "Keuangan") ? 'active' : '' ?> " href="/listKeuangan">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -195,6 +196,7 @@
                         <span class="nav-link-text ms-1">Keuangan</span>
                     </a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link  <?= ($title == "Transaksi") ? 'active' : '' ?> " href="/transaksi">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -217,6 +219,7 @@
                         <span class="nav-link-text ms-1">Transaksi</span>
                     </a>
                 </li>
+                <?php if (session()->get('id_role') != 2): ?>
                 <li class="nav-item">
                     <a class="nav-link  <?= ($title == "API") ? 'active' : '' ?> " href="/api">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -239,6 +242,7 @@
                         <span class="nav-link-text ms-1">Autentifikasi</span>
                     </a>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link id=" logoutBtn" <?= ($title == "Log Out") ? 'active' : '' ?>" href="<?= base_url('logout') ?>">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">

@@ -66,12 +66,12 @@
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold"><?= $supplies['tanggal_supply'] ?></span>
                                     </td>
-                                    <td>
-                                        <div class="d-flex" align="center">
+                                    <td class="align-middle text-center">
+                                        <div>
                                             <a href="<?= base_url('/hapusSupply/' . $supplies['id_supply']) ?>" class="btn btn-link text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
-                                            <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editSupply-<?= $supplies['id_supply'] ?>">
+                                            <!-- <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editSupply-<?= $supplies['id_supply'] ?>">
                                                 <i class="fa fa-pencil"></i>
-                                            </button>
+                                            </button> -->
                                         </div>
                                     </td>
                                 </tr>

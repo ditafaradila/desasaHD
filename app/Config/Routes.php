@@ -1,10 +1,12 @@
 <?php
 
 use CodeIgniter\Router\RouteCollection;
+use App\Filters\AuthMiddleware;
 
 /**
  * @var RouteCollection $routes
  */
+
 $routes->get('/', 'Home::index');
 $routes->get('/login', 'Home::index');
 $routes->get('/dashboard', 'DashboardController::dashboard', ['filter' => 'auth']);
@@ -57,7 +59,7 @@ $routes->add('/updateTransaksi/(:segment)','TransaksiController::updateTransaksi
 $routes->get('/laporanToko', 'TransaksiController::cetakToko');
 $routes->get('api_result', 'TransaksiController::getOrders');
 
-$routes->get('/listKeuangan', 'KeuanganController::indexx');
+$routes->get('/listKeuangan', 'KeuanganController::indexx', ['filter' => 'auth']);
 $routes->get('/keuangan', 'KeuanganController::index');
 $routes->get('/detailPemasukan/(:any)', 'KeuanganController::detailIn/$1');
 $routes->get('/detailPengeluaran/(:any)', 'KeuanganController::detailOut/$1');

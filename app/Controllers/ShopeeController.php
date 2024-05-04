@@ -18,8 +18,12 @@ class ShopeeController extends Controller
   protected $partnerId = 2007160;
   protected $partnerKey = "694d505149626c7468547562576b507a6e6856776f5a59514852705872626243";
 
-  public function index()
-  {
+  public function index(){
+    // Periksa id_role
+    if (session()->get('id_role') == 2) {
+      return redirect()->to(base_url('/dashboard'));
+    }
+
     $data = [
       'title' => 'API',
     ];
@@ -114,6 +118,7 @@ class ShopeeController extends Controller
     $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275";
     return $this->getTokenShopLevel($code, $partnerId, $partnerKey, $shopId);
   }
+  
   public function refreshToken($partnerId, $partnerKey, $shopId, $refreshToken){
     $host = "https://partner.shopeemobile.com";
     $path = "/api/v2/auth/access_token/get";

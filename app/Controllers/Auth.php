@@ -8,11 +8,9 @@ class Auth extends BaseController
 {
     public function login()
     {
-        // Ambil data dari form
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
 
-        // Panggil model untuk login
         $model = new user();
         $user = $model->login($username, $password);
 
@@ -22,19 +20,14 @@ class Auth extends BaseController
                 'logged_in' => true,
                 'username' => $username, // Simpan nama pengguna
                 'nama' => $user['nama'],
+                'id_role' => $user['id_role']
             ]);
 
-            // Tentukan alur berdasarkan peran pengguna
-            if ($user['id_role'] == 1) {
-                return redirect()->to(base_url('/dashboard'));
-            } elseif ($user['id_role'] == 2) {
-                return redirect()->to(base_url('/dashboard'));
-            } else {
-                return redirect()->to(base_url());
+            if ($user['id_role'] == 2 && ($this->request->uri->getPath() === 'listKeuangan' || $this->request->uri->getPath() === 'api')) {
+                return redirect()->to(base_url('/dashboard')); // Redirect ke halaman dashboard atau halaman lain yang sesuai
             }
-            } else {
-            // Jika data pengguna tidak ditemukan, kembalikan pesan error
-            return "Username atau password salah!";
+
+            return redirect()->to(base_url('/dashboard'));
         }
 
     }

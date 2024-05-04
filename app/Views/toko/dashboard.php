@@ -73,7 +73,7 @@
                             </span>
                             <div class="timeline-content">
                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Penjualan Shopee</h6>
-                                <a href="/transaksi"><p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalShopee ?> Produk</p>
+                                <a href="/transaksi"><p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalShopee ?> Produk</p></a>
                             </div>
                         </div>
                     </div>
@@ -89,26 +89,10 @@
                     <img class="card-img-top" src="<?= base_url() ?>berkas/<?= $product['foto_produk']; ?>" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Top #<?= $index + 1 ?></h5>
-                        <p class="card-text"><?= $product['nama_produk'] ?></p>
+                        <a href="/produk"><p class="card-text"><?= $product['nama_produk'] ?></p></a>
                         <p class="card-text"><small class="text-success"><?= $product['jumlah_penjualan'] ?> terjual</small></p>
                     </div>
                 </div>
-                <!-- <div class="card">
-                    <img class="card-img-top" src="https://64.media.tumblr.com/fdfd3313f4d8ff670f7e8fe1aadcd047/4e5d88e8724e8406-4c/s400x600/192e76268eca524d2c823a1bd176922fcded7afc.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Top #2</h5>
-                        <p class="card-text">Blossom</p>
-                        <p class="card-text"><small class="text-success">30 terjual</small></p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top" src="https://64.media.tumblr.com/e6bb07eee550e3628bba5ba103fd77b1/4e5d88e8724e8406-2f/s400x600/3bbb155e3418b87b8244c4407adea0fe724d60d4.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Top #3</h5>
-                        <p class="card-text">Bubble</p>
-                        <p class="card-text"><small class="text-success">20 terjual</small></p>
-                    </div>
-                </div> -->
             <?php endforeach;?>
         </div>
     </div>

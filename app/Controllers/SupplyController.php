@@ -120,13 +120,13 @@ class SupplyController extends BaseController{
         $barangKeluarModel = new BarangKeluar();
         $barangKeluar = $barangKeluarModel->findAll();
         $supplyModel = new Supply();
-        $supply = $supplyModel->findAll();
+        $supply = $supplyModel->getSupply();
         $jenisModel = new JenisBarang();
         $jenisBarang = $jenisModel->findAll();
 
         $data = [
             'title' => 'Tambah Data Barang Keluar',
-            'supply' => $supplyModel->getSupply(),
+            'supply' => $supply,
             'barangKeluar' => $barangKeluar,
             'jenisBarang' => $jenisBarang
         ];
@@ -137,12 +137,14 @@ class SupplyController extends BaseController{
     public function storeBK(){
         $barangKeluarModel = new BarangKeluar();
         $supplyModel = new Supply();
+        
         $id_supply = $this->request->getPost('id_supply');
         $jumlahBarangKeluar = $this->request->getPost('jumlah_barangKeluar');
+        
         // Ambil stok produk
         $supply = $supplyModel->find($id_supply);
         $stok_sekarang = $supply['jumlah_supply'];
-        $jumlahBarangKeluar = $this->request->getPost('jumlah_barangKeluar');
+        //$jumlahBarangKeluar = $this->request->getPost('jumlah_barangKeluar');
 
         if (!is_numeric($this->request->getPost('jumlah_barangKeluar'))) {
             return redirect()->to('/tambahBarangKeluar')->with('error', 'Jumlah Barang harus angka!');
@@ -232,7 +234,7 @@ class SupplyController extends BaseController{
         $supplyModel->update($supply['id_supply'], ['jumlah_supply' => $newJumlahSupply]);
 
         // Redirect atau tampilkan pesan sukses
-        return redirect()->to('/detailBarangKeluar');
+        return redirect()->to('/supply');
     }
 
     public function hapusBK($id_barangKeluar)
@@ -240,6 +242,6 @@ class SupplyController extends BaseController{
         $barangKeluarModel = new BarangKeluar();
         $barangKeluarModel->delete($id_barangKeluar);
 
-        return redirect()->to('/detailBarangKeluar');
+        return redirect()->to('/supply');
     }
 }

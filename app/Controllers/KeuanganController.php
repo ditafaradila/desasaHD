@@ -10,7 +10,12 @@ use App\Libraries\MY_TCPDF AS TCPDF;
 
 class KeuanganController extends BaseController{
     public function index(){
-        helper('url');
+        // Periksa id_role
+        if (session()->get('id_role') == 2) {
+            // Jika id_role adalah 2, maka arahkan ke dashboard
+            return redirect()->to(base_url('/dashboard'));
+        }
+
         $pemasukanModel = new Pemasukan();
         $pengeluaranModel = new Pengeluaran();
         $bulan = $this->request->getGet('bulan') ?: date('m');
@@ -24,6 +29,11 @@ class KeuanganController extends BaseController{
     }
 
     public function indexx(){
+        // Periksa id_role
+        if (session()->get('id_role') == 2) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
         $keuanganModel = new Keuangan();
         $totalDebitResult = $keuanganModel->select('SUM(debit) as totalDebit')->first();
         $totalKreditResult = $keuanganModel->select('SUM(kredit) as totalKredit')->first();
@@ -51,6 +61,10 @@ class KeuanganController extends BaseController{
     }
 
     public function detailIn($tanggal){
+        // Periksa id_role
+        if (session()->get('id_role') == 2) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $pemasukanModel = new Pemasukan();
         $detailPemasukan = $pemasukanModel->getDetailPemasukanByDate($tanggal);
 
@@ -62,6 +76,11 @@ class KeuanganController extends BaseController{
     }
 
     public function detailOut($tanggal){
+        // Periksa id_role
+        if (session()->get('id_role') == 2) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
         $pengeluaranModel = new Pengeluaran();
         $detailPengeluaran = $pengeluaranModel->getDetailPengeluaranByDate($tanggal);
 
@@ -73,6 +92,11 @@ class KeuanganController extends BaseController{
     }
 
     public function tambahK(){
+        // Periksa id_role
+        if (session()->get('id_role') == 2) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
         $data = [
             'title' => 'Tambah Data Keuangan',
         ];
@@ -105,6 +129,11 @@ class KeuanganController extends BaseController{
     }
 
     public function editPemasukan($id_pemasukan){
+        // Periksa id_role
+        if (session()->get('id_role') == 2) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
         $pemasukanModel = new Pemasukan();
         $pemasukan = $pemasukanModel->find($id_pemasukan);
 
@@ -158,6 +187,11 @@ class KeuanganController extends BaseController{
     }
 
     public function tambahPengeluaran(){
+        // Periksa id_role
+        if (session()->get('id_role') == 2) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
         $data = [
             'title' => 'Tambah Data Pengeluaran',
         ];
@@ -189,6 +223,11 @@ class KeuanganController extends BaseController{
     }
 
     public function editPengeluaran($id_pengeluaran){
+        // Periksa id_role
+        if (session()->get('id_role') == 2) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        
         $pengeluaranModel = new Pengeluaran();
         $pengeluaran = $pengeluaranModel->find($id_pengeluaran);
 
