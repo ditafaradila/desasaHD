@@ -31,24 +31,19 @@
                     <div class="card-body px-4 pt-4 pb-2">
                         <div class="table-responsive p-0">
                             <form>
-                                <div class="form-group">
-                                    <label for="supply" class="form-label">Nama Barang</label><br>
-                                    <select name="id_supply" id="id_supply">
-                                        <?php foreach ($supply as $supply) : ?>
-                                            <option value="<?= $supply['id_supply']?>">
-                                                <?= $supply['jenis_barang']?> / <?= $supply['jumlah_supply']?> / <?= $supply['tanggal_supply']?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                <div class="row">
+                                    <?php foreach ($supply as $item) : ?>
+                                        <div class="col-md-3">
+                                            <label for="stok_<?= $item['id_supply'] ?>">
+                                                <?= $item['jenis_barang'] ?> (Stok: <?= $item['jumlah_supply'] ?>) / <?= $item['tanggal_supply'] ?>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" class="form-control" name="stok_<?= $item['id_supply'] ?>" id="stok_<?= $item['id_supply'] ?>" placeholder="Masukkan stok...">
+                                        </div>
+                                    <?php endforeach; ?>
                                 </div>
-                                <div class="form-group">
-                                    <label for="jumlah_barangKeluar">Jumlah</label>
-                                    <input type="text" class="form-control" name="jumlah_barangKeluar" id="jumlah_barangKeluar" placeholder="Masukkan angka. Contoh: 20">
-                                </div>
-                                <!-- <div class="form-group">
-                                    <label for="tanggal_barangKeluar">Tanggal Barang Keluar</label>
-                                    <input type="date" class="form-control" id="tanggal_barangKeluar" name="tanggal_barangKeluar">
-                                </div> -->
+                                <br>
                                 <div class="col-6 text-end">
                                     <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
                                 </div>

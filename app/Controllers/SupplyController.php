@@ -115,8 +115,7 @@ class SupplyController extends BaseController{
         return redirect()->to('/supply');
     }
 
-    public function tambahBarangKeluar()
-    {
+    public function tambahBarangKeluar(){
         $barangKeluarModel = new BarangKeluar();
         $barangKeluar = $barangKeluarModel->findAll();
         $supplyModel = new Supply();
@@ -138,54 +137,50 @@ class SupplyController extends BaseController{
         $barangKeluarModel = new BarangKeluar();
         $supplyModel = new Supply();
         
-        $id_supply = $this->request->getPost('id_supply');
-        $jumlahBarangKeluar = $this->request->getPost('jumlah_barangKeluar');
-        
-        // Ambil stok produk
-        $supply = $supplyModel->find($id_supply);
-        $stok_sekarang = $supply['jumlah_supply'];
-        //$jumlahBarangKeluar = $this->request->getPost('jumlah_barangKeluar');
-
-        if (!is_numeric($this->request->getPost('jumlah_barangKeluar'))) {
-            return redirect()->to('/tambahBarangKeluar')->with('error', 'Jumlah Barang harus angka!');
-        }
-        if ($jumlahBarangKeluar <= 0) {
-            return redirect()->to('/tambahBarangKeluar')->with('error', 'Jumlah Supply harus lebih dari 0!');
-        }
-
-        $data = [
-            //'id_barangKeluar' => $this->request->getPost('id_barangKeluar'),
-            'id_supply' => $this->request->getPost('id_supply'),
-            'jumlah_barangKeluar' => $this->request->getPost('jumlah_barangKeluar'),
-            'tanggal_barangKeluar' => date('Y-m-d'),
-        ];
-
-        if ($stok_sekarang > 0) {
-            $data = [
-                'id_supply' => $this->request->getPost('id_supply'),
-                'jumlah_barangKeluar' => $this->request->getPost('jumlah_barangKeluar'),
-                'tanggal_barangKeluar' => date('Y-m-d'),
-            ];
-            $barangKeluarModel->save($data);
-            $id_barangKeluar = $barangKeluarModel->insertID();
-
-            // Kurangi stok produk
-            $stok_baru = $stok_sekarang - $jumlahBarangKeluar; // Misalnya, di sini asumsi setiap transaksi hanya mengurangi stok satu unit
-            $supplyModel->update($id_supply, ['jumlah_supply' => $stok_baru]);
-
-            // Cek apakah stok habis
-            if ($stok_baru <= 0) {
-                // Tampilkan notifikasi bahwa produk habis
-                //$supplyModel->delete($id_supply);
-                // Contoh menggunakan session flash data
-                session()->setFlashdata('pesan', 'Produk telah habis.');
+        // Memproses setiap pasokan
+        foreach ($this->request->getPost() as $key => $value) {
+            // Periksa apakah input merupakan input untuk stok pasokan
+            if (strpos($key, 'stok_') === 0) {
+                $id_supply = str_replace('stok_', '', $key); // Mendapatkan id_supply dari nama input
+                $jumlahBarangKeluar = $value;
+    
+                // Validasi jumlah barang keluar
+                if (!is_numeric($jumlahBarangKeluar) || $jumlahBarangKeluar <= 0) {
+                    return redirect()->to('/tambahBarangKeluar')->with('error', 'Jumlah Barang harus angka dan lebih dari 0!');
+                }
+    
+                // Ambil stok pasokan
+                $supply = $supplyModel->find($id_supply);
+                $stok_sekarang = $supply['jumlah_supply'];
+    
+                // Periksa apakah stok mencukupi
+                if ($stok_sekarang >= $jumlahBarangKeluar) {
+                    // Kurangi stok pasokan
+                    $stok_baru = $stok_sekarang - $jumlahBarangKeluar;
+                    $supplyModel->update($id_supply, ['jumlah_supply' => $stok_baru]);
+    
+                    $data = [
+                        'id_supply' => $id_supply,
+                        'jumlah_barangKeluar' => $jumlahBarangKeluar,
+                        'tanggal_barangKeluar' => date('Y-m-d'),
+                    ];
+                    $barangKeluarModel->save($data);
+    
+                    // Cek apakah stok habis
+                    if ($stok_baru <= 0) {
+                        // Tampilkan notifikasi bahwa pasokan habis
+                        session()->setFlashdata('pesan', 'Pasokan telah habis.');
+                    }
+                } else {
+                    // Jika stok tidak mencukupi, kembalikan pesan kesalahan
+                    return redirect()->to('/supply')->with('error', 'Stok pasokan tidak mencukupi.');
+                }
             }
-        } else {
-            // Jika stok habis, kembalikan ke halaman sebelumnya dan tampilkan pesan
-            return redirect()->to('/supply')->with('error', 'Stok produk telah habis.');
         }
+    
         return redirect()->to('/supply');
     }
+    
 
     public function detailBarangKeluar($id_jenisBarang){
         $supplyModel = new Supply();
