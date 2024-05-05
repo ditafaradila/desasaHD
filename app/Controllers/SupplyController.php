@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\BarangKeluar;
 use App\Models\JenisBarang;
+use App\Models\Keuangan;
 use App\Models\Pengeluaran;
 use App\Models\Supply;
 
@@ -60,6 +61,7 @@ class SupplyController extends BaseController{
     {
         $supplyModel = new Supply();
         $pengeluaranModel = new Pengeluaran();
+        $keuanganModel = new Keuangan();
         $jumlahSupply = $this->request->getPost('jumlah_supply');
         $hargaSupply = $this->request->getPost('harga_supply');
 
@@ -88,6 +90,13 @@ class SupplyController extends BaseController{
             'nominal' => $this->request->getPost('harga_supply'),
         ];
         $pengeluaranModel->save($dataPengeluaran);
+
+        $data = [
+            'keterangan' => "Pembelian Bahan Baku",
+            'tanggal' => date('Y-m-d'),
+            'kredit' => $this->request->getPost('harga_supply'),
+        ];
+        $keuanganModel->save($data);
         return redirect()->to('/supply');
     }
 

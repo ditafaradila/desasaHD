@@ -11,6 +11,13 @@ class Keuangan extends Model
     protected $useAutoIncrement = true;
     protected $allowedFields    = ['id_keuangan', 'id_pemasukan', 'id_pengeluaran', 'id_transaksi', 'keterangan', 'tanggal', 'debit', 'kredit'];
 
+    public function getkeuanganbyMonth($bulan){
+        return $this->db->table('tbl_keuangan')
+        ->orderBy('tanggal', 'ASC')
+        ->where('MONTH(tanggal)', $bulan)
+        ->get()->getResultArray();
+    }
+
     public function getkeuangan(){
         return $this->db->table('tbl_keuangan')
         ->orderBy('tanggal', 'ASC')

@@ -46,10 +46,11 @@ class KeuanganController extends BaseController{
         $totalToko = $totalTokoResult['totalToko'];
 
         $totalUang = $totalDebit - $totalKredit;
+        $bulan = $this->request->getGet('bulan') ?: date('m');
 
         $data = [
             'title' => 'Keuangan',
-            'keuangan' => $keuanganModel->getkeuangan(),
+            'keuangan' => $keuanganModel->getkeuanganbyMonth($bulan),
             'totalDebit' =>$totalDebit,
             'totalKredit' =>$totalKredit,
             'totalUang' =>$totalUang,
