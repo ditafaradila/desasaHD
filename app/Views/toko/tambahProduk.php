@@ -52,13 +52,7 @@
                                     <div class="col-9">
                                         <h6 class="mb-0">Tambah Produk</h6>
                                     </div>
-                                    <div class="col-3 text-end">
-                                        <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
-                                            <i class="fa fa-close"></i>
-                                        </button>
-                                    </div>
                                 </div>
-
                             </div>
                             <div class="card-body px-4 pt-4 pb-2">
                                 <div class="table-responsive p-0">

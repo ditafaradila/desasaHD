@@ -33,6 +33,7 @@ class Supply extends Model
         return $this->db->table('tbl_supply')
                         ->join('tbl_jenisbarang', 'tbl_jenisbarang.id_jenisBarang=tbl_supply.id_jenisBarang')
                         ->where('tbl_supply.id_jenisBarang', $id_jenisBarang)
+                        ->where('tbl_supply.jumlah_supply >', 0)
                         ->get()
                         ->getResultArray();
     }

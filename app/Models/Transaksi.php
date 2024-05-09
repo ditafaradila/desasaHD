@@ -9,7 +9,7 @@ class Transaksi extends Model
     protected $table            = 'tbl_transaksi';
     protected $primaryKey       = 'id_transaksi';
     protected $useAutoIncrement = true;
-    protected $allowedFields    = ['id_transaksi', 'waktu', 'metode_bayar', 'diskon', 'nominal', 'id_produk'];
+    protected $allowedFields    = ['id_transaksi', 'waktu', 'metode_bayar', 'diskon', 'nominal', 'id_produk', 'jumlah', 'nominal_bayar', 'kembalian'];
 
     public function gettransaksi(){
         return $this->db->table('tbl_transaksi')

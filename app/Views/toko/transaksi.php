@@ -110,8 +110,10 @@
                                 </div>
                             </div>
                             <div class="col-4 text-end">
-                                <a href="/tambahTransaksi" type="button" class="icon icon-shape icon-custom bg-gradient-primary-alt shadow text-center border-radius-md" data-bs-toggle="modal" data-bs-target="#tambahTransaksi">
-                                    <i class="fa fa-plus text-lg" aria-hidden="true"></i>
+                                <a href="/kasir">
+                                    <div class="icon icon-shape icon-custom bg-gradient-primary-alt shadow text-center border-radius-md">
+                                        <i class="fa fa-plus text-lg" aria-hidden="true"></i>
+                                    </div>
                                 </a>
                             </div>
                         </div>
@@ -403,75 +405,40 @@
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                     Rp <?= number_format($transaksi['diskon']) ?></p>
                                                             </div>
-                                                            <!-- <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Tanggal
-                                                                    Transaksi</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    <?= $transaksi['waktu'] ?></p>
-                                                            </div> -->
-                                                        </div>
-                                                        <div class="row">
                                                             <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Harga
-                                                                    Awal</h5>
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Harga Produk</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                     Rp <?= number_format($transaksi['harga_produk']) ?></p>
                                                             </div>
+                                                        </div>
+                                                        <div class="row">
                                                             <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Harga
-                                                                    Akhir</h5>
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Jumlah Produk</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    <?= ($transaksi['jumlah']) ?></p>
+                                                            </div>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Total Harga</h5>
                                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                     Rp <?= number_format($transaksi['nominal']) ?></p>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Modal Edit Supply -->
-                                        <div class="modal fade" id="editTransaksi-<?= $transaksi['id_transaksi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h6 class="modal-title" id="exampleModalLabel">Edit Transaksi Toko
-                                                        </h6>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
-                                                    </div>
-                                                    <form action="<?= base_url('/updateTransaksi/' . $transaksi['id_transaksi']) ?>" method="post">
-                                                        <?= csrf_field(); ?>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <label for="produk" class="form-label">Nama
-                                                                    Barang</label><br>
-                                                                <select name="id_produk" id="id_produk">
-                                                                    <option value="" disabled selected>Pilih produk</option>
-                                                                    <?php foreach ($produkList as $produkItem) : ?>
-                                                                        <option value="<?= $produkItem->id_produk ?>" data-harga="<?= $produkItem->harga_produk ?>">
-                                                                            <span class="shorten-text"><?= $produkItem->nama_produk ?></span>
-                                                                            / <?= $produkItem->harga_produk ?>
-                                                                        </option>
-                                                                    <?php endforeach; ?>
-                                                                </select>
+                                                        <div class="row">
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Nominal Bayar</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    Rp <?= number_format(floatval($transaksi['nominal_bayar'])) ?></p>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="metode_bayar">Metode Bayar</label>
-                                                                <input type="text" class="form-control" name="metode_bayar" id="metode_barang" value="<?= $transaksi['metode_bayar'] ?>">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="diskon">Diskon</label>
-                                                                <input type="text" class="form-control" name="diskon" id="diskon" value="<?= $transaksi['diskon'] ?>">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="harga_produk" class="form-label">Harga Barang</label>
-                                                                <input type="text" class="form-control" name="harga_produk" id="harga_produk" readonly>
-                                                            </div>
-                                                            <div align="center">
-                                                                <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN
-                                                                    PERUBAHAN</button>
+                                                            <div class="timeline-content mb-3 col-6">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Kembalian</h5>
+                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                    Rp <?= number_format(floatval($transaksi['kembalian'])) ?></p>
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                        <div class="align-middle text-center">
+                                                            <a href="/cetakStruk/<?= ($transaksi['id_transaksi']) ?>" type="button" class="btn btn-outline-primary btn-sm mb-0"><i class="fa fa-print" style="font-size: 12px;"></i>struk</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -482,56 +449,6 @@
                             </table>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal tambah Transaksi -->
-    <div class="modal fade" id="tambahTransaksi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Transaksi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/storeTransaksi" method="post">
-                        <?= csrf_field(); ?>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="metode_bayar">Metode Bayar</label>
-                                <select class="form-select" name="metode_bayar" id="metode_bayar">
-                                    <option value="Cash">Cash</option>
-                                    <option value="Transfer">Transfer</option>
-                                    <option value="Qris">Qris</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="diskon">Diskon</label>
-                                <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan diskon yang sedang berlaku. Contoh: 10000.">
-                            </div>
-                            <div class="form-group">
-                                <label for="produk" class="form-label">Nama Barang</label><br>
-                                <select name="id_produk" id="id_produk">
-                                    <option value="" disabled selected>Pilih produk</option>
-                                    <?php foreach ($produkList as $produkItem) : ?>
-                                        <option value="<?= $produkItem->id_produk ?>" data-harga="<?= $produkItem->harga_produk ?>">
-                                            <span class="shorten-text"><?= $produkItem->nama_produk ?></span> /
-                                            <?= $produkItem->harga_produk ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="harga_produk" class="form-label">Harga Barang</label>
-                                <input type="text" class="form-control" name="harga_produk" id="harga_produk" readonly>
-                            </div>
-                            <div align="center">
-                                <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN PERUBAHAN</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

@@ -178,7 +178,7 @@ class SupplyController extends BaseController{
                     // Cek apakah stok habis
                     if ($stok_baru <= 0) {
                         // Tampilkan notifikasi bahwa pasokan habis
-                        session()->setFlashdata('pesan', 'Pasokan telah habis.');
+                        session()->setFlashdata('error', 'Pasokan telah habis.');
                     }
                 } else {
                     // Jika stok tidak mencukupi, kembalikan pesan kesalahan

@@ -9,6 +9,7 @@ use App\Models\Pemasukan;
 use App\Models\Produk;
 use App\Models\Transaksi;
 use App\Libraries\MY_TCPDF as TCPDF;
+use App\Libraries\struk_tcpdf;
 use App\Models\detailOrderList;
 use App\Models\OrderList;
 
@@ -24,7 +25,6 @@ class TransaksiController extends BaseController
         $detailOrder = new detailOrderList();
         //$orders = $detailOrder->findAll();
 
-        // Ambil data dengan sistem penomoran halaman
         $orders = $detailOrder->findAll();
 
         $totalShopeeResult = $orderModel->select('count(order_sn) as totalShopee')->first();
@@ -46,6 +46,20 @@ class TransaksiController extends BaseController
         return view('toko/transaksi', $data);
     }
 
+    public function kasir(){
+        $transaksiModel = new Transaksi();
+        $transaksi = $transaksiModel->getTransaksi();
+        $produkModel = new Produk();
+        $produk = $produkModel->findAll();
+
+        $data = [
+            'title' => 'Kasir',
+            'transaksi' => $transaksi,
+            'produkList' => $produk,
+        ];
+        return view('toko/kasir', $data);
+    }
+
     public function getHarga($id_produk)
     {
         $transaksiModel = new Transaksi();
@@ -55,8 +69,7 @@ class TransaksiController extends BaseController
         return $this->response->setJSON(['harga_produk' => $hargaProduk]);
     }
 
-    public function storeTransaksi()
-    {
+    public function storeTransaksi(){
         $transaksiModel = new Transaksi();
         $keuanganModel = new Keuangan();
         $pemasukanModel = new Pemasukan();
@@ -64,9 +77,12 @@ class TransaksiController extends BaseController
 
 
         $id_produk = $this->request->getPost('id_produk');
+        $jumlah = $this->request->getPost('jumlah');
         $harga_produk = $transaksiModel->getHargaProduk($id_produk);
         $diskon = (float) $this->request->getPost('diskon');
-        $nominal = $harga_produk - $diskon;
+        $nominal = ($harga_produk * $jumlah) - $diskon;
+        $nominal_bayar = $this->request->getPost('nominal_bayar');
+        $kembalian = $nominal_bayar - $nominal;
 
         // Ambil stok produk
         $produk = $produkModel->find($id_produk);
@@ -77,11 +93,14 @@ class TransaksiController extends BaseController
             // Data transaksi
             $data = [
                 'id_transaksi' => $this->request->getPost('id_transaksi'),
-                'waktu' => date('Y-m-d'),
+                'waktu' => date('Y-m-d H:i:s'),
                 'metode_bayar' => $this->request->getPost('metode_bayar'),
                 'diskon' => $diskon,
                 'nominal' => $nominal,
                 'id_produk' => $this->request->getPost('id_produk'),
+                'jumlah' => $this->request->getPost('jumlah'),
+                'nominal_bayar' => $nominal_bayar,
+                'kembalian' => $kembalian,
             ];
 
             // Simpan transaksi
@@ -110,7 +129,7 @@ class TransaksiController extends BaseController
             $keuanganModel->save($data);
 
             // Kurangi stok produk
-            $stok_baru = $stok_sekarang - 1;
+            $stok_baru = $stok_sekarang - $jumlah;
             $produkModel->update($id_produk, ['jumlah_produk' => $stok_baru]);
 
             // Cek apakah stok habis
@@ -194,6 +213,46 @@ class TransaksiController extends BaseController
         return redirect()->to('/transaksi');
     }
 
+    public function cetakStruk($id_transaksi){
+        $pdf = new struk_tcpdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->setPrintHeader(true);
+        $pdf->setPrintFooter(true);
+        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->setFontSubsetting(true);
+        $pdf->SetFont('helvetica', '', 8, '', true);
+        $pdf->AddPage();
+
+        $transaksiModel = new Transaksi();
+        $transaksi = $transaksiModel->find($id_transaksi);
+        $produkModel = new Produk();
+        $produk = $produkModel->where('id_produk', $transaksi['id_produk'])->findAll();
+
+        $data = [
+            'title' => 'Transaksi',
+            'transaksi' => $transaksi,
+            'produkList' => $produk,
+        ];
+        $html = view('toko/cetakStruk', $data);
+
+
+        $pdf->setHeaderData('', 0, 'Struk Pembelian', 'Tanggal: ' . date('Y-m-d H:i:s'));
+        $pdf->setFooterData(['0', '', ''], [0, '', '']);
+        $pdf->setY(65);
+        $pdf->setX(1);
+        $pdf->setMargins(1, 0, 1);
+        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+        $this->response->setContentType('application/pdf');
+        $pdf->Output('struk_pembelian.pdf', 'I');
+    }
+
     public function cetakToko()
     {
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -230,26 +289,4 @@ class TransaksiController extends BaseController
         $pdf->Output('laporan-Toko.pdf', 'I');
     }
 
-    public function getOrders()
-    {
-        $client = \Config\Services::curlrequest();
-
-        // Ganti URL sesuai dengan API yang ingin Anda akses
-        $url = 'https://fake-store-api.mock.beeceptor.com/api/orders';
-
-        // Lakukan permintaan GET ke API
-        $response = $client->get($url);
-
-        // Periksa apakah permintaan berhasil
-        if ($response->getStatusCode() == 200) {
-            // Proses data JSON yang diterima
-            $data['orders'] = json_decode($response->getBody(), true);
-
-            // Tampilkan data ke view atau lakukan operasi lainnya
-            return view('api_result', $data);
-        } else {
-            // Tampilkan pesan kesalahan jika permintaan tidak berhasil
-            return 'Error: ' . $response->getStatusCode();
-        }
-    }
 }
