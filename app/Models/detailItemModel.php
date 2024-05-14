@@ -12,8 +12,7 @@ class detailItemModel extends Model
                                 'original_price', 'current_price', 'stock_type', 'current_stock', 'normal_stock', 'image_url_list', 'weight', 'condition', 'size_chart', 'item_status', 'deboost']; // Sesuaikan dengan kolom yang ingin Anda simpan
 
 
-    public function saveItem($data)
-    {
+    public function saveItem($data){
         if (isset($data['image'])) {
             $image_url_list = implode(',', $data['image']['image_url_list']);
             $data['image_url_list'] = $image_url_list;

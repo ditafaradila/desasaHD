@@ -179,7 +179,7 @@
                                             </td>
                                             <td class="align-middle text-center text-sm">
                                                 <p class="text-xs font-weight-bold mb-0">
-                                                    <?= CodeIgniter\I18n\Time::createFromTimestamp($order['update_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
+                                                    <?= CodeIgniter\I18n\Time::createFromTimestamp($order['create_time'], 'Asia/Jakarta')->format('d F Y, H:i:s'); ?>
                                                 </p>
                                             </td>
                                             <td>
@@ -301,157 +301,171 @@
                                                                     <?= $order['buyer_username'] ?></p>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php
-                                    endforeach
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Transaksi Toko -->
-            <div class="col-6">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <div class="row">
-                            <div class="col-6 d-flex align-items-center">
-                                <h6 class="mb-0">Transaksi Toko</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            No
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Nama Produk</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Tanggal</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Harga</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $no = 1;
-                                    foreach ($transaksi as $transaksi) :
-                                    ?>
-                                        <tr>
-                                            <td class="align-middle text-center">
-                                                <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
-                                            </td>
-                                            <td>
-                                                <p class="shorten-text text-xs font-weight-bold mb-0">
-                                                    <?= $transaksi['nama_produk'] ?></p>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                <p class="text-xs font-weight-bold mb-0"><?= $transaksi['waktu'] ?></p>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                <p class="text-xs font-weight-bold mb-0"><?= $transaksi['nominal'] ?></p>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <div>
-                                                    <!-- <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editTransaksi-<?= $transaksi['id_transaksi'] ?>">
-                                                        <i class="fa fa-pencil"></i>
-                                                    </button>
-                                                    <a href="<?= base_url('/hapusTransaksi/' . $transaksi['id_transaksi']) ?>" class="btn btn-link text-center text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a> -->
-                                                    <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#detailToko-<?= $transaksi['id_transaksi'] ?>">
-                                                        <i class="fa fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Modal Detail Transaksi -->
-                                        <div class="modal fade" id="detailToko-<?= $transaksi['id_transaksi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h6 class="modal-title" id="exampleModalLabel">Detail Data</h6>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
-                                                    </div>
-                                                    <?= csrf_field(); ?>
-                                                    <div class="modal-body">
                                                         <div class="row">
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h6 class="text-dark text-sm font-weight-bold mb-0">Nama
-                                                                    Produk</h6>
-                                                                <p class="shorten-text text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    <?= $transaksi['nama_produk'] ?></p>
+                                                            <div class="mb-3 col-12" style="margin-left: 45px; margin-right: 45px;">
+                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Nama Produk</h5>
+                                                                <?php
+                                                                $item_names = explode(',', $order['item_name']);
+                                                                foreach ($item_names as $item_name) :
+                                                                ?>
+                                                                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0" style="margin-right: 45px;">
+                                                                        <?= $item_name ?>
+                                                                    </p>
+                                                                <?php endforeach; ?>
                                                             </div>
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Metode
-                                                                    Pembayaran</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    <?= $transaksi['metode_bayar'] ?></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Diskon
-                                                                </h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    Rp <?= number_format($transaksi['diskon']) ?></p>
-                                                            </div>
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Harga Produk</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    Rp <?= number_format($transaksi['harga_produk']) ?></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Jumlah Produk</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    <?= ($transaksi['jumlah']) ?></p>
-                                                            </div>
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Total Harga</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    Rp <?= number_format($transaksi['nominal']) ?></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Nominal Bayar</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    Rp <?= number_format(floatval($transaksi['nominal_bayar'])) ?></p>
-                                                            </div>
-                                                            <div class="timeline-content mb-3 col-6">
-                                                                <h5 class="text-dark text-sm font-weight-bold mb-0">Kembalian</h5>
-                                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                    Rp <?= number_format(floatval($transaksi['kembalian'])) ?></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="align-middle text-center">
-                                                            <a href="/cetakStruk/<?= ($transaksi['id_transaksi']) ?>" type="button" class="btn btn-outline-primary btn-sm mb-0"><i class="fa fa-print" style="font-size: 12px;"></i>struk</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php
-                                    endforeach
-                                    ?>
-                                </tbody>
-                            </table>
                         </div>
+                    <?php
+                                    endforeach
+                    ?>
+                    </tbody>
+                    </table>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Transaksi Toko -->
+        <div class="col-6">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <h6 class="mb-0">Transaksi Toko</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        No
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Nama Produk</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Tanggal</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Harga</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $no = 1;
+                                foreach ($transaksi as $transaksi) :
+                                ?>
+                                    <tr>
+                                        <td class="align-middle text-center">
+                                            <span class="text-secondary text-xs font-weight-bold"><?= $no++ ?></span>
+                                        </td>
+                                        <td>
+                                            <p class="shorten-text text-xs font-weight-bold mb-0">
+                                                <?= $transaksi['nama_produk'] ?></p>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <p class="text-xs font-weight-bold mb-0"><?= $transaksi['waktu'] ?></p>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <p class="text-xs font-weight-bold mb-0"><?= $transaksi['nominal'] ?></p>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <div>
+                                                <!-- <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editTransaksi-<?= $transaksi['id_transaksi'] ?>">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
+                                                    <a href="<?= base_url('/hapusTransaksi/' . $transaksi['id_transaksi']) ?>" class="btn btn-link text-center text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a> -->
+                                                <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#detailToko-<?= $transaksi['id_transaksi'] ?>">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Modal Detail Transaksi -->
+                                    <div class="modal fade" id="detailToko-<?= $transaksi['id_transaksi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title" id="exampleModalLabel">Detail Data</h6>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
+                                                </div>
+                                                <?= csrf_field(); ?>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="timeline-content mb-3 col-6">
+                                                            <h6 class="text-dark text-sm font-weight-bold mb-0">Nama
+                                                                Produk</h6>
+                                                            <p class="shorten-text text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <?= $transaksi['nama_produk'] ?></p>
+                                                        </div>
+                                                        <div class="timeline-content mb-3 col-6">
+                                                            <h5 class="text-dark text-sm font-weight-bold mb-0">Metode
+                                                                Pembayaran</h5>
+                                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <?= $transaksi['metode_bayar'] ?></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="timeline-content mb-3 col-6">
+                                                            <h5 class="text-dark text-sm font-weight-bold mb-0">Diskon
+                                                            </h5>
+                                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                Rp <?= number_format($transaksi['diskon']) ?></p>
+                                                        </div>
+                                                        <div class="timeline-content mb-3 col-6">
+                                                            <h5 class="text-dark text-sm font-weight-bold mb-0">Harga Produk</h5>
+                                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                Rp <?= number_format($transaksi['harga_produk']) ?></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="timeline-content mb-3 col-6">
+                                                            <h5 class="text-dark text-sm font-weight-bold mb-0">Jumlah Produk</h5>
+                                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <?= ($transaksi['jumlah']) ?></p>
+                                                        </div>
+                                                        <div class="timeline-content mb-3 col-6">
+                                                            <h5 class="text-dark text-sm font-weight-bold mb-0">Total Harga</h5>
+                                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                Rp <?= number_format($transaksi['nominal']) ?></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="timeline-content mb-3 col-6">
+                                                            <h5 class="text-dark text-sm font-weight-bold mb-0">Nominal Bayar</h5>
+                                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                Rp <?= number_format(floatval($transaksi['nominal_bayar'])) ?></p>
+                                                        </div>
+                                                        <div class="timeline-content mb-3 col-6">
+                                                            <h5 class="text-dark text-sm font-weight-bold mb-0">Kembalian</h5>
+                                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                Rp <?= number_format(floatval($transaksi['kembalian'])) ?></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="align-middle text-center">
+                                                        <a href="/cetakStruk/<?= ($transaksi['id_transaksi']) ?>" type="button" class="btn btn-outline-primary btn-sm mb-0"><i class="fa fa-print" style="font-size: 12px;"></i>struk</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php
+                                endforeach
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </body>
 

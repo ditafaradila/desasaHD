@@ -30,24 +30,28 @@
                     </div>
                     <div class="card-body px-4 pt-4 pb-2">
                         <div class="table-responsive p-0">
-                            <form>
-                                <div class="row">
-                                    <?php foreach ($supply as $item) : ?>
-                                        <div class="col-md-3">
-                                            <label for="stok_<?= $item['id_supply'] ?>">
-                                                <?= $item['jenis_barang'] ?> (Stok: <?= $item['jumlah_supply'] ?>) / <?= $item['tanggal_supply'] ?>
-                                            </label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="number" class="form-control" name="stok_<?= $item['id_supply'] ?>" id="stok_<?= $item['id_supply'] ?>" placeholder="Masukkan stok...">
-                                        </div>
-                                    <?php endforeach; ?>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="id_jenisBarang">Pilih Jenis Barang:</label>
+                                    <select class="form-control" id="id_jenisBarang" name="id_jenisBarang">
+                                        <?php foreach ($supply as $item) : ?>
+                                            <option value="<?= $item['id_jenisBarang'] ?>">
+                                                <?= $item['jenis_barang'] ?> (Stok: <?= $item['total_jumlah_supply'] ?>)
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
-                                <br>
-                                <div class="col-6 text-end">
-                                    <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control" name="jumlah_barangKeluar" id="jumlah_barangKeluar" placeholder="Masukkan stok...">
                                 </div>
-                            </form>
+                            </div>
+
+                            <br>
+                            <div class="col-6 text-end">
+                                <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
+                            </div>
                         </div>
                     </div>
                 </div>

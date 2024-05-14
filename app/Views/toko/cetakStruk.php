@@ -42,31 +42,31 @@
             <tbody>
                 <?php foreach ($produkList as $produk) : ?>
                 <tr>
-                    <td style="width:50%;"><?= $produk->nama_produk ?></td>
+                    <td style="width:40%;"><?= $produk->nama_produk ?></td>
                     <td style="width:5%;" class="garis"><?= $transaksi['jumlah'] ?></td>
-                    <td style="width:20%;" class="garis"><?= number_format($produk->harga_produk) ?></td>
-                    <td style="width:20%;" class="garis"><?= number_format($transaksi['jumlah'] * $produk->harga_produk) ?></td>
+                    <td style="width:25%;" class="garis">Rp. <?= number_format($produk->harga_produk) ?></td>
+                    <td style="width:25%;" class="garis">Rp. <?= number_format($transaksi['jumlah'] * $produk->harga_produk) ?></td>
                 </tr>
                 <?php endforeach; ?>
                 <tr>
                     <td></td>
                     <td colspan="2" align="right" class="garis"> Harga Jual :</td>
-                    <td class="garis"><p><?= number_format($transaksi['jumlah'] * $produk->harga_produk) ?></p></td>
+                    <td class="garis"><p>Rp. <?= number_format($transaksi['jumlah'] * $produk->harga_produk) ?></p></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td colspan="2" align="right">Total :</td>
-                    <td><p><?= number_format($transaksi['jumlah'] * $produk->harga_produk) ?></p></td>
+                    <td><p>Rp. <?= number_format($transaksi['jumlah'] * $produk->harga_produk) ?></p></td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td colspan="2" align="right">Nominal Bayar :</td>
-                    <td><p><?= number_format($transaksi['nominal_bayar']) ?></p></td>
+                    <!-- <td></td> -->
+                    <td colspan="3" align="right">Nominal Bayar :</td>
+                    <td><p>Rp. <?= number_format($transaksi['nominal_bayar']) ?></p></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td colspan="2" align="right">Kembali :</td>
-                    <td><p><?= number_format($transaksi['kembalian']) ?></p></td>
+                    <td><p>Rp. <?= number_format($transaksi['kembalian']) ?></p></td>
                 </tr>
             </tbody>
         </table>

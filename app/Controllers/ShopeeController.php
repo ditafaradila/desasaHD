@@ -7,6 +7,7 @@ use App\Models\detailOrderList;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\Request;
 use App\Controllers\Services;
+use App\Models\Api;
 use App\Models\ItemModel;
 use App\Models\Keuangan;
 use App\Models\OrderList;
@@ -24,10 +25,38 @@ class ShopeeController extends Controller
       return redirect()->to(base_url('/dashboard'));
     }
 
+    $apiModel = new Api();
+    $api = $apiModel->find(1);
+
     $data = [
       'title' => 'API',
+      'api' =>$api
     ];
     return view('toko/api.php', $data);
+  }
+
+  public function updateApi($id_api){
+    $request = service('request');
+    $apiModel = new Api();
+
+    $partner_key = $request->getPost('partner_key');
+    $partner_id = $request->getPost('partner_id');
+    $shop_id = $request->getPost('shop_id');
+    $code = $request->getPost('code');
+    $access_token = $request->getPost('access_token');
+    $refresh_token = $request->getPost('refresh_token');
+
+    $data = [
+      'partner_key' => $partner_key,
+      'partner_id' => $partner_id,
+      'shop_id' => $shop_id,
+      'code' => $code,
+      'access_token' => $access_token,
+      'refresh_token' => $refresh_token,
+    ];
+    $apiModel->update($id_api, $data);
+
+    return redirect()->to('/api'); 
   }
 
   public function auth()
@@ -139,8 +168,9 @@ class ShopeeController extends Controller
     $ret = json_decode($resp, true);
     $accessToken = $ret["access_token"] ?? null;
     $newRefreshToken = $ret["refresh_token"] ?? null;
-    echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken raw: $resp" . "\n";
-    return $ret;
+    echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken";
+    // echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken raw: $resp" . "\n";
+    // return $ret;
   }
 
   public function processRefreshToken(){
@@ -174,7 +204,7 @@ class ShopeeController extends Controller
     $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
     $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
 
-    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&offset=0&page_size=100&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&item_status=BANNED&item_status=UNLIST&item_status=REVIEWING&item_status=SELLER_DELETE&item_status=SHOPEE_DELETE&offset=0&page_size=100&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
 
     // Membuat permintaan GET ke API Shopee
     $curl = curl_init($url);
@@ -222,9 +252,6 @@ class ShopeeController extends Controller
   }
 
   public function getItemBaseInfo(){
-    // // Set item_id yang ingin Anda minta informasinya
-    //$item_id = 12048275043;
-
     $itemModel = new ItemModel();
     $items = $itemModel->findAll();
 
@@ -349,7 +376,7 @@ class ShopeeController extends Controller
     $keuanganModel = new Keuangan();
     foreach ($orders as $order){
       try{
-        $url = "https://partner.shopeemobile.com/api/v2/order/get_order_detail?access_token={$accessToken}&order_sn_list={$order['order_sn']}&request_order_status_pending=false&response_optional_fields=order_sn,region,currency,cod,total_amount,pending_terms,order_status,shipping_carrier,payment_method,estimated_shipping_fee,message_to_seller,create_time,update_time,days_to_ship,ship_by_date,buyer_user_id,buyer_username&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+        $url = "https://partner.shopeemobile.com/api/v2/order/get_order_detail?access_token={$accessToken}&order_sn_list={$order['order_sn']}&request_order_status_pending=false&response_optional_fields=order_sn,region,currency,cod,total_amount,pending_terms,order_status,shipping_carrier,payment_method,estimated_shipping_fee,message_to_seller,create_time,update_time,days_to_ship,ship_by_date,buyer_user_id,buyer_username,item_list,item_id,item_name&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
 
         // Membuat permintaan GET ke API Shopee
         $curl = curl_init($url);
@@ -366,7 +393,7 @@ class ShopeeController extends Controller
           if (!$existingItem) {
             $detailOrderModel->saveItem($order);
           } else {
-            $detailOrderModel->update($existingItem['order_sn'], $order); // Anda perlu mengganti 'id' dengan nama kolom id yang sesuai
+            $detailOrderModel->update($existingItem['id_orderList'], $order); // Anda perlu mengganti 'id' dengan nama kolom id yang sesuai
           }
 
           // Simpan data pemasukan di luar loop detail order
@@ -416,11 +443,9 @@ class ShopeeController extends Controller
   
   public function showOrderList()
   {
-    set_time_limit(300);
-    // Memanggil method getItemList untuk mendapatkan data item
+    set_time_limit(600);
     $order = $this->getOrderList();
     $orders = $this->getDetailOrderList();
-    // Menampilkan view item_list.php bersama dengan data item
     return redirect()->to('/api')->with('success', 'Data berhasil diambil');
   }
 }

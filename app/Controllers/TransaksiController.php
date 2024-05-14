@@ -21,18 +21,14 @@ class TransaksiController extends BaseController
         $produkModel = new Produk();
         $produk = $produkModel->findAll();
         $orderModel = new OrderList();
-        //$order = $orderModel->findAll();
         $detailOrder = new detailOrderList();
-        //$orders = $detailOrder->findAll();
-
-        $orders = $detailOrder->findAll();
+        $orders = $detailOrder->getOrderedDetailOrders();
 
         $totalShopeeResult = $orderModel->select('count(order_sn) as totalShopee')->first();
         $totalShopee = !empty($totalShopeeResult) ? $totalShopeeResult['totalShopee'] : 0;
         $totalTokoResult = $transaksiModel->select('count(id_transaksi) as totalToko')->first();
         $totalToko = !empty($totalTokoResult) ? $totalTokoResult['totalToko'] : 0;
         $totalTransaksi = $totalShopee + $totalToko;
-
 
         $data = [
             'title' => 'Transaksi',
@@ -244,7 +240,7 @@ class TransaksiController extends BaseController
 
         $pdf->setHeaderData('', 0, 'Struk Pembelian', 'Tanggal: ' . date('Y-m-d H:i:s'));
         $pdf->setFooterData(['0', '', ''], [0, '', '']);
-        $pdf->setY(65);
+        $pdf->setY(43);
         $pdf->setX(1);
         $pdf->setMargins(1, 0, 1);
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);

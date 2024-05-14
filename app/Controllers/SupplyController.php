@@ -142,52 +142,52 @@ class SupplyController extends BaseController{
         return view('toko/tambahBarangKeluar', $data);
     }
 
-    public function storeBK(){
+    public function storeBK()
+    {
         $barangKeluarModel = new BarangKeluar();
         $supplyModel = new Supply();
-        
-        // Memproses setiap pasokan
-        foreach ($this->request->getPost() as $key => $value) {
-            // Periksa apakah input merupakan input untuk stok pasokan
-            if (strpos($key, 'stok_') === 0) {
-                $id_supply = str_replace('stok_', '', $key); // Mendapatkan id_supply dari nama input
-                $jumlahBarangKeluar = $value;
     
-                // Validasi jumlah barang keluar
-                if (!is_numeric($jumlahBarangKeluar) || $jumlahBarangKeluar <= 0) {
-                    return redirect()->to('/tambahBarangKeluar')->with('error', 'Jumlah Barang harus angka dan lebih dari 0!');
-                }
+        // Ambil data dari form
+        $id_jenisBarang = $this->request->getPost('id_jenisBarang');
+        $jumlah_barangKeluar = $this->request->getPost('jumlah_barangKeluar');
     
-                // Ambil stok pasokan
-                $supply = $supplyModel->find($id_supply);
-                $stok_sekarang = $supply['jumlah_supply'];
+        // Validasi input
+        if (!is_numeric($jumlah_barangKeluar) || $jumlah_barangKeluar <= 0) {
+            return redirect()->back()->withInput()->with('error', 'Jumlah Barang harus angka dan lebih dari 0!');
+        }
     
-                // Periksa apakah stok mencukupi
-                if ($stok_sekarang >= $jumlahBarangKeluar) {
-                    // Kurangi stok pasokan
-                    $stok_baru = $stok_sekarang - $jumlahBarangKeluar;
-                    $supplyModel->update($id_supply, ['jumlah_supply' => $stok_baru]);
+        // Ambil data supply berdasarkan id_jenisBarang
+        $supplyData = $supplyModel->where('id_jenisBarang', $id_jenisBarang)
+                                  ->orderBy('jumlah_supply', 'ASC')
+                                  ->findAll();
     
-                    $data = [
-                        'id_supply' => $id_supply,
-                        'jumlah_barangKeluar' => $jumlahBarangKeluar,
-                        'tanggal_barangKeluar' => date('Y-m-d'),
-                    ];
-                    $barangKeluarModel->save($data);
+        // Cek total stok yang tersedia
+        $total_stok = array_sum(array_column($supplyData, 'jumlah_supply'));
+        if ($total_stok < $jumlah_barangKeluar) {
+            return redirect()->back()->withInput()->with('error', 'Stok pasokan tidak mencukupi.');
+        }
     
-                    // Cek apakah stok habis
-                    if ($stok_baru <= 0) {
-                        // Tampilkan notifikasi bahwa pasokan habis
-                        session()->setFlashdata('error', 'Pasokan telah habis.');
-                    }
-                } else {
-                    // Jika stok tidak mencukupi, kembalikan pesan kesalahan
-                    return redirect()->to('/supply')->with('error', 'Stok pasokan tidak mencukupi.');
-                }
+        // Simpan data barang keluar dan kurangi stok dari masing-masing supply
+        $sisa_barang_keluar = $jumlah_barangKeluar;
+        foreach ($supplyData as $supply) {
+            if ($sisa_barang_keluar > 0) {
+                $stok_yang_diambil = min($sisa_barang_keluar, $supply['jumlah_supply']);
+                $sisa_barang_keluar -= $stok_yang_diambil;
+                $stok_baru = $supply['jumlah_supply'] - $stok_yang_diambil;
+                $supplyModel->update($supply['id_supply'], ['jumlah_supply' => $stok_baru]);
+    
+                // Simpan data barang keluar
+                $data = [
+                    'id_supply' => $supply['id_supply'],
+                    'jumlah_barangKeluar' => $stok_yang_diambil,
+                    'tanggal_barangKeluar' => date('Y-m-d'),
+                ];
+                $barangKeluarModel->insert($data);
             }
         }
     
-        return redirect()->to('/supply');
+        // Redirect dengan pesan sukses
+        return redirect()->to('/supply')->with('success', 'Barang keluar berhasil disimpan.');
     }
     
 

@@ -13,9 +13,13 @@ class Supply extends Model
 
     public function getSupply(){
         return $this->db->table('tbl_supply')
-            ->select('tbl_supply.id_supply, tbl_supply.id_jenisBarang, tbl_jenisbarang.jenis_barang, tbl_supply.jumlah_supply, tbl_supply.harga_supply, tbl_supply.tanggal_supply')
+            ->select('tbl_jenisbarang.id_jenisBarang, tbl_jenisbarang.jenis_barang, 
+                      GROUP_CONCAT(tbl_supply.id_supply) as id_supplies,
+                      SUM(tbl_supply.jumlah_supply) as total_jumlah_supply, 
+                      SUM(tbl_supply.harga_supply) as total_harga_supply')
             ->join('tbl_jenisbarang', 'tbl_jenisbarang.id_jenisBarang = tbl_supply.id_jenisBarang')
             ->where('tbl_supply.jumlah_supply >', 0)
+            ->groupBy('tbl_jenisbarang.id_jenisBarang')
             ->get()
             ->getResultArray();
     }
