@@ -88,10 +88,10 @@
     </div>
 
     <!-- halaman -->
-    <div class="row">
-        <div class="col-lg-4 mb-lg-0 mb-4">
+    <div class="row gap-3 gap-md-0">
+        <div class="col-lg-4 mb-lg-0 mb-0 mb-md-4 mb-lg-0">
             <div class="card h-100">
-                <div class="card-header pb-0">
+                <div class="card-header">
                     <h6>1. Shop Authenticate</h6>
                     <p class="text-sm">
                         <span class="font-weight-bold">Click the following link to authenticate your shop:</span>
@@ -173,7 +173,7 @@
     </div>
 </div>
 <div class="container-fluid py-4">
-    <div class="row">
+    <div class="row gap-3 gap-md-0">
         <div class="col-lg-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header pb-0">

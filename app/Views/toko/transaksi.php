@@ -138,7 +138,7 @@
     <div class="container-fluid py-4">
         <div class="row">
             <!-- Transaksi Shopee -->
-            <div class="col-6">
+            <div class="col-lg-6">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <div class="row">
@@ -330,7 +330,7 @@
         </div>
 
         <!-- Transaksi Toko -->
-        <div class="col-6">
+        <div class="col-lg-6">
             <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class="row">
