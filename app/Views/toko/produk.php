@@ -35,82 +35,90 @@
     </nav>
 
     <div class="container-fluid py-4">
-        <div class="row d-flex">
+        <div class="row">
             <?php if (session()->has('error')) : ?>
                 <div class="alert alert-danger text-white">
                     <?php echo session('error'); ?>
                 </div>
             <?php endif; ?>
         </div>
-        <div class="row mt-4">
-            <div class="card-group">
-                <?php
-                foreach ($produk as $produk) :
-                ?>
-                    <div class="card">
-                        <img class="card-img-top" src="<?= base_url() ?>berkas/<?= $produk['foto_produk']; ?>" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-auto me-auto">
-                                    <h5 class="shorten-text card-title" title="<?= $produk['nama_produk'] ?>">
-                                        <?= $produk['nama_produk'] ?>
-                                    </h5>
-                                </div>
-                                <div class="col-3">
-                                    <div class="d-flex">
-                                        <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editModal-<?= $produk['id_produk'] ?>">
-                                            <i class="fa fa-pencil"></i>
-                                        </button>
-                                        <a href="<?= base_url('produk/delete/' . $produk['id_produk']) ?>" class="btn btn-link text-danger px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
-                                    </div>
-                                </div>
-                                <p class="card-text">Rp <?= number_format($produk['harga_produk']) ?></p>
-                                <p class="form-text">Jumlah Stok: <?= ($produk['jumlah_produk']) ?></p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Modal untuk Edit data -->
-                    <div class="modal fade" id="editModal-<?= $produk['id_produk'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h6 class="modal-title" id="exampleModalLabel">Edit produk</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
-                                </div>
-                                <form action="<?= base_url('produk/edit/' . $produk['id_produk']) ?>" method="post" enctype="multipart/form-data">
-                                    <?= csrf_field(); ?>
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="nama_produk">Name</label>
-                                            <input type="text" name="nama_produk" class="form-control" id="nama_produk" value="<?= $produk['nama_produk'] ?>" placeholder="produk nama_produk" required>
+        <div class="row">
+            <?php
+            foreach ($produk as $produk) :
+            ?>
+                <div class="col-4">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        <div class="card-deck">
+                            <div class="card mb-4 mr-4" style="width: 18rem;">
+                                <img class="card-img-top" src="<?= base_url() ?>berkas/<?= $produk['foto_produk']; ?>" alt="Card image cap">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-auto me-auto">
+                                            <h5 class="shorten-text card-title" title="<?= $produk['nama_produk'] ?>">
+                                                <?= $produk['nama_produk'] ?>
+                                            </h5>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="jumlah_produk">Jumlah Stok</label>
-                                            <input type="text" name="jumlah_produk" class="form-control" id="jumlah_produk" value="<?= $produk['jumlah_produk'] ?>" placeholder="produk jumlah_produk" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="harga_produk">Harga Produk</label>
-                                            <input type="text" name="harga_produk" class="form-control" id="harga_produk" value="<?= $produk['harga_produk'] ?>" placeholder="produk harga_produk" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="foto_produk">Masukkan foto</label>
-                                            <div>
-                                                <input type="file" class="form-control-file" name="foto_produk" id="foto_produk" <?= $produk['foto_produk'] ? '' : 'required' ?> accept=".jpg, .png, .jpeg" value="<?= $produk['foto_produk'] ?>">
-                                                <?php if ($produk['foto_produk']) : ?>
-                                                    <img src="<?= base_url('berkas/' . $produk['foto_produk']) ?>" alt="Foto Produk" style="max-width: 200px; margin-top: 10px;">
-                                                <?php endif; ?>
+                                        <div class="col-3">
+                                            <div class="d-flex">
+                                                <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editModal-<?= $produk['id_produk'] ?>">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                                <a href="<?= base_url('produk/delete/' . $produk['id_produk']) ?>" class="btn btn-link text-danger px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a>
                                             </div>
                                         </div>
-                                        <div class="col-6 text-end" align="center">
-                                            <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
-                                        </div>
+                                        <p class="card-text">Rp <?= number_format($produk['harga_produk']) ?></p>
+                                        <p class="form-text">Jumlah Stok: <?= ($produk['jumlah_produk']) ?></p>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
+                </div>
+
+                <!-- Modal untuk Edit data -->
+                <div class="modal fade" id="editModal-<?= $produk['id_produk'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title" id="exampleModalLabel">Edit produk</h6>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: black;">&times;</span></button>
+                            </div>
+                            <form action="<?= base_url('produk/edit/' . $produk['id_produk']) ?>" method="post" enctype="multipart/form-data">
+                                <?= csrf_field(); ?>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="nama_produk">Name</label>
+                                        <input type="text" name="nama_produk" class="form-control" id="nama_produk" value="<?= $produk['nama_produk'] ?>" placeholder="produk nama_produk" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jumlah_produk">Jumlah Stok</label>
+                                        <input type="text" name="jumlah_produk" class="form-control" id="jumlah_produk" value="<?= $produk['jumlah_produk'] ?>" placeholder="produk jumlah_produk" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="harga_produk">Harga Produk</label>
+                                        <input type="text" name="harga_produk" class="form-control" id="harga_produk" value="<?= $produk['harga_produk'] ?>" placeholder="produk harga_produk" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="foto_produk">Masukkan foto</label>
+                                        <div>
+                                            <input type="file" class="form-control-file" name="foto_produk" id="foto_produk" <?= $produk['foto_produk'] ? '' : 'required' ?> accept=".jpg, .png, .jpeg" value="<?= $produk['foto_produk'] ?>">
+                                            <?php if ($produk['foto_produk']) : ?>
+                                                <img src="<?= base_url('berkas/' . $produk['foto_produk']) ?>" alt="Foto Produk" style="max-width: 200px; margin-top: 10px;">
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-end" align="center">
+                                        <button type="submit" class="btn bg-gradient-dark mb-0">SIMPAN</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            <?php
+            endforeach
+            ?>
         </div>
     </div>
 
