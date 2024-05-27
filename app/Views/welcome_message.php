@@ -22,7 +22,7 @@
 </head>
 
 <body class="">
-  <?php if(session()->getFlashdata('msg')): ?>
+  <?php if (session()->getFlashdata('msg')) : ?>
     <div><?= session()->getFlashdata('msg') ?></div>
   <?php endif; ?>
 
@@ -36,6 +36,11 @@
                 <div class="card-header pb-0 text-left bg-transparent">
                   <h3 class="font-weight-bolder text-info text-gradient">Selamat Datang!</h3>
                   <p class="mb-0">Masukan username dan password untuk masuk</p>
+                  <?php if (session()->getFlashdata('error')) : ?>
+                    <div class="alert alert-danger text-white">
+                      <?= session()->getFlashdata('error') ?>
+                    </div>
+                  <?php endif; ?>
                 </div>
                 <div class="card-body">
                   <form action="/login" method="POST">
@@ -60,7 +65,7 @@
             </div>
             <div class="col-md-6">
               <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('../assets/img/curved-images/curved6.jpg')"></div>
+                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('../assets/img/curved-images/login.png')"></div>
               </div>
             </div>
           </div>
