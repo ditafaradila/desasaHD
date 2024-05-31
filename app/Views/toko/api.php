@@ -42,6 +42,7 @@
                                     <th>Code</th>
                                     <th>Access Token</th>
                                     <th>Refresh Token</th>
+                                    <th>Token Expired</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -70,6 +71,10 @@
                                         <span class="text-secondary text-xs font-weight-bold" title="<?= $api['refresh_token'] ?>">
                                             <?= $api['refresh_token'] ?>
                                         </span>
+                                    </td>
+                                    <td class="align-middle text-center shorten-text">
+                                        <span class="text-secondary text-xs font-weight-bold" title="<?= $api['expire_in'] ?>">
+                                        <?=($api['expire_in']) ?>                                        </span>
                                     </td>
                                     <td>
                                         <div class="align-middle text-center text-sm">
@@ -144,6 +149,7 @@
                     <p class="text-sm">
                         <span class="font-weight-bold">Click the following link to get refresh Token your shop:</span>
                     </p>
+                    <!-- <div id="countdown" class="text-center mt-3"></div> -->
                 </div>
                 <div class="card-body">
                     <form method="POST" action="<?= base_url('/processRefreshToken') ?>">
@@ -153,11 +159,11 @@
                                     <form>
                                         <div class="form-group">
                                             <label for="shop_id">Shop ID</label>
-                                            <input type="text" class="form-control" name="shop_id" id="shop_id">
+                                            <input type="text" class="form-control" name="shop_id" id="shop_id" value="<?= $api['shop_id'] ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="refreshToken">Refresh Token</label>
-                                            <input type="text" class="form-control" name="refreshToken" id="refreshToken">
+                                            <input type="text" class="form-control" name="refreshToken" id="refreshToken" value="<?= $api['refresh_token'] ?>">
                                         </div>
                                         <div align="center">
                                             <button type="submit" class="btn bg-gradient-dark mb-0">Dapatkan Refresh Token</button>
@@ -190,11 +196,11 @@
                                     <form>
                                         <div class="form-group">
                                             <label for="shop_id">Shop ID</label>
-                                            <input type="text" class="form-control" name="shop_id" id="shop_id">
+                                            <input type="text" class="form-control" name="shop_id" id="shop_id" value="<?= $api['shop_id'] ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="access_token">Access Token</label>
-                                            <input type="text" class="form-control" name="access_token" id="access_token">
+                                            <input type="text" class="form-control" name="access_token" id="access_token" value="<?= $api['access_token'] ?>">
                                         </div>
                                         <div align="center">
                                             <button type="submit" class="btn bg-gradient-dark mb-0">Tampilkan Data</button>
@@ -223,11 +229,11 @@
                                     <form>
                                         <div class="form-group">
                                             <label for="shop_id">Shop ID</label>
-                                            <input type="text" class="form-control" name="shop_id" id="shop_id">
+                                            <input type="text" class="form-control" name="shop_id" id="shop_id" value="<?= $api['shop_id'] ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="access_token">Access Token</label>
-                                            <input type="text" class="form-control" name="access_token" id="access_token">
+                                            <input type="text" class="form-control" name="access_token" id="access_token" value="<?= $api['access_token'] ?>">
                                         </div>
                                         <div align="center">
                                             <button type="submit" class="btn bg-gradient-dark mb-0">Tampilkan Data</button>
@@ -286,5 +292,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    const expiresIn = <?= $api['expire_in'] ?>; // Duration in seconds
+    const countdownElement = document.getElementById("countdown");
+
+    function updateCountdown() {
+        const now = Math.floor(Date.now() / 1000); // Current time in seconds
+        const expiresAt = now + expiresIn; // Calculate expiration time
+
+        if (expiresAt <= now) {
+            countdownElement.innerHTML = "<strong class='text-danger'>Token telah habis masa berlakunya. Perbarui token sekarang!</strong>";
+        } else {
+            const distance = expiresAt - now;
+            const hours = Math.floor(distance / (60 * 60));
+            const minutes = Math.floor((distance % (60 * 60)) / 60);
+            const seconds = distance % 60;
+
+            countdownElement.innerHTML = "Token expires in " + hours + "h " + minutes + "m " + seconds + "s ";
+        }
+    }
+
+    updateCountdown(); // Call initially to avoid delay
+    setInterval(updateCountdown, 1000); // Update countdown every second
+</script>
 
 <?= $this->endSection() ?>

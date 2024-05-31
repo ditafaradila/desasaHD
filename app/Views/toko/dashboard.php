@@ -28,7 +28,6 @@
 
 <div class="container-fluid py-4">
     <div class="row">
-        <!-- Halo -->
         <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card h-100">
                 <div class="card-body p-4">
@@ -53,7 +52,7 @@
                     <h6>Total Penjualan</h6>
                     <p class="text-sm">
                         <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-                        <a href="/transaksi"><span class="font-weight-bold"><?php echo $totalTransaksi ?></span> Produk bulan ini
+                        <a href="/transaksi"><span class="font-weight-bold"><?php echo $totalTransaksi ?></span> Transaksi tahun ini
                     </p>
                 </div>
                 <div class="card-body p-3">
@@ -64,7 +63,8 @@
                             </span>
                             <div class="timeline-content">
                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Penjualan Toko</h6>
-                                <a href="/transaksi"><p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalToko ?> Produk</p>
+                                <a href="/transaksi">
+                                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalToko ?> Transaksi</p>
                             </div>
                         </div>
                         <div class="timeline-block mb-3">
@@ -73,7 +73,9 @@
                             </span>
                             <div class="timeline-content">
                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Penjualan Shopee</h6>
-                                <a href="/transaksi"><p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalShopee ?> Produk</p></a>
+                                <a href="/transaksi">
+                                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalShopee ?> Transaksi</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -83,51 +85,102 @@
     </div>
     <!-- Top products -->
     <div class="row mt-4">
-        <div class="card-group">
-            <?php foreach ($top3Products as $index => $product): ?>
-                <div class="card">
-                    <img class="card-img-top" src="<?= base_url() ?>berkas/<?= $product['foto_produk']; ?>" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Top #<?= $index + 1 ?></h5>
-                        <a href="/produk"><p class="card-text"><?= $product['nama_produk'] ?></p></a>
-                        <p class="card-text"><small class="text-success"><?= $product['jumlah_penjualan'] ?> terjual</small></p>
+        <div class="card h-100">
+            <h6 class="ms-2 mt-4 mb-0 align-middle"> Top 3 Penjualan Shopee </h6>
+            <div class="card-group">
+                <?php foreach ($top3Shopee as $index => $productS) : ?>
+                    <div class="card">
+                        <div class="card-body">
+                            <?php
+                            $imageUrls = explode(',', $productS['image_url_list']);
+                            ?>
+                            <div id="carouselExampleIndicators<?= $index ?>" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <?php foreach ($imageUrls as $i => $url) : ?>
+                                        <button type="button" data-bs-target="#carouselExampleIndicators<?= $index ?>" data-bs-slide-to="<?= $i ?>" class="<?= $i === 0 ? 'active' : '' ?>" aria-current="true" aria-label="Slide <?= $i + 1 ?>"></button>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="carousel-inner">
+                                    <?php foreach ($imageUrls as $i => $url) : ?>
+                                        <div class="carousel-item <?= $i === 0 ? 'active' : '' ?>">
+                                            <img src="<?= esc($url) ?>" class="d-block w-100" alt="Product image <?= $i + 1 ?>">
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators<?= $index ?>" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators<?= $index ?>" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <h5 class="card-title">Top #<?= $index + 1 ?></h5>
+                            <a href="/produkShopee">
+                                <p class="card-text"><?= $productS['item_name'] ?></p>
+                            </a>
+                            <p class="card-text"><small class="text-success"><?= $productS['sale'] ?> terjual</small></p>
+                            <p class="card-text"><small class="text-success">Stok : <?= $productS['total_available_stock'] ?></small></p>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach;?>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
     <div class="row mt-4">
-        <!-- Grafik Barang Terjual -->
-        <div class="col-lg-5 mb-lg-0 mb-4">
-            <div class="card z-index-2">
-                <div class="card-body p-3">
-                    <div class="bg-gradient-dark border-radius-lg py-3 pe-1 mb-3">
-                        <div class="chart">
-                            <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
+        <div class="card h-100">
+            <h6 class="ms-2 mt-4 mb-0 align-middle"> Top 3 Penjualan Toko </h6>
+            <div class="card-group">
+                <?php foreach ($top3Products as $index => $product) : ?>
+                    <div class="card">
+                        <img class="card-img-top" src="<?= base_url() ?>berkas/<?= $product['foto_produk']; ?>" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Top #<?= $index + 1 ?></h5>
+                            <a href="/produk">
+                                <p class="card-text"><?= $product['nama_produk'] ?></p>
+                            </a>
+                            <p class="card-text"><small class="text-success"><?= $product['jumlah_penjualan'] ?> terjual</small></p>
                         </div>
                     </div>
-                    <h6 class="ms-2 mt-4 mb-0"> Total Transaksi </h6>
-                    <p class="text-sm ms-2"><span class="font-weight-bolder"><?php echo $totalTransaksi ?></span> Transaksi</p>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
-        <!-- Grafik Keuangan -->
-        <div class="col-lg-7">
-            <div class="card z-index-2">
-                <div class="card-header pb-0">
-                    <h6>Keuangan</h6>
-                    <p class="text-sm">
-                        <!-- <i class="fa fa-arrow-up text-success"></i> -->
-                        <!-- <span class="font-weight-bold">4% more</span> in 2021 -->
-                    </p>
-                </div>
-                <div class="card-body p-3">
-                    <div class="chart">
-                        <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+    </div>
+    <div class="row mt-4">
+        <?php if (session()->get('id_role') != 2) : ?>
+            <!-- Grafik Barang Terjual -->
+            <div class="col-lg-5 mb-lg-0 mb-4">
+                <div class="card z-index-2">
+                    <div class="card-body p-3">
+                        <div class="bg-gradient-dark border-radius-lg py-3 pe-1 mb-3">
+                            <div class="chart">
+                                <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
+                            </div>
+                        </div>
+                        <h6 class="ms-2 mt-4 mb-0"> Total Transaksi </h6>
+                        <p class="text-sm ms-2"><span class="font-weight-bolder"><?php echo $totalTransaksi ?></span> Transaksi</p>
                     </div>
                 </div>
             </div>
-        </div>
+            <!-- Grafik Keuangan -->
+            <div class="col-lg-7">
+                <div class="card z-index-2">
+                    <div class="card-header pb-0">
+                        <h6>Keuangan</h6>
+                        <p class="text-sm">
+                            <!-- <i class="fa fa-arrow-up text-success"></i> -->
+                            <!-- <span class="font-weight-bold">4% more</span> in 2021 -->
+                        </p>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="chart">
+                            <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -147,11 +200,12 @@
                 borderSkipped: false,
                 backgroundColor: "#fff",
                 data: [<?php echo max($transaksiJanuari, 1) ?>, <?php echo max($transaksiFebruari, 1) ?>,
-                      <?php echo max($transaksiMaret, 1) ?>, <?php echo max($transaksiApril, 1) ?>, 
-                      <?php echo max($transaksiMei, 1) ?>, <?php echo max($transaksiJuni, 1) ?>, 
-                      <?php echo max($transaksiJuli, 1) ?>, <?php echo max($transaksiAgustus, 1) ?>,
-                      <?php echo max($transaksiSeptember, 1) ?>, <?php echo max($transaksiOktober, 1) ?>,
-                      <?php echo max($transaksiNovember, 1) ?>, <?php echo max($transaksiDesember, 1) ?>],
+                    <?php echo max($transaksiMaret, 1) ?>, <?php echo max($transaksiApril, 1) ?>,
+                    <?php echo max($transaksiMei, 1) ?>, <?php echo max($transaksiJuni, 1) ?>,
+                    <?php echo max($transaksiJuli, 1) ?>, <?php echo max($transaksiAgustus, 1) ?>,
+                    <?php echo max($transaksiSeptember, 1) ?>, <?php echo max($transaksiOktober, 1) ?>,
+                    <?php echo max($transaksiNovember, 1) ?>, <?php echo max($transaksiDesember, 1) ?>
+                ],
                 maxBarThickness: 6
             }, ],
         },
@@ -234,11 +288,12 @@
                     backgroundColor: gradientStroke1,
                     fill: true,
                     data: [<?php echo max($totalJanuari, 1) ?>, <?php echo max($totalFebruari, 1) ?>,
-                            <?php echo max($totalMaret, 1) ?>, <?php echo max($totalApril, 1) ?>, 
-                            <?php echo max($totalMei, 1) ?>, <?php echo max($totalJuni, 1) ?>, 
-                            <?php echo max($totalJuli, 1) ?>, <?php echo max($totalAgustus, 1) ?>,
-                            <?php echo max($totalSeptember, 1) ?>, <?php echo max($totalOktober, 1) ?>,
-                            <?php echo max($totalNovember, 1) ?>, <?php echo max($totalDesember, 1) ?>],
+                        <?php echo max($totalMaret, 1) ?>, <?php echo max($totalApril, 1) ?>,
+                        <?php echo max($totalMei, 1) ?>, <?php echo max($totalJuni, 1) ?>,
+                        <?php echo max($totalJuli, 1) ?>, <?php echo max($totalAgustus, 1) ?>,
+                        <?php echo max($totalSeptember, 1) ?>, <?php echo max($totalOktober, 1) ?>,
+                        <?php echo max($totalNovember, 1) ?>, <?php echo max($totalDesember, 1) ?>
+                    ],
                     maxBarThickness: 6
                 },
                 {
@@ -251,11 +306,12 @@
                     backgroundColor: gradientStroke2,
                     fill: true,
                     data: [<?php echo max($totalPengeluaranJanuari, 1) ?>, <?php echo max($totalPengeluaranFebruari, 1) ?>,
-                            <?php echo max($totalPengeluaranMaret, 1) ?>, <?php echo max($totalPengeluaranApril, 1) ?>, 
-                            <?php echo max($totalPengeluaranMei, 1) ?>, <?php echo max($totalPengeluaranJuni, 1) ?>, 
-                            <?php echo max($totalPengeluaranJuli, 1) ?>, <?php echo max($totalPengeluaranAgustus, 1) ?>,
-                            <?php echo max($totalPengeluaranSeptember, 1) ?>, <?php echo max($totalPengeluaranOktober, 1) ?>,
-                            <?php echo max($totalPengeluaranNovember, 1) ?>, <?php echo max($totalPengeluaranDesember, 1) ?>],
+                        <?php echo max($totalPengeluaranMaret, 1) ?>, <?php echo max($totalPengeluaranApril, 1) ?>,
+                        <?php echo max($totalPengeluaranMei, 1) ?>, <?php echo max($totalPengeluaranJuni, 1) ?>,
+                        <?php echo max($totalPengeluaranJuli, 1) ?>, <?php echo max($totalPengeluaranAgustus, 1) ?>,
+                        <?php echo max($totalPengeluaranSeptember, 1) ?>, <?php echo max($totalPengeluaranOktober, 1) ?>,
+                        <?php echo max($totalPengeluaranNovember, 1) ?>, <?php echo max($totalPengeluaranDesember, 1) ?>
+                    ],
                     maxBarThickness: 6
                 },
             ],

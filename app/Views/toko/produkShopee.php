@@ -60,10 +60,11 @@
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>Item ID</th>
-                                        <th>Nama Produk</th>
-                                        <th>Aksi</th>
+                                        <th class="align-middle text-center">No</th>
+                                        <th class="align-middle text-center">Item ID</th>
+                                        <th class="align-middle text-center">Nama Produk</th>
+                                        <th class="align-middle text-center">Stok</th>
+                                        <th class="align-middle text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bodyTable">
@@ -79,6 +80,11 @@
                                             </td>
                                             <td class="align-middle shorten-text">
                                                 <span class="text-secondary text-xs font-weight-bold"><?= $item2['item_name'] ?></span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">
+                                                    <?= $item2['total_available_stock'] !== null ? $item2['total_available_stock'] : 'Tidak Diketahui' ?>
+                                                </span>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <div>

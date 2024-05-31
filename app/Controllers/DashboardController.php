@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\detailItemModel;
 use App\Models\detailOrderList;
+use App\Models\ItemModel;
 use App\Models\Transaksi;
 use App\Models\OrderList;
 use App\Models\Pemasukan;
@@ -14,9 +16,11 @@ class DashboardController extends BaseController{
         $nama = session()->get('nama');
         $transaksiModel = new Transaksi();
         $orderModel = new OrderList();
+        $itemModel = new detailItemModel();
         $pemasukanModel = new Pemasukan();
         $pengeluaranModel = new Pengeluaran();
         $top3Products = $transaksiModel->getTop3PenjualanProduk();
+        $top3Shopee = $itemModel->getTop3PenjualanShopee();
 
         $totalShopeeResult = $orderModel->select('count(order_sn) as totalShopee')->first();
         $totalShopee = !empty($totalShopeeResult) ? $totalShopeeResult['totalShopee'] : 0;
@@ -217,6 +221,7 @@ class DashboardController extends BaseController{
             'totalTransaksi' => $totalTransaksi,
             'totalPemasukan' => $totalPemasukan,
             'top3Products' => $top3Products,
+            'top3Shopee' => $top3Shopee,
             'transaksiJanuari' => $transaksiJanuari,
             'transaksiFebruari' => $transaksiFebruari,
             'transaksiMaret' => $transaksiMaret,

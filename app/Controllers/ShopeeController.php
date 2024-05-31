@@ -135,8 +135,7 @@ class ShopeeController extends Controller
     //return $ret;
   }
 
-  public function process()
-  {
+  public function process(){
     $request = service('request');
     $code = $request->getPost('code');
     $shopId = $request->getPost('shop_id');
@@ -168,9 +167,14 @@ class ShopeeController extends Controller
     $ret = json_decode($resp, true);
     $accessToken = $ret["access_token"] ?? null;
     $newRefreshToken = $ret["refresh_token"] ?? null;
-    echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken";
-    // echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken raw: $resp" . "\n";
-    // return $ret;
+    $expireIn = $ret["expire_in"] ?? 14400;
+
+    if ($accessToken && $newRefreshToken) {
+      $apiModel = new Api();
+      $apiModel->updateTokens($partnerId, $shopId, $accessToken, $newRefreshToken, $expireIn);
+    }
+    // echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken";
+    return redirect()->to('/api')->with('success', 'Token berhasil didapat');
   }
 
   public function processRefreshToken(){
@@ -183,15 +187,13 @@ class ShopeeController extends Controller
     $partnerId = 2007160;
     $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275";
     return $this->refreshToken($partnerId, $partnerKey, $shopId, $refreshToken);
+    // return redirect()->to('/api')->with('success', 'Token berhasil didapat');
   }
 
 
   public function getItemList()
   {
     $request = service('request');
-    // Menangani paging
-    $page = $request->getPost('page') ?? 1;
-    $pageSize = $request->getPost('page_size') ?? 10;
 
     $partnerId = 2007160; // Ganti dengan partner ID Anda
     $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275"; // Ganti dengan partner key Anda
@@ -204,7 +206,7 @@ class ShopeeController extends Controller
     $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
     $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
 
-    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&item_status=BANNED&item_status=UNLIST&item_status=REVIEWING&item_status=SELLER_DELETE&item_status=SHOPEE_DELETE&offset=0&page_size=100&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&item_status=SHOPEE_DELETE&offset=0&page_size=100&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
 
     // Membuat permintaan GET ke API Shopee
     $curl = curl_init($url);
@@ -235,6 +237,7 @@ class ShopeeController extends Controller
       // Memanggil method getItemList untuk mendapatkan data item
       $items = $this->getItemList();
       $items2 = $this->getItemBaseInfo();
+      $items3 = $this->getItemExtraInfo();
 
       // Menampilkan view item_list.php bersama dengan data item
       // return view('toko/item_list.php', ['items' => $items, 'items2' => $items2]);
@@ -288,13 +291,60 @@ class ShopeeController extends Controller
           if (!$existingItem) {
             $detailModel->saveItem($item);
           } else {
-
+            $detailModel->update($existingItem['id_detailItem'], $item);
           }
         }
       } catch (\Exception $e){
         // Tangani kesalahan dengan mencatatnya ke log atau melakukan tindakan yang sesuai
         error_log('Error: ' . $e->getMessage());
         continue; // Lanjutkan ke item berikutnya
+      }
+    }  
+    return $result['response']['item_list']; 
+  }
+
+  public function getItemExtraInfo(){
+    $itemModel = new ItemModel();
+    $items = $itemModel->findAll();
+
+    $request = service('request');
+    $partnerId = 2007160; // Ganti dengan partner ID Anda
+    $partnerKey = "53426c5366705146516a724e6f51416d4b48797576475a496f6e4a6c78434275"; // Ganti dengan partner key Anda
+
+    $accessToken = $request->getPost('access_token');
+    $shopId = $request->getPost('shop_id');
+    $timest = time();
+    $path = "/api/v2/product/get_item_extra_info";
+    $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
+    $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
+    
+    $result = [];
+    foreach ($items as $item){
+      try{
+        $url = "https://partner.shopeemobile.com/api/v2/product/get_item_extra_info?access_token={$accessToken}&item_id_list={$item['item_id']}&need_complaint_policy=true&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $result = json_decode($response, true);
+        // error_log('API Response: ' . json_encode($result));
+
+        $detailModel = new detailItemModel();
+        foreach ($result['response']['item_list'] as $item) {
+          // error_log('Item Data: ' . json_encode($item));
+          $existingItem = $detailModel->where('item_id', $item['item_id'])->first();
+
+          if (!$existingItem) {
+            $detailModel->saveItem($item);
+          } else {
+            $detailModel->update($existingItem['id_detailItem'], $item); // Anda perlu mengganti 'id' dengan nama kolom id yang sesuai
+          }
+        }
+      } catch (\Exception $e){
+        error_log('Error: ' . $e->getMessage());
+        continue;
       }
     }  
     return $result['response']['item_list']; 
@@ -384,10 +434,10 @@ class ShopeeController extends Controller
         $response = curl_exec($curl);
         curl_close($curl);
 
-        $result = json_decode($response, true);
+        $data = json_decode($response, true);
 
         $detailOrderModel = new detailOrderList();
-        foreach ($result['response']['order_list'] as $order) {
+        foreach ($data['response']['order_list'] as $order) {
           $existingItem = $detailOrderModel->where('order_sn', $order['order_sn'])->first();
 
           if (!$existingItem) {
