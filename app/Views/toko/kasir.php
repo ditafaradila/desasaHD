@@ -132,7 +132,7 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="diskon">Diskon</label>
-                                                    <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan diskon yang sedang berlaku. Contoh: 10000.">
+                                                    <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan % diskon yang berlaku. Contoh: 10.">
                                                 </div>
                                             </div>
                                             <div class="col-4">
@@ -197,7 +197,8 @@
         function updateTotalHarga() {
             var hargaProduk = parseInt(document.getElementById('harga_produk').value.replace(/\D/g, ''));
             var jumlahBarang = parseInt(document.getElementById('jumlah').value);
-            var diskon = parseInt(document.getElementById('diskon').value);
+            var diskonPercentage = parseFloat(document.getElementById('diskon').value.replace(/[^\d.]/g, '')); // Extract percentage value
+            var diskon = hargaProduk * jumlahBarang * (diskonPercentage / 100); // Calculate discount amount
             var totalHarga = (hargaProduk * jumlahBarang) - diskon;
 
             // Memformat total harga menggunakan toLocaleString() dan menambahkan "Rp" di depannya

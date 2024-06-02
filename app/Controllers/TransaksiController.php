@@ -74,9 +74,11 @@ class TransaksiController extends BaseController
 
         $id_produk = $this->request->getPost('id_produk');
         $jumlah = $this->request->getPost('jumlah');
-        $harga_produk = $transaksiModel->getHargaProduk($id_produk);
         $diskon = (float) $this->request->getPost('diskon');
-        $nominal = ($harga_produk * $jumlah) - $diskon;
+        $harga_produk = $transaksiModel->getHargaProduk($id_produk);
+        $nominal_sebelum_diskon = $harga_produk * $jumlah;
+        $nominal_diskon = $nominal_sebelum_diskon * ($diskon / 100);
+        $nominal = $nominal_sebelum_diskon - $nominal_diskon;
         $nominal_bayar = $this->request->getPost('nominal_bayar');
         $kembalian = $nominal_bayar - $nominal;
 
