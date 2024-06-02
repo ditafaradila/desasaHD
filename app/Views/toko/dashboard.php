@@ -5,7 +5,9 @@
     <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+                <li class="breadcrumb-item text-sm">
+                    <a class="opacity-5 text-dark" href="javascript:;">Pages</a>
+                </li>
                 <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
             </ol>
             <h6 class="font-weight-bolder mb-0">Dashboard</h6>
@@ -63,7 +65,7 @@
                             </span>
                             <div class="timeline-content">
                                 <h6 class="text-dark text-sm font-weight-bold mb-0">Penjualan Toko</h6>
-                                <a href="/transaksi">
+                                <a href="/transaksi"></a>
                                     <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"><?php echo $totalToko ?> Transaksi</p>
                             </div>
                         </div>
