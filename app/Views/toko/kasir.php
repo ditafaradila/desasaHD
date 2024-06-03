@@ -200,7 +200,6 @@
                     console.error('Error:', error);
                 });
         }
-
         function updateTotalHarga() {
             var totalHarga = 0;
             document.querySelectorAll('.produk-item').forEach(function(produkItem) {
@@ -220,7 +219,6 @@
             document.getElementById('nominal').textContent = formattedTotalHarga;
             hitungKembalian();
         }
-
         function hitungKembalian() {
             var totalHarga = parseInt(document.getElementById('nominal').textContent.replace(/\D/g, ''));
             var nominalBayar = parseInt(document.getElementById('nominal_bayar').value.replace(/\D/g, ''));

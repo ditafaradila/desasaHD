@@ -366,7 +366,9 @@ class ShopeeController extends Controller
     $sign = hash_hmac('sha256', $baseStringTmp, $partnerKey);
 
     // Konfigurasi panggilan API
-    $url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}&cursor=0&order_status=COMPLETED&page_size=100&partner_id={$partnerId}&response_optional_fields=order_status&shop_id={$shopId}&sign={$sign}&time_range_field=create_time&time_from={$timest}&time_to={$timestamp}&timestamp={$timestamp}";
+    $url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}
+    &cursor=0&order_status=COMPLETED&page_size=100&partner_id={$partnerId}&response_optional_fields=order_status
+    &shop_id={$shopId}&sign={$sign}&time_range_field=create_time&time_from={$timest}&time_to={$timestamp}&timestamp={$timestamp}";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

@@ -57,8 +57,7 @@ class SupplyController extends BaseController{
         return view('toko/tambahSupply', $data);
     }
 
-    public function storeSupply()
-    {
+    public function storeSupply(){
         $supplyModel = new Supply();
         $pengeluaranModel = new Pengeluaran();
         $keuanganModel = new Keuangan();
@@ -142,8 +141,7 @@ class SupplyController extends BaseController{
         return view('toko/tambahBarangKeluar', $data);
     }
 
-    public function storeBK()
-    {
+    public function storeBK(){
         $barangKeluarModel = new BarangKeluar();
         $supplyModel = new Supply();
     

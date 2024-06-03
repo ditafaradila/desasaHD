@@ -10,9 +10,7 @@ use App\Libraries\MY_TCPDF AS TCPDF;
 
 class KeuanganController extends BaseController{
     public function index(){
-        // Periksa id_role
         if (session()->get('id_role') == 2) {
-            // Jika id_role adalah 2, maka arahkan ke dashboard
             return redirect()->to(base_url('/dashboard'));
         }
 
@@ -29,7 +27,6 @@ class KeuanganController extends BaseController{
     }
 
     public function indexx(){
-        // Periksa id_role
         if (session()->get('id_role') == 2) {
             return redirect()->to(base_url('/dashboard'));
         }

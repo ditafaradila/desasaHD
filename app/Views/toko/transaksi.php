@@ -376,18 +376,13 @@
                                             <p class="text-xs font-weight-bold mb-0"><?= $transaksi['nominal'] ?></p>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <div>
-                                                <!-- <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#editTransaksi-<?= $transaksi['id_transaksi'] ?>">
-                                                        <i class="fa fa-pencil"></i>
-                                                    </button>
-                                                    <a href="<?= base_url('/hapusTransaksi/' . $transaksi['id_transaksi']) ?>" class="btn btn-link text-center text-danger text-gradient px-1 mb-0" onclick="return confirm('Apakah anda yakin?')"><i class="far fa-trash-alt me-2"></i></a> -->
+                                            <div>                                        
                                                 <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#detailToko-<?= $transaksi['id_transaksi'] ?>">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
-
                                     <!-- Modal Detail Transaksi -->
                                     <div class="modal fade" id="detailToko-<?= $transaksi['id_transaksi'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
