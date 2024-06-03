@@ -64,7 +64,7 @@
                         <div class="flex-grow-1">
                             <div class="numbers">
                                 <p class="text-white text-sm mb-0 text-capitalize font-weight-bold">Total Transaksi</p>
-                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalTransaksi ?> Produk
+                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalTransaksi ?> Transaksi
                                 </h5>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                         <div class="flex-grow-1">
                             <div class="numbers">
                                 <p class="text-white text-sm mb-0 text-capitalize font-weight-bold">Transaksi Shopee</p>
-                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalShopee ?> Produk </h5>
+                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalShopee ?> Transaksi </h5>
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <div class="flex-grow-1">
                             <div class="numbers">
                                 <p class="text-white text-sm mb-0 text-capitalize font-weight-bold">Transaksi Toko</p>
-                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalToko ?> Produk
+                                <h5 class="text-white font-weight-bolder mb-0 text-end"><?php echo $totalToko ?> Transaksi
                                 </h5>
                             </div>
                         </div>
@@ -417,7 +417,7 @@
                                                             <h5 class="text-dark text-sm font-weight-bold mb-0">Diskon
                                                             </h5>
                                                             <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                Rp <?= number_format($transaksi['diskon']) ?></p>
+                                                                <?= ($transaksi['diskon']) ?>%</p>
                                                         </div>
                                                         <div class="timeline-content mb-3 col-6">
                                                             <h5 class="text-dark text-sm font-weight-bold mb-0">Harga Produk</h5>

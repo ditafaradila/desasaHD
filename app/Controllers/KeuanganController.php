@@ -34,6 +34,12 @@ class KeuanganController extends BaseController{
             return redirect()->to(base_url('/dashboard'));
         }
 
+        $bulan_list = [
+            '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
+            '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
+            '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+        ];
+
         $keuanganModel = new Keuangan();
         $totalDebitResult = $keuanganModel->select('SUM(debit) as totalDebit')->first();
         $totalKreditResult = $keuanganModel->select('SUM(kredit) as totalKredit')->first();
@@ -45,8 +51,22 @@ class KeuanganController extends BaseController{
         $totalShopee = $totalShopeeResult['totalShopee'];
         $totalToko = $totalTokoResult['totalToko'];
 
-        $totalUang = $totalDebit - $totalKredit;
         $bulan = $this->request->getGet('bulan') ?: date('m');
+
+        $keuangan = $keuanganModel
+                    ->where('MONTH(tanggal)', $bulan)
+                    ->findAll();
+
+        $totalUang = 0;
+        $totalDebitMonth = 0;
+        $totalKreditMonth = 0;
+        foreach ($keuangan as $item){
+            $totalDebitMonth += $item['debit'];
+        }
+        foreach ($keuangan as $item2){
+            $totalKreditMonth += $item2['kredit'];
+        }
+        $totalUang = $totalDebitMonth - $totalKreditMonth;
 
         $data = [
             'title' => 'Keuangan',
@@ -56,6 +76,8 @@ class KeuanganController extends BaseController{
             'totalUang' =>$totalUang,
             'totalShopee' => $totalShopee,
             'totalToko' => $totalToko,
+            'bulan_list' => $bulan_list,
+            'bulan' => $bulan,
         ];
         
         return view('toko/listKeuangan', $data);

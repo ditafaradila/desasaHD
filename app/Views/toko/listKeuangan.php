@@ -116,7 +116,7 @@
                     <div class="col-4">
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                Bulan
+                                <?= $bulan_list[$bulan] ?>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" name="bulan" id="bulan">
                                 <?php

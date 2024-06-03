@@ -55,6 +55,13 @@
         endforeach
         ?>
         <tr style="border:1px solid #000; text-align:center;">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><strong>Rp <?php echo number_format((float)$totalDebit) ?></strong></td>
+            <td><strong>Rp <?php echo number_format((float)$totalKredit) ?></strong></td>
+        </tr>
+        <tr style="border:1px solid #000; text-align:center;">
             <td colspan="3" style="height: 20px"><strong>Total</strong></td>
             <td colspan="2" style="height: 20px;text-align:center"><strong>Rp <?php echo number_format((float)$totalUang) ?></strong></td>
         </tr>

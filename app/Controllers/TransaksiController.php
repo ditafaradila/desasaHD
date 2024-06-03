@@ -65,83 +65,96 @@ class TransaksiController extends BaseController
         return $this->response->setJSON(['harga_produk' => $hargaProduk]);
     }
 
-    public function storeTransaksi(){
+    public function storeTransaksi() {
         $transaksiModel = new Transaksi();
         $keuanganModel = new Keuangan();
         $pemasukanModel = new Pemasukan();
         $produkModel = new Produk();
-
-
-        $id_produk = $this->request->getPost('id_produk');
-        $jumlah = $this->request->getPost('jumlah');
-        $diskon = (float) $this->request->getPost('diskon');
-        $harga_produk = $transaksiModel->getHargaProduk($id_produk);
-        $nominal_sebelum_diskon = $harga_produk * $jumlah;
-        $nominal_diskon = $nominal_sebelum_diskon * ($diskon / 100);
-        $nominal = $nominal_sebelum_diskon - $nominal_diskon;
+    
+        $id_produk_list = $this->request->getPost('id_produk');
+        $jumlah_list = $this->request->getPost('jumlah');
+        $diskon_list = $this->request->getPost('diskon');
         $nominal_bayar = $this->request->getPost('nominal_bayar');
-        $kembalian = $nominal_bayar - $nominal;
-
-        // Ambil stok produk
-        $produk = $produkModel->find($id_produk);
-        $stok_sekarang = $produk->jumlah_produk;
-
-        // Pastikan stok masih tersedia sebelum menyimpan transaksi
-        if ($stok_sekarang > 0) {
-            // Data transaksi
-            $data = [
-                'id_transaksi' => $this->request->getPost('id_transaksi'),
-                'waktu' => date('Y-m-d H:i:s'),
-                'metode_bayar' => $this->request->getPost('metode_bayar'),
-                'diskon' => $diskon,
-                'nominal' => $nominal,
-                'id_produk' => $this->request->getPost('id_produk'),
-                'jumlah' => $this->request->getPost('jumlah'),
-                'nominal_bayar' => $nominal_bayar,
-                'kembalian' => $kembalian,
-            ];
-
-            // Simpan transaksi
-            $transaksiModel->save($data);
-            $id_transaksi = $transaksiModel->insertID();
-
-            // Simpan data pemasukan
-            $data = [
-                'id_pemasukan' => $this->request->getPost('id_pemasukan'),
-                'id_transaksi' => $id_transaksi,
-                'sumber' => 'Toko',
-                'tanggal' => date('Y-m-d'),
-                'jumlah' => $nominal,
-            ];
-            $pemasukanModel->save($data);
-
-            // Simpan data keuangan
-            $data = [
-                'id_keuangan' => $this->request->getPost('id_keuangan'),
-                'id_pemasukan' => $this->request->getPost('id_pemasukan'),
-                'id_transaksi' => $id_transaksi,
-                'keterangan' => 'Toko',
-                'tanggal' => date('Y-m-d'),
-                'debit' => $nominal,
-            ];
-            $keuanganModel->save($data);
-
-            // Kurangi stok produk
-            $stok_baru = $stok_sekarang - $jumlah;
-            $produkModel->update($id_produk, ['jumlah_produk' => $stok_baru]);
-
-            // Cek apakah stok habis
-            if ($stok_baru <= 0) {
-                // Tampilkan notifikasi bahwa produk habis
-                session()->setFlashdata('pesan', 'Produk telah habis.');
+    
+        $total_nominal = 0;
+    
+        foreach ($id_produk_list as $index => $id_produk) {
+            $jumlah = $jumlah_list[$index];
+            $diskon = (float) $diskon_list[$index];
+            $harga_produk = $transaksiModel->getHargaProduk($id_produk);
+            $nominal_sebelum_diskon = $harga_produk * $jumlah;
+            $nominal_diskon = $nominal_sebelum_diskon * ($diskon / 100);
+            $nominal = $nominal_sebelum_diskon - $nominal_diskon;
+            $total_nominal += $nominal;
+    
+            // Ambil stok produk
+            $produk = $produkModel->find($id_produk);
+            $stok_sekarang = $produk->jumlah_produk;
+    
+            // Pastikan stok masih tersedia sebelum menyimpan transaksi
+            if ($stok_sekarang >= $jumlah) {
+                // Data transaksi
+                $data_transaksi = [
+                    'id_transaksi' => $this->request->getPost('id_transaksi'),
+                    'waktu' => date('Y-m-d H:i:s'),
+                    'metode_bayar' => $this->request->getPost('metode_bayar'),
+                    'diskon' => $diskon,
+                    'nominal' => $nominal,
+                    'id_produk' => $id_produk,
+                    'jumlah' => $jumlah,
+                    'nominal_bayar' => $nominal_bayar,
+                    'kembalian' => $nominal_bayar - $total_nominal,
+                ];
+    
+                // Simpan transaksi
+                $transaksiModel->save($data_transaksi);
+                $id_transaksi = $transaksiModel->insertID();
+    
+                // Simpan data pemasukan
+                $data_pemasukan = [
+                    'id_pemasukan' => $this->request->getPost('id_pemasukan'),
+                    'id_transaksi' => $id_transaksi,
+                    'sumber' => 'Toko',
+                    'tanggal' => date('Y-m-d'),
+                    'jumlah' => $nominal,
+                ];
+                $pemasukanModel->save($data_pemasukan);
+    
+                // Simpan data keuangan
+                $data_keuangan = [
+                    'id_keuangan' => $this->request->getPost('id_keuangan'),
+                    'id_pemasukan' => $this->request->getPost('id_pemasukan'),
+                    'id_transaksi' => $id_transaksi,
+                    'keterangan' => 'Toko',
+                    'tanggal' => date('Y-m-d'),
+                    'debit' => $nominal,
+                ];
+                $keuanganModel->save($data_keuangan);
+    
+                // Kurangi stok produk
+                $stok_baru = $stok_sekarang - $jumlah;
+                $produkModel->update($id_produk, ['jumlah_produk' => $stok_baru]);
+    
+                // Cek apakah stok habis
+                if ($stok_baru <= 0) {
+                    // Tampilkan notifikasi bahwa produk habis
+                    session()->setFlashdata('pesan', 'Produk telah habis.');
+                }
+            } else {
+                // Jika stok habis, kembalikan ke halaman sebelumnya dan tampilkan pesan
+                return redirect()->back()->with('error', 'Stok produk tidak mencukupi.');
             }
-        } else {
-            // Jika stok habis, kembalikan ke halaman sebelumnya dan tampilkan pesan
-            return redirect()->back()->with('error', 'Stok produk telah habis.');
         }
-
+    
+        // Menyimpan data total nominal dan kembalian setelah semua transaksi selesai
+        $kembalian = $nominal_bayar - $total_nominal;
+    
+        // Tampilkan pesan sukses
+        session()->setFlashdata('pesan', 'Transaksi berhasil disimpan.');
+    
         return redirect()->to('/transaksi');
     }
+    
 
     public function updateTransaksi($id_transaksi)
     {

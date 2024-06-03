@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <?= $this->extend('templates/template') ?>
 <?= $this->section('content') ?>
 
@@ -98,43 +100,54 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label for="produk" class="form-label">Nama Barang</label><br>
-                                                    <select name="id_produk" id="id_produk">
-                                                        <option value="" disabled selected>Pilih produk</option>
-                                                        <?php foreach ($produkList as $produkItem) : ?>
-                                                            <option value="<?= $produkItem->id_produk ?>" data-harga="<?= $produkItem->harga_produk ?>">
-                                                                <span class="shorten-text"><?= $produkItem->nama_produk ?></span>
-                                                            </option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label for="jumlah">Jumlah Barang</label>
-                                                    <input type="text" class="form-control" name="jumlah" id="jumlah" placeholder="Masukkan Jumlah Barang. Contoh: 2.">
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label for="harga_produk" class="form-label">Harga Barang</label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="harga_produk" readonly>
-                                                        <span class="input-group-text">,-</span>
+
+                                        <div id="produk-container">
+                                            <div class="row produk-item">
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label for="produk" class="form-label">Nama Barang</label><br>
+                                                        <select name="id_produk[]" class="id_produk" id="id_produk">
+                                                            <option value="" disabled selected>Pilih produk</option>
+                                                            <?php foreach ($produkList as $produkItem) : ?>
+                                                                <option value="<?= $produkItem->id_produk ?>" data-harga="<?= $produkItem->harga_produk ?>">
+                                                                    <span class="shorten-text"><?= $produkItem->nama_produk ?></span>
+                                                                </option>
+                                                            <?php endforeach; ?>
+                                                        </select>
                                                     </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <label for="jumlah">Jumlah Barang</label>
+                                                        <input type="text" class="form-control jumlah" name="jumlah[]" placeholder="2">
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <label for="harga_produk" class="form-label">Harga Barang</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control harga_produk" readonly>
+                                                            <span class="input-group-text">,-</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <label for="diskon">Diskon</label>
+                                                        <input type="text" class="form-control diskon" name="diskon[]" placeholder="10%">
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 d-flex align-items-end">
+                                                    <button type="button" class="btn btn-danger remove-produk">Hapus</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label for="diskon">Diskon</label>
-                                                    <input type="text" class="form-control" name="diskon" id="diskon" placeholder="Masukkan % diskon yang berlaku. Contoh: 10.">
-                                                </div>
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-success" id="add-produk">Tambah Produk</button>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="nominal_bayar">Nominal Bayar</label>
@@ -168,13 +181,12 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Fungsi untuk mengupdate harga saat memilih produk
-        function updateHarga() {
-            var selectedOption = document.getElementById('id_produk');
-            var hargaProdukInput = document.getElementById('harga_produk');
+        function updateHarga(element) {
+            var selectedOption = element.value;
+            var hargaProdukInput = element.closest('.produk-item').querySelector('.harga_produk');
 
             // Mengambil URL untuk mendapatkan data harga berdasarkan id_produk
-            var url = '<?= site_url('/get_harga') ?>/' + selectedOption.value;
+            var url = '<?= site_url('/get_harga') ?>/' + selectedOption;
 
             // Menggunakan Fetch API untuk mengambil data harga
             fetch(url)
@@ -182,24 +194,24 @@
                 .then(data => {
                     var formattedHarga = "Rp " + parseInt(data.harga_produk).toLocaleString('id-ID');
                     hargaProdukInput.value = formattedHarga;
+                    updateTotalHarga();
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
         }
-        // Memanggil fungsi updateHarga saat memilih produk
-        document.getElementById('id_produk').addEventListener('change', updateHarga);
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Fungsi untuk mengupdate total harga saat memilih jumlah barang
+
         function updateTotalHarga() {
-            var hargaProduk = parseInt(document.getElementById('harga_produk').value.replace(/\D/g, ''));
-            var jumlahBarang = parseInt(document.getElementById('jumlah').value);
-            var diskonPercentage = parseFloat(document.getElementById('diskon').value.replace(/[^\d.]/g, '')); // Extract percentage value
-            var diskon = hargaProduk * jumlahBarang * (diskonPercentage / 100); // Calculate discount amount
-            var totalHarga = (hargaProduk * jumlahBarang) - diskon;
+            var totalHarga = 0;
+            document.querySelectorAll('.produk-item').forEach(function(produkItem) {
+                var hargaProduk = parseInt(produkItem.querySelector('.harga_produk').value.replace(/\D/g, ''));
+                var jumlahBarang = parseInt(produkItem.querySelector('.jumlah').value) || 0;
+                var diskonPercentage = parseFloat(produkItem.querySelector('.diskon').value.replace(/[^\d.]/g, '')) || 0; // Extract percentage value
+                var diskon = hargaProduk * jumlahBarang * (diskonPercentage / 100); // Calculate discount amount
+                var hargaSetelahDiskon = (hargaProduk * jumlahBarang) - diskon;
+
+                totalHarga += hargaSetelahDiskon;
+            });
 
             // Memformat total harga menggunakan toLocaleString() dan menambahkan "Rp" di depannya
             var formattedTotalHarga = "Rp " + totalHarga.toLocaleString('id-ID') + ",-";
@@ -221,15 +233,45 @@
             document.getElementById('kembalian').textContent = formattedKembalian;
         }
 
-        // Memanggil fungsi updateTotalHarga saat memilih jumlah barang atau memasukkan diskon
-        document.getElementById('jumlah').addEventListener('input', updateTotalHarga);
-        document.getElementById('diskon').addEventListener('input', updateTotalHarga);
+        document.getElementById('add-produk').addEventListener('click', function() {
+            var produkContainer = document.getElementById('produk-container');
+            var newProduk = document.querySelector('.produk-item').cloneNode(true);
+            newProduk.querySelectorAll('input').forEach(input => input.value = '');
+            newProduk.querySelector('.harga_produk').value = '';
+            produkContainer.appendChild(newProduk);
+
+            newProduk.querySelector('.id_produk').addEventListener('change', function() {
+                updateHarga(this);
+            });
+            newProduk.querySelector('.jumlah').addEventListener('input', updateTotalHarga);
+            newProduk.querySelector('.diskon').addEventListener('input', updateTotalHarga);
+            newProduk.querySelector('.remove-produk').addEventListener('click', function() {
+                this.closest('.produk-item').remove();
+                updateTotalHarga();
+            });
+        });
 
         document.getElementById('nominal_bayar').addEventListener('input', hitungKembalian);
 
-        // Memanggil fungsi updateHarga saat memilih produk
-        document.getElementById('id_produk').addEventListener('change', updateHarga);
+        document.querySelectorAll('.id_produk').forEach(function(select) {
+            select.addEventListener('change', function() {
+                updateHarga(this);
+            });
+        });
+        document.querySelectorAll('.jumlah').forEach(function(input) {
+            input.addEventListener('input', updateTotalHarga);
+        });
+        document.querySelectorAll('.diskon').forEach(function(input) {
+            input.addEventListener('input', updateTotalHarga);
+        });
+        document.querySelectorAll('.remove-produk').forEach(function(button) {
+            button.addEventListener('click', function() {
+                this.closest('.produk-item').remove();
+                updateTotalHarga();
+            });
+        });
     });
 </script>
 
 <?= $this->endSection() ?>
+</html>
