@@ -376,7 +376,7 @@
                                             <p class="text-xs font-weight-bold mb-0"><?= $transaksi['nominal'] ?></p>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <div>                                        
+                                            <div>
                                                 <button type="button" class="btn btn-link text-dark px-1 mb-0" data-bs-toggle="modal" data-bs-target="#detailToko-<?= $transaksi['id_transaksi'] ?>">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
@@ -395,10 +395,9 @@
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="timeline-content mb-3 col-6">
-                                                            <h6 class="text-dark text-sm font-weight-bold mb-0">Nama
-                                                                Produk</h6>
-                                                            <p class="shorten-text text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                                <?= $transaksi['nama_produk'] ?></p>
+                                                            <h6 class="text-dark text-sm font-weight-bold mb-0">Nama Produk</h6>
+                                                            <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                                <?= ($transaksi['nama_produk']) ?></p>
                                                         </div>
                                                         <div class="timeline-content mb-3 col-6">
                                                             <h5 class="text-dark text-sm font-weight-bold mb-0">Metode
@@ -414,11 +413,11 @@
                                                             <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                 <?= ($transaksi['diskon']) ?>%</p>
                                                         </div>
-                                                        <div class="timeline-content mb-3 col-6">
+                                                        <!-- <div class="timeline-content mb-3 col-6">
                                                             <h5 class="text-dark text-sm font-weight-bold mb-0">Harga Produk</h5>
                                                             <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                                 Rp <?= number_format($transaksi['harga_produk']) ?></p>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="row">
                                                         <div class="timeline-content mb-3 col-6">

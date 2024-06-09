@@ -206,7 +206,7 @@ class ShopeeController extends Controller
     $baseStringTmp = $partnerId . $path . $timest . $accessToken . $shopId;
     $baseString = hash_hmac('sha256', $baseStringTmp, $partnerKey);
 
-    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&item_status=SHOPEE_DELETE&offset=0&page_size=100&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
+    $url = "https://partner.shopeemobile.com/api/v2/product/get_item_list?access_token={$accessToken}&item_status=NORMAL&offset=0&page_size=100&partner_id={$partnerId}&shop_id={$shopId}&sign={$baseString}&timestamp={$timest}";
 
     // Membuat permintaan GET ke API Shopee
     $curl = curl_init($url);
@@ -366,9 +366,7 @@ class ShopeeController extends Controller
     $sign = hash_hmac('sha256', $baseStringTmp, $partnerKey);
 
     // Konfigurasi panggilan API
-    $url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}
-    &cursor=0&order_status=COMPLETED&page_size=100&partner_id={$partnerId}&response_optional_fields=order_status
-    &shop_id={$shopId}&sign={$sign}&time_range_field=create_time&time_from={$timest}&time_to={$timestamp}&timestamp={$timestamp}";
+    $url = "https://partner.shopeemobile.com/api/v2/order/get_order_list?access_token={$accessToken}&cursor=0&order_status=COMPLETED&page_size=100&partner_id={$partnerId}&response_optional_fields=order_status&shop_id={$shopId}&sign={$sign}&time_range_field=create_time&time_from={$timest}&time_to={$timestamp}&timestamp={$timestamp}";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -445,7 +443,7 @@ class ShopeeController extends Controller
           if (!$existingItem) {
             $detailOrderModel->saveItem($order);
           } else {
-            $detailOrderModel->update($existingItem['id_orderList'], $order); // Anda perlu mengganti 'id' dengan nama kolom id yang sesuai
+            // $detailOrderModel->update($existingItem['id_orderList'], $order); // Anda perlu mengganti 'id' dengan nama kolom id yang sesuai
           }
 
           // Simpan data pemasukan di luar loop detail order
@@ -490,7 +488,7 @@ class ShopeeController extends Controller
         continue; // Lanjutkan ke item berikutnya
       }
     }  
-    return $result['response']['order_list']; 
+    return redirect()->to('/api')->with('success', 'Data berhasil diambil');
   }
   
   public function showOrderList()

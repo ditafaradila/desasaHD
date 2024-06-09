@@ -243,7 +243,6 @@ class KeuanganController extends BaseController{
     }
 
     public function editPengeluaran($id_pengeluaran){
-        // Periksa id_role
         if (session()->get('id_role') == 2) {
             return redirect()->to(base_url('/dashboard'));
         }

@@ -209,33 +209,20 @@ class SupplyController extends BaseController{
     {
         $barangKeluarModel = new BarangKeluar();
         $supplyModel = new Supply();
-
-        // Ambil data barang keluar berdasarkan ID
         $barangKeluar = $barangKeluarModel->find($id_barangKeluar);
-
-        // Simpan nilai jumlah_barangKeluar lama untuk menghitung selisih
         $oldJumlahKeluar = $barangKeluar['jumlah_barangKeluar'];
 
-        // Ambil data dari form
         $data = [
             'jumlah_barangKeluar' => $this->request->getPost('jumlah_barangKeluar'),
             'tanggal_barangKeluar' => date('Y-m-d'),
         ];
 
-        // Update data barang keluar
         $barangKeluarModel->update($id_barangKeluar, $data);
-
-        // Hitung selisih jumlah_barangKeluar baru dengan jumlah_barangKeluar lama
         $selisih = $data['jumlah_barangKeluar'] - $oldJumlahKeluar;
-
-        // Ambil data supply berdasarkan ID supply yang terkait
         $supply = $supplyModel->find($barangKeluar['id_supply']);
-
-        // Update jumlah_supply di tabel supply
         $newJumlahSupply = $supply['jumlah_supply'] - $selisih;
         $supplyModel->update($supply['id_supply'], ['jumlah_supply' => $newJumlahSupply]);
 
-        // Redirect atau tampilkan pesan sukses
         return redirect()->to('/supply');
     }
 

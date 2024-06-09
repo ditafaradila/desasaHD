@@ -73,7 +73,7 @@
                                             onclick="return confirm('Apakah anda yakin?')"><i
                                                 class="far fa-trash-alt me-2"></i></a>
                                         <button type="button" class="btn btn-link text-dark px-1 mb-0"
-                                            data-bs-toggle="modal" data-bs-target="#editBK-155">
+                                            data-bs-toggle="modal" data-bs-target="#editBK-<?= $barangKeluar['id_barangKeluar'] ?>">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
                                         </button>
                                     </div>
