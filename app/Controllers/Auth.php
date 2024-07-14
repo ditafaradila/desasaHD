@@ -8,6 +8,13 @@ class Auth extends BaseController{
     public function login(){
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
+        if (is_array($username) || is_array($password)) {
+            session()->setFlashdata('error', 'Invalid input!');
+            return redirect()->back()->withInput();
+        }
+        $username = htmlspecialchars(strval($username));
+        $password = htmlspecialchars(strval($password));
+        
         $model = new user();
         $user = $model->login($username, $password);
 
@@ -18,8 +25,8 @@ class Auth extends BaseController{
                 'nama' => $user['nama'],
                 'id_role' => $user['id_role']
             ]);
-            if ($user['id_role'] == 2 && ($this->request->uri->getPath() === 'listKeuangan'
-                || $this->request->uri->getPath() === 'api')) {
+            $allowedPaths = ['listKeuangan', 'api', 'dashboard'];
+            if ($user['id_role'] == 2 && in_array($this->request->uri->getPath(), $allowedPaths)) {
                 return redirect()->to(base_url('/dashboard'));
             }
             return redirect()->to(base_url('/dashboard'));

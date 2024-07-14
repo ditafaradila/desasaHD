@@ -22,9 +22,11 @@
 </head>
 
 <body class="">
-  <?php if (session()->getFlashdata('msg')) : ?>
-    <div><?= session()->getFlashdata('msg') ?></div>
-  <?php endif; ?>
+<?php if ($msg = session()->getFlashdata('msg')) : ?>
+    <?php if (is_string($msg)) : ?>
+        <div><?= htmlspecialchars($msg) ?></div>
+    <?php endif; ?>
+<?php endif; ?>
 
   <main class="main-content mt-0">
     <section>
